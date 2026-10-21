@@ -1,0 +1,371 @@
+{
+  "productGroups": [
+    {
+      "id": "grp_history",
+      "name": "History",
+      "subgroups": [
+        "Civil War",
+        "WWII",
+        "American Revolution",
+        "Abraham Lincoln",
+        "Vikings",
+        "General History"
+      ],
+      "description": "Historical events, figures, military history, and vintage archival designs."
+    },
+    {
+      "id": "grp_tv_film",
+      "name": "TV & Film",
+      "subgroups": [
+        "How I Met Your Mother",
+        "Film",
+        "TV",
+        "Filmmakers"
+      ],
+      "description": "Pop culture, cinema, movie lore, television quotes, and film crew merchandise."
+    },
+    {
+      "id": "grp_music",
+      "name": "Music",
+      "subgroups": [
+        "Jazz",
+        "Classical Music",
+        "Rock & Vinyl",
+        "Instruments"
+      ],
+      "description": "Musical genres, classical composers, band culture, and music lover gifts."
+    },
+    {
+      "id": "grp_professions",
+      "name": "Professions",
+      "subgroups": [
+        "Teachers",
+        "Police",
+        "Pilots",
+        "Yoga Teachers",
+        "Engineers",
+        "Nurses"
+      ],
+      "description": "Career appreciation, workplace humor, and professional gifts."
+    },
+    {
+      "id": "grp_other",
+      "name": "Other",
+      "subgroups": [
+        "General Gifts",
+        "Custom Apparel",
+        "Collectibles"
+      ],
+      "description": "Uncategorized gifts and novelties."
+    }
+  ],
+  "themes": [
+    {
+      "id": "history_general",
+      "name": "History & World Events",
+      "subthemes": [
+        "General History",
+        "Historiography",
+        "Archival Documents",
+        "Historical Maps"
+      ],
+      "keywords": [
+        "history lover",
+        "history buff",
+        "historian",
+        "historical quote",
+        "vintage map"
+      ]
+    },
+    {
+      "id": "civil_war",
+      "name": "American Civil War",
+      "subthemes": [
+        "Gettysburg",
+        "Lincoln",
+        "Appomattox",
+        "Union & Confederate Regiments"
+      ],
+      "keywords": [
+        "civil war history",
+        "lincoln quote",
+        "gettysburg address",
+        "rebellion",
+        "union army"
+      ]
+    },
+    {
+      "id": "wwii",
+      "name": "World War II",
+      "subthemes": [
+        "Aviation & Warbirds",
+        "D-Day / Normandy",
+        "Codebreaking & Enigma",
+        "Pacific Campaign"
+      ],
+      "keywords": [
+        "wwii history",
+        "spitfire",
+        "b-17 bomber",
+        "churchill",
+        "allied forces"
+      ]
+    },
+    {
+      "id": "ancient_rome",
+      "name": "Ancient Rome & Greece",
+      "subthemes": [
+        "Roman Emperors",
+        "Stoicism & Marcus Aurelius",
+        "Greek Mythology",
+        "Spartan History"
+      ],
+      "keywords": [
+        "spqr",
+        "marcus aurelius",
+        "stoic philosophy",
+        "julius caesar",
+        "greek mythology"
+      ]
+    },
+    {
+      "id": "filmmaking",
+      "name": "Filmmaking & Cinema Arts",
+      "subthemes": [
+        "Screenwriting",
+        "Cinematography",
+        "Director Clapperboards",
+        "Film History & 35mm"
+      ],
+      "keywords": [
+        "filmmaker gift",
+        "indie director",
+        "screenwriter notebook",
+        "cinema buff",
+        "film crew"
+      ]
+    },
+    {
+      "id": "writing_literature",
+      "name": "Writing, Literature & Typography",
+      "subthemes": [
+        "Classic Authors",
+        "Poetry",
+        "Grammar & Punctuation",
+        "Vintage Typewriters"
+      ],
+      "keywords": [
+        "author gift",
+        "novelist mug",
+        "bookworm",
+        "english teacher gift",
+        "grammar nerd"
+      ]
+    },
+    {
+      "id": "science_physics",
+      "name": "Science, Physics & Astronomy",
+      "subthemes": [
+        "Quantum Mechanics",
+        "Space Exploration",
+        "Cosmology",
+        "Famous Scientists"
+      ],
+      "keywords": [
+        "physics nerd",
+        "astronomy lover",
+        "james webb",
+        "einstein",
+        "science teacher"
+      ]
+    },
+    {
+      "id": "theme_1791346961252",
+      "name": "How I Met Your Mother Gifts",
+      "subthemes": [
+        "HIMYM"
+      ],
+      "keywords": [
+        "himym"
+      ]
+    }
+  ],
+  "giftAudiences": [
+    {
+      "id": "history_buffs",
+      "name": "History Buffs",
+      "description": "Passionate readers, documentary watchers, museum visitors"
+    },
+    {
+      "id": "teachers_professors",
+      "name": "History & Science Teachers",
+      "description": "Educators looking for classroom decor, witty academic humor"
+    },
+    {
+      "id": "filmmakers_cinematographers",
+      "name": "Filmmakers & Video Creators",
+      "description": "Directors, DP, editors, film school students"
+    },
+    {
+      "id": "writers_authors",
+      "name": "Writers & Novelists",
+      "description": "Screenwriters, journalists, poets, avid readers"
+    },
+    {
+      "id": "scientists_engineers",
+      "name": "Scientists & STEM Students",
+      "description": "Physicists, astronomers, STEM majors and nerds"
+    },
+    {
+      "id": "dads_grandfathers",
+      "name": "Dads & Grandfathers",
+      "description": "Military history enthusiasts, armchair generals"
+    }
+  ],
+  "recipientPersonas": [
+    "History Buff",
+    "History Teacher",
+    "Filmmaker / Director",
+    "Screenwriter",
+    "Writer / Author",
+    "Science Enthusiast",
+    "College Professor",
+    "Military Veteran",
+    "Grandfather / Father",
+    "Graduate / Student"
+  ],
+  "occasions": [
+    "Birthday",
+    "Christmas / Holidays",
+    "Father’s Day",
+    "Mother’s Day",
+    "Teacher Appreciation",
+    "Graduation",
+    "Retirement",
+    "Back to School",
+    "Film Premiere / Wrap Gift"
+  ],
+  "priceTiers": [
+    {
+      "id": "tier_under_20",
+      "label": "Budget Gifts (< $20)",
+      "min": 0,
+      "max": 20
+    },
+    {
+      "id": "tier_20_40",
+      "label": "Mid-Tier Gifts ($20 - $40)",
+      "min": 20,
+      "max": 40
+    },
+    {
+      "id": "tier_40_75",
+      "label": "Premium Gifts ($40 - $75)",
+      "min": 40,
+      "max": 75
+    },
+    {
+      "id": "tier_over_75",
+      "label": "Deluxe Apparel & Bundles (> $75)",
+      "min": 75
+    }
+  ],
+  "seasonality": [
+    "Year-Round Essential",
+    "Q4 Holiday Peak (Nov-Dec)",
+    "Spring / Graduation (May-June)",
+    "Back to School / Fall (Aug-Sep)",
+    "Father’s Day (June)"
+  ],
+  "customLabelMappings": {
+    "custom_label_0": "Gift Audience",
+    "custom_label_1": "Price Tier",
+    "custom_label_2": "Seasonality",
+    "custom_label_3": "Theme / Collection",
+    "custom_label_4": "Product Type"
+  },
+  "geminiModel": "gemini-3.5-flash-lite",
+  "googleTaxonomyPresets": [
+    {
+      "id": "212",
+      "name": "Shirts & Tops",
+      "fullPath": "Apparel & Accessories > Clothing > Shirts & Tops",
+      "suggestedProductType": "Apparel > T-Shirts & Tops",
+      "defaultAttributes": {
+        "age_group": "adult",
+        "gender": "unisex"
+      }
+    },
+    {
+      "id": "5598",
+      "name": "Hoodies & Sweatshirts",
+      "fullPath": "Apparel & Accessories > Clothing > Outerwear > Sweatshirts & Hoodies",
+      "suggestedProductType": "Apparel > Hoodies & Sweatshirts",
+      "defaultAttributes": {
+        "age_group": "adult",
+        "gender": "unisex"
+      }
+    },
+    {
+      "id": "2092",
+      "name": "Drinkware > Mugs",
+      "fullPath": "Home & Garden > Kitchen & Dining > Tableware > Drinkware > Mugs",
+      "suggestedProductType": "Home & Living > Drinkware > Ceramic Mugs"
+    },
+    {
+      "id": "500044",
+      "name": "Posters, Prints & Visual Artwork",
+      "fullPath": "Home & Garden > Decor > Artwork > Posters, Prints & Visual Artwork",
+      "suggestedProductType": "Home Decor > Wall Art > Historical Posters"
+    },
+    {
+      "id": "922",
+      "name": "Stationery & Notebooks",
+      "fullPath": "Office Supplies > Paper Products > Notebooks & Notepads",
+      "suggestedProductType": "Stationery > Journals & Notebooks"
+    },
+    {
+      "id": "536",
+      "name": "Hats & Caps",
+      "fullPath": "Apparel & Accessories > Clothing Accessories > Hats",
+      "suggestedProductType": "Apparel > Headwear > Embroidered Caps",
+      "defaultAttributes": {
+        "age_group": "adult",
+        "gender": "unisex"
+      }
+    },
+    {
+      "id": "3032",
+      "name": "Tote Bags",
+      "fullPath": "Luggage & Bags > Shopping Totes",
+      "suggestedProductType": "Accessories > Bags > Canvas Totes"
+    },
+    {
+      "id": "5870",
+      "name": "Phone Cases",
+      "fullPath": "Electronics > Communications > Telephony > Mobile Phone Accessories > Mobile Phone Cases",
+      "suggestedProductType": "Electronics Accessories > Phone Cases"
+    },
+    {
+      "id": "5434",
+      "name": "Stickers & Decals",
+      "fullPath": "Home & Garden > Decor > Decorative Stickers",
+      "suggestedProductType": "Stationery & Accessories > Die-cut Stickers"
+    },
+    {
+      "id": "499969",
+      "name": "Puzzles",
+      "fullPath": "Toys & Games > Puzzles > Jigsaw Puzzles",
+      "suggestedProductType": "Games & Puzzles > History Puzzles",
+      "defaultAttributes": {
+        "age_group": "all_ages"
+      }
+    },
+    {
+      "id": "784",
+      "name": "Books",
+      "fullPath": "Media > Books > Print Books",
+      "suggestedProductType": "Books > Non-Fiction > History & Science"
+    }
+  ]
+}
