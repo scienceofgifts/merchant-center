@@ -129,18 +129,100 @@ export async function extractProductFromUrl(url: string): Promise<ProductItem> {
     price = `${parseFloat(p).toFixed(2)} ${curr}`;
   }
 
-  // Extract verified material / physical specs from description or JSON-LD
+  // 1. Extract Variants and Variant Attributes (Color & Size) from JSON-LD or State
+  const extractedColors: string[] = [];
+  const extractedSizes: string[] = [];
+
+  if (jsonLd?.offers && Array.isArray(jsonLd.offers)) {
+    variants = jsonLd.offers.map((off: any, idx: number) => {
+      const varTitle = off.name || off.sku || `Variant ${idx + 1}`;
+      const { color: vColor, size: vSize } = parseVariantAttributes(varTitle);
+
+      const finalVarColor = off.color || vColor;
+      const finalVarSize = off.size || vSize;
+
+      if (finalVarColor && !extractedColors.includes(finalVarColor)) {
+        extractedColors.push(finalVarColor);
+      }
+      if (finalVarSize && !extractedSizes.includes(finalVarSize)) {
+        extractedSizes.push(finalVarSize);
+      }
+
+      return {
+        id: off.sku || `var_${idx + 1}`,
+        title: varTitle,
+        price: off.price ? `${parseFloat(off.price).toFixed(2)} ${off.priceCurrency || 'USD'}` : price,
+        sku: off.sku,
+        color: finalVarColor || undefined,
+        size: finalVarSize || undefined,
+        available: off.availability ? !off.availability.includes('OutOfStock') : true,
+      };
+    });
+  }
+
+  // Check OpenGraph & JSON-LD root attributes
+  if (ogData['product:color'] || ogData['og:product:color']) {
+    const c = ogData['product:color'] || ogData['og:product:color'];
+    if (c && !extractedColors.includes(c)) extractedColors.push(c);
+  }
+  if (jsonLd?.color && !extractedColors.includes(jsonLd.color)) {
+    extractedColors.push(jsonLd.color);
+  }
+
+  if (ogData['product:material'] || ogData['og:product:material']) {
+    const m = ogData['product:material'] || ogData['og:product:material'];
+    if (m) verifiedAttributes.material = m;
+  }
+  if (jsonLd?.material) {
+    verifiedAttributes.material = jsonLd.material;
+  }
+
+  // 2. Extract verified material / physical specs from description, title, or taxonomy
   const descLower = (rawDescription + ' ' + finalTitle).toLowerCase();
-  if (descLower.includes('100% cotton') || descLower.includes('ring-spun cotton')) {
-    verifiedAttributes.material = '100% Cotton';
-  } else if (descLower.includes('cotton blend') || descLower.includes('poly/cotton') || descLower.includes('polyester')) {
-    verifiedAttributes.material = 'Cotton / Polyester Blend';
-  } else if (descLower.includes('ceramic') || descLower.includes('11 oz') || descLower.includes('15 oz')) {
-    verifiedAttributes.material = 'Ceramic';
-    if (descLower.includes('11 oz')) verifiedAttributes.capacity = '11 oz';
-    if (descLower.includes('15 oz')) verifiedAttributes.capacity = '15 oz';
-  } else if (descLower.includes('canvas') || descLower.includes('museum-grade paper') || descLower.includes('matte paper')) {
-    verifiedAttributes.material = 'Museum-grade Matte Paper';
+
+  if (!verifiedAttributes.material) {
+    if (descLower.includes('100% cotton') || descLower.includes('ring-spun cotton') || descLower.includes('combed cotton')) {
+      verifiedAttributes.material = '100% Cotton';
+    } else if (descLower.includes('cotton blend') || descLower.includes('poly/cotton') || descLower.includes('polyester') || descLower.includes('fleece')) {
+      verifiedAttributes.material = 'Cotton / Polyester Blend';
+    } else if (descLower.includes('ceramic') || descLower.includes('porcelain') || descLower.includes('11 oz') || descLower.includes('15 oz')) {
+      verifiedAttributes.material = 'Ceramic';
+    } else if (descLower.includes('museum-grade paper') || descLower.includes('archival paper') || descLower.includes('poster paper') || descLower.includes('fine art paper') || descLower.includes('matte paper') || descLower.includes('heavyweight paper') || descLower.includes('engraving style') || descLower.includes('poster') || finalTitle.toLowerCase().includes('poster') || finalTitle.toLowerCase().includes('print')) {
+      verifiedAttributes.material = 'Museum-grade Matte Paper';
+    } else if (descLower.includes('canvas')) {
+      verifiedAttributes.material = 'Canvas';
+    } else if (descLower.includes('hardcover') || descLower.includes('journal') || descLower.includes('notebook')) {
+      verifiedAttributes.material = 'Matte Hardcover with Archival Paper';
+    } else if (descLower.includes('twill') || descLower.includes('cap') || descLower.includes('hat')) {
+      verifiedAttributes.material = '100% Cotton Twill';
+    }
+  }
+
+  // Capacity detection
+  if (descLower.includes('11 oz')) verifiedAttributes.capacity = '11 oz';
+  if (descLower.includes('15 oz')) verifiedAttributes.capacity = '15 oz';
+
+  // 3. Extract verified color & size attributes
+  if (extractedColors.length > 0) {
+    verifiedAttributes.color = extractedColors[0];
+  } else {
+    const textColor = detectColorFromText(finalTitle + ' ' + rawDescription);
+    if (textColor) {
+      verifiedAttributes.color = textColor;
+    }
+  }
+
+  if (extractedSizes.length > 0) {
+    verifiedAttributes.size = extractedSizes.length === 1
+      ? extractedSizes[0]
+      : extractedSizes.length > 3
+        ? `${extractedSizes[0]} - ${extractedSizes[extractedSizes.length - 1]}`
+        : extractedSizes.join(', ');
+  } else {
+    const textSize = detectSizeFromText(finalTitle + ' ' + rawDescription);
+    if (textSize) {
+      verifiedAttributes.size = textSize;
+    }
   }
 
   if (jsonLd?.brand?.name) {
@@ -154,17 +236,6 @@ export async function extractProductFromUrl(url: string): Promise<ProductItem> {
   }
   if (jsonLd?.sku) {
     verifiedAttributes.sku = jsonLd.sku;
-  }
-
-  // Extract Variants if present
-  if (jsonLd?.offers && Array.isArray(jsonLd.offers)) {
-    variants = jsonLd.offers.map((off: any, idx: number) => ({
-      id: off.sku || `var_${idx + 1}`,
-      title: off.name || off.sku || `Variant ${idx + 1}`,
-      price: off.price ? `${parseFloat(off.price).toFixed(2)} ${off.priceCurrency || 'USD'}` : price,
-      sku: off.sku,
-      available: off.availability ? !off.availability.includes('OutOfStock') : true,
-    }));
   }
 
   // Determine standard Google Product Category & Product Type candidates
@@ -364,4 +435,60 @@ function guessTaxonomy(title: string, desc: string): {
     gender: '',
     ageGroup: '',
   };
+}
+
+function parseVariantAttributes(title: string): { color?: string; size?: string } {
+  let color = '';
+  let size = '';
+  const parts = title.split(/[,/|-]/).map((p) => p.trim()).filter(Boolean);
+
+  for (const part of parts) {
+    const isSize =
+      /^(xs|s|m|l|xl|2xl|3xl|4xl|5xl|small|medium|large|x-large|xx-large|one size|os)$/i.test(part) ||
+      /\d+(\.\d+)?\s*(?:"|in|inch|inches|cm|mm)?\s*x\s*\d+(\.\d+)?/i.test(part) ||
+      /\d+\s*(oz|ml|l|ounce|ounces)/i.test(part);
+
+    if (isSize) {
+      if (!size) size = part;
+    } else {
+      if (!color && /[a-z]/i.test(part) && !/variant|default|select/i.test(part)) {
+        color = part;
+      }
+    }
+  }
+  return { color: color || undefined, size: size || undefined };
+}
+
+function detectColorFromText(text: string): string | undefined {
+  const lower = text.toLowerCase();
+  const knownColors = [
+    { name: 'Heather Charcoal', regex: /\bheather charcoal\b/i },
+    { name: 'Black', regex: /\b(black|monochrome)\b/i },
+    { name: 'White', regex: /\b(white|glossy white)\b/i },
+    { name: 'Navy', regex: /\b(navy|navy blue)\b/i },
+    { name: 'Charcoal', regex: /\bcharcoal\b/i },
+    { name: 'Sport Grey', regex: /\bsport gre?y\b/i },
+    { name: 'Red', regex: /\bred\b/i },
+    { name: 'Maroon', regex: /\bmaroon\b/i },
+    { name: 'Natural', regex: /\b(natural|cream|off-white)\b/i },
+    { name: 'Royal Blue', regex: /\broyal blue\b/i },
+  ];
+
+  for (const item of knownColors) {
+    if (item.regex.test(lower)) return item.name;
+  }
+  return undefined;
+}
+
+function detectSizeFromText(text: string): string | undefined {
+  const dimMatch = text.match(/\b\d+(\.\d+)?\s*(?:"|in|inch|inches)?\s*x\s*\d+(\.\d+)?\s*(?:"|in|inch|inches)?\b/i);
+  if (dimMatch) return dimMatch[0];
+
+  const capMatch = text.match(/\b(11|15|12|16|20|32)\s*oz\b/i);
+  if (capMatch) return capMatch[0];
+
+  const sizeMatch = text.match(/\b(S - 3XL|S-3XL|S to 2XL|XS|S|M|L|XL|2XL|3XL)\b/i);
+  if (sizeMatch) return sizeMatch[0];
+
+  return undefined;
 }

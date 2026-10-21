@@ -1008,9 +1008,12 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
                       <label className="text-[11px] text-slate-400 block">Color</label>
                       <FieldProvenanceBadge
                         status={
-                          product.evidence.verifiedAttributes?.color || formData.color
+                          product.fieldProvenance?.color ||
+                          (product.evidence.verifiedAttributes?.color
                             ? 'VERIFIED'
-                            : 'UNAVAILABLE'
+                            : formData.color
+                            ? 'GENERATED'
+                            : 'UNAVAILABLE')
                         }
                       />
                     </div>
@@ -1027,9 +1030,12 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
                       <label className="text-[11px] text-slate-400 block">Size</label>
                       <FieldProvenanceBadge
                         status={
-                          product.evidence.verifiedAttributes?.size || formData.size
+                          product.fieldProvenance?.size ||
+                          (product.evidence.verifiedAttributes?.size
                             ? 'VERIFIED'
-                            : 'UNAVAILABLE'
+                            : formData.size
+                            ? 'GENERATED'
+                            : 'UNAVAILABLE')
                         }
                       />
                     </div>
@@ -1046,9 +1052,12 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
                       <label className="text-[11px] text-slate-400 block">Material</label>
                       <FieldProvenanceBadge
                         status={
-                          product.evidence.verifiedAttributes?.material || formData.material
+                          product.fieldProvenance?.material ||
+                          (product.evidence.verifiedAttributes?.material
                             ? 'VERIFIED'
-                            : 'UNAVAILABLE'
+                            : formData.material
+                            ? 'GENERATED'
+                            : 'UNAVAILABLE')
                         }
                       />
                     </div>

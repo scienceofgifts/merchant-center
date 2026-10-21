@@ -351,6 +351,9 @@ Recommended GPC: ${strategy.recommendedGoogleCategory}`;
             },
             bestTitle: { type: Type.STRING },
             optimizedDescription: { type: Type.STRING },
+            color: { type: Type.STRING, description: 'Standard Merchant Center color (e.g. Black, Heather Charcoal, Glossy White).' },
+            size: { type: Type.STRING, description: 'Standard Merchant Center size (e.g. 18" x 24", 15 oz, L, S-3XL).' },
+            material: { type: Type.STRING, description: 'Standard Merchant Center material (e.g. 100% Cotton, Ceramic, Museum-grade Matte Paper).' },
             googleProductCategory: { type: Type.STRING },
             productType: { type: Type.STRING },
             giftTheme: { type: Type.STRING },
@@ -401,6 +404,9 @@ Recommended GPC: ${strategy.recommendedGoogleCategory}`;
     const suggestedMerchantData: Partial<MerchantData> = {
       title: parsed.bestTitle || parsed.titleCandidates?.[0]?.title || item.merchantData.title,
       description: parsed.optimizedDescription || item.merchantData.description,
+      color: parsed.color || item.evidence.verifiedAttributes?.color || item.merchantData.color || '',
+      size: parsed.size || item.evidence.verifiedAttributes?.size || item.merchantData.size || '',
+      material: parsed.material || item.evidence.verifiedAttributes?.material || item.merchantData.material || '',
       google_product_category: parsed.googleProductCategory || strategy.recommendedGoogleCategory || item.merchantData.google_product_category,
       product_type: parsed.productType || item.merchantData.product_type,
       custom_label_0: parsed.customLabels?.custom_label_0 || parsed.targetAudiences?.[0] || 'History Buffs',
@@ -609,34 +615,50 @@ export function computeFieldProvenance(
   provenance.condition = md.condition ? 'VERIFIED' : 'VERIFIED';
   details.condition = { status: 'VERIFIED', source: 'Standard retail condition (new)', updatedAt: now };
 
-  // 2. Physical Specs (Verified vs Unverified vs Unavailable)
-  if (verified.color || md.color) {
-    provenance.color = verified.color ? 'VERIFIED' : 'UNVERIFIED';
+  // 2. Physical Specs (Verified vs Generated vs Unavailable)
+  if (md.color) {
+    provenance.color = verified.color ? 'VERIFIED' : 'GENERATED';
     details.color = {
       status: provenance.color,
-      source: verified.color ? 'Extracted from page specifications' : 'Product text / metadata',
+      source: verified.color ? 'Extracted from page specifications & variants' : 'Derived by AI from product strategy & options',
       updatedAt: now,
     };
+  } else if (verified.color) {
+    md.color = verified.color;
+    provenance.color = 'VERIFIED';
+    details.color = { status: 'VERIFIED', source: 'Extracted from page specifications & variants', updatedAt: now };
   } else {
     provenance.color = 'UNAVAILABLE';
     details.color = { status: 'UNAVAILABLE', note: 'Not specified in product evidence', updatedAt: now };
   }
 
-  if (verified.material || md.material) {
-    provenance.material = verified.material ? 'VERIFIED' : 'UNVERIFIED';
+  if (md.material) {
+    provenance.material = verified.material ? 'VERIFIED' : 'GENERATED';
     details.material = {
       status: provenance.material,
-      source: verified.material ? 'Extracted from page specifications' : 'Product text / metadata',
+      source: verified.material ? 'Extracted from page specifications' : 'Derived by AI from product strategy & options',
       updatedAt: now,
     };
+  } else if (verified.material) {
+    md.material = verified.material;
+    provenance.material = 'VERIFIED';
+    details.material = { status: 'VERIFIED', source: 'Extracted from page specifications', updatedAt: now };
   } else {
     provenance.material = 'UNAVAILABLE';
     details.material = { status: 'UNAVAILABLE', note: 'Not specified in product evidence', updatedAt: now };
   }
 
-  if (verified.size || md.size) {
-    provenance.size = verified.size ? 'VERIFIED' : 'UNVERIFIED';
-    details.size = { status: provenance.size, source: 'Extracted from page specifications', updatedAt: now };
+  if (md.size) {
+    provenance.size = verified.size ? 'VERIFIED' : 'GENERATED';
+    details.size = {
+      status: provenance.size,
+      source: verified.size ? 'Extracted from page specifications' : 'Derived by AI from product strategy & options',
+      updatedAt: now,
+    };
+  } else if (verified.size) {
+    md.size = verified.size;
+    provenance.size = 'VERIFIED';
+    details.size = { status: 'VERIFIED', source: 'Extracted from page specifications', updatedAt: now };
   } else {
     provenance.size = 'UNAVAILABLE';
     details.size = { status: 'UNAVAILABLE', note: 'Not applicable or unverified', updatedAt: now };
@@ -810,6 +832,30 @@ export async function optimizeAndApplyAll(
       const wasEmpty = !priorMerchantData.product_type || !priorMerchantData.product_type.trim();
       item.merchantData.product_type = suggestedMerchantData.product_type;
       appliedFields.push(`${wasEmpty ? 'Generated' : 'Optimized'} Product Type`);
+    }
+    if (suggestedMerchantData.color || item.evidence.verifiedAttributes?.color) {
+      const colorVal = suggestedMerchantData.color || item.evidence.verifiedAttributes?.color;
+      if (colorVal) {
+        const wasEmpty = !priorMerchantData.color || !priorMerchantData.color.trim();
+        item.merchantData.color = colorVal;
+        appliedFields.push(`${wasEmpty ? 'Generated' : 'Optimized'} Color (${colorVal})`);
+      }
+    }
+    if (suggestedMerchantData.size || item.evidence.verifiedAttributes?.size) {
+      const sizeVal = suggestedMerchantData.size || item.evidence.verifiedAttributes?.size;
+      if (sizeVal) {
+        const wasEmpty = !priorMerchantData.size || !priorMerchantData.size.trim();
+        item.merchantData.size = sizeVal;
+        appliedFields.push(`${wasEmpty ? 'Generated' : 'Optimized'} Size (${sizeVal})`);
+      }
+    }
+    if (suggestedMerchantData.material || item.evidence.verifiedAttributes?.material) {
+      const matVal = suggestedMerchantData.material || item.evidence.verifiedAttributes?.material;
+      if (matVal) {
+        const wasEmpty = !priorMerchantData.material || !priorMerchantData.material.trim();
+        item.merchantData.material = matVal;
+        appliedFields.push(`${wasEmpty ? 'Generated' : 'Optimized'} Material (${matVal})`);
+      }
     }
     if (suggestedMerchantData.custom_label_0) {
       item.merchantData.custom_label_0 = suggestedMerchantData.custom_label_0;
@@ -1478,6 +1524,9 @@ function createHeuristicFields(
     suggestedMerchantData: {
       title: candidate1.title,
       description: suggestedDescription,
+      color: item.evidence.verifiedAttributes?.color || item.merchantData.color || '',
+      size: item.evidence.verifiedAttributes?.size || item.merchantData.size || '',
+      material: item.evidence.verifiedAttributes?.material || item.merchantData.material || '',
       google_product_category: strategy.recommendedGoogleCategory,
       product_type: strategy.productTypeStrategy,
       custom_label_0: 'History Buffs',
