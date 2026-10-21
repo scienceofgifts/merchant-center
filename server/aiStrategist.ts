@@ -12,6 +12,9 @@ import {
   StrategyConfig,
   TitleCandidate,
 } from '../src/types/feed';
+import { reconcileProductAttributes, getEvidenceAwareCorrections } from '../src/utils/attributeReconciler';
+import { allocateCustomLabels, derivePriceTier, detectCustomLabelAnomalies } from '../src/utils/customLabels';
+import { INITIAL_STRATEGY_CONFIG } from '../src/utils/taxonomy';
 
 async function callGeminiWithRetry(
   ai: any,
@@ -49,7 +52,7 @@ export async function generateProductStrategy(
   config: StrategyConfig
 ): Promise<AIStrategy> {
   const ai = getGeminiClient();
-  const modelName = config.geminiModel || 'gemini-3.5-flash-lite';
+  const modelName = config?.geminiModel || 'gemini-3.5-flash-lite';
 
   const systemInstruction = `You are the Lead Merchant Center Strategist for "Science of Gifts", an ecommerce brand specializing in gifts for history buffs, science nerds, filmmakers, writers, and curious minds.
 Your task is to analyze product evidence strictly and produce a 15-point product strategy.
@@ -59,6 +62,11 @@ RULES:
 2. Distinguish between VERIFIED FACTS, AI INTERPRETATION, and AI RECOMMENDATIONS.
 3. The internal Science of Gifts taxonomy (Themes, Audiences, Occasions) is for understanding and custom labels, NOT for polluting Google Product Category.
 4. Output valid JSON adhering to the provided schema.`;
+
+  const productGroupsList = config?.productGroups || INITIAL_STRATEGY_CONFIG.productGroups || [];
+  const themesList = config?.themes || INITIAL_STRATEGY_CONFIG.themes || [];
+  const giftAudiencesList = config?.giftAudiences || INITIAL_STRATEGY_CONFIG.giftAudiences || [];
+  const occasionsList = config?.occasions || INITIAL_STRATEGY_CONFIG.occasions || [];
 
   const userPrompt = `Analyze the following product evidence and create a comprehensive strategy:
 
@@ -74,20 +82,20 @@ PRODUCT EVIDENCE:
 - URL: ${item.evidence.sourceUrl}
 - Raw Description: ${item.evidence.rawDescription}
 - Verified Attributes: ${JSON.stringify(item.evidence.verifiedAttributes)}
-- Extracted Images: ${item.evidence.images.join(', ')}
+- Extracted Images: ${item.evidence.images ? item.evidence.images.join(', ') : ''}
 - Price: ${item.merchantData.price}
 
 AVAILABLE SCIENCE OF GIFTS PRODUCT GROUPS:
-${(config.productGroups || []).map((g) => `- ${g.name} (subgroups: ${(g.subgroups || []).join(', ')})`).join('\n')}
+${productGroupsList.map((g) => `- ${g.name} (subgroups: ${(g.subgroups || []).join(', ')})`).join('\n')}
 
 AVAILABLE SCIENCE OF GIFTS THEMES:
-${config.themes.map((t) => `- ${t.name} (subthemes: ${t.subthemes.join(', ')})`).join('\n')}
+${themesList.map((t) => `- ${t.name} (subthemes: ${t.subthemes.join(', ')})`).join('\n')}
 
 AVAILABLE GIFT AUDIENCES:
-${config.giftAudiences.map((a) => `- ${a.name}: ${a.description}`).join('\n')}
+${giftAudiencesList.map((a) => `- ${a.name}: ${a.description}`).join('\n')}
 
 AVAILABLE OCCASIONS:
-${config.occasions.join(', ')}`;
+${occasionsList.join(', ')}`;
 
   try {
     const response = await callGeminiWithRetry(ai, modelName, {
@@ -401,19 +409,32 @@ Recommended GPC: ${strategy.recommendedGoogleCategory}`;
       priceTier = matchedTier ? matchedTier.label : 'Mid-Tier Gifts ($20 - $40)';
     }
 
+    const corrections = getEvidenceAwareCorrections(item);
+
+    const allocatedLabels = allocateCustomLabels(item, config, {
+      aiGenerated: {
+        custom_label_0: parsed.customLabels?.custom_label_0 || parsed.targetAudiences?.[0],
+        custom_label_1: parsed.customLabels?.custom_label_1,
+        custom_label_2: parsed.customLabels?.custom_label_2,
+        custom_label_3: parsed.customLabels?.custom_label_3 || parsed.giftTheme,
+        custom_label_4: parsed.customLabels?.custom_label_4 || parsed.productType,
+      },
+      strategy,
+    });
+
     const suggestedMerchantData: Partial<MerchantData> = {
       title: parsed.bestTitle || parsed.titleCandidates?.[0]?.title || item.merchantData.title,
       description: parsed.optimizedDescription || item.merchantData.description,
-      color: parsed.color || item.evidence.verifiedAttributes?.color || item.merchantData.color || '',
-      size: parsed.size || item.evidence.verifiedAttributes?.size || item.merchantData.size || '',
-      material: parsed.material || item.evidence.verifiedAttributes?.material || item.merchantData.material || '',
-      google_product_category: parsed.googleProductCategory || strategy.recommendedGoogleCategory || item.merchantData.google_product_category,
-      product_type: parsed.productType || item.merchantData.product_type,
-      custom_label_0: parsed.customLabels?.custom_label_0 || parsed.targetAudiences?.[0] || 'History Buffs',
-      custom_label_1: priceTier,
-      custom_label_2: parsed.customLabels?.custom_label_2 || 'Year-Round Essential',
-      custom_label_3: parsed.customLabels?.custom_label_3 || parsed.giftTheme || strategy.dominantTheme,
-      custom_label_4: parsed.customLabels?.custom_label_4 || strategy.productCategory || item.merchantData.custom_label_4,
+      color: corrections.color || parsed.color || item.evidence.verifiedAttributes?.color || item.merchantData.color || '',
+      size: corrections.size || parsed.size || item.evidence.verifiedAttributes?.size || item.merchantData.size || '',
+      material: corrections.material || parsed.material || item.evidence.verifiedAttributes?.material || item.merchantData.material || '',
+      google_product_category: corrections.google_product_category || parsed.googleProductCategory || strategy.recommendedGoogleCategory || item.merchantData.google_product_category,
+      product_type: corrections.product_type || parsed.productType || item.merchantData.product_type,
+      custom_label_0: allocatedLabels.custom_label_0,
+      custom_label_1: allocatedLabels.custom_label_1,
+      custom_label_2: allocatedLabels.custom_label_2,
+      custom_label_3: allocatedLabels.custom_label_3,
+      custom_label_4: allocatedLabels.custom_label_4,
     };
 
     const suggestedGiftIntelligence: Partial<GiftIntelligence> = {
@@ -567,6 +588,33 @@ SOURCE EVIDENCE TO VERIFY AGAINST:
     });
 
     const parsed = JSON.parse(response.text || '{}');
+    const discrepancies = reconcileProductAttributes(item);
+    if (!parsed.issues) parsed.issues = [];
+    if (!parsed.warnings) parsed.warnings = [];
+    if (!parsed.suggestedFixes) parsed.suggestedFixes = [];
+
+    for (const d of discrepancies) {
+      if (d.status === 'contradicted') {
+        const alreadyFlagged = parsed.issues.some((i: any) => i.field === d.field);
+        if (!alreadyFlagged) {
+          parsed.issues.unshift({
+            id: `iss_contradicted_${d.field}`,
+            field: d.field,
+            title: `Contradicted ${d.field}: "${d.currentValue}" conflicts with source evidence`,
+            description: `Current value "${d.currentValue}" contradicts verified source evidence. Recommended replacement: "${d.proposedValue}". ${d.reason}`,
+            state: d.isSafeToFix ? 'safe_to_fix' : 'requires_review',
+            verifiedEvidence: `${d.evidenceSource}: "${d.proposedValue}"`,
+            suggestedFix: `Update ${d.field} from "${d.currentValue}" to verified "${d.proposedValue}"`,
+          });
+          parsed.warnings.push(`Contradicted ${d.field}: "${d.currentValue}" conflicts with source evidence (${d.proposedValue}).`);
+          parsed.suggestedFixes.push({ field: d.field, issue: `Contradicted ${d.field}`, fix: `Update to ${d.proposedValue}` });
+          if (parsed.fieldScores?.accuracy) {
+            parsed.fieldScores.accuracy = Math.max(50, parsed.fieldScores.accuracy - 10);
+          }
+        }
+      }
+    }
+
     return {
       ...parsed,
       previousScore,
@@ -615,53 +663,109 @@ export function computeFieldProvenance(
   provenance.condition = md.condition ? 'VERIFIED' : 'VERIFIED';
   details.condition = { status: 'VERIFIED', source: 'Standard retail condition (new)', updatedAt: now };
 
-  // 2. Physical Specs (Verified vs Generated vs Unavailable)
-  if (md.color) {
-    provenance.color = verified.color ? 'VERIFIED' : 'GENERATED';
-    details.color = {
-      status: provenance.color,
-      source: verified.color ? 'Extracted from page specifications & variants' : 'Derived by AI from product strategy & options',
-      updatedAt: now,
-    };
-  } else if (verified.color) {
-    md.color = verified.color;
-    provenance.color = 'VERIFIED';
-    details.color = { status: 'VERIFIED', source: 'Extracted from page specifications & variants', updatedAt: now };
-  } else {
+  // 2. Physical Specs (Verified vs User Edited vs Generated vs Unverified vs Unavailable)
+  const discrepancies = reconcileProductAttributes(item);
+  const colorDisc = discrepancies.find((d) => d.field === 'color');
+  const matDisc = discrepancies.find((d) => d.field === 'material');
+  const sizeDisc = discrepancies.find((d) => d.field === 'size');
+
+  // Color
+  if (!md.color || !md.color.trim()) {
     provenance.color = 'UNAVAILABLE';
     details.color = { status: 'UNAVAILABLE', note: 'Not specified in product evidence', updatedAt: now };
-  }
-
-  if (md.material) {
-    provenance.material = verified.material ? 'VERIFIED' : 'GENERATED';
-    details.material = {
-      status: provenance.material,
-      source: verified.material ? 'Extracted from page specifications' : 'Derived by AI from product strategy & options',
+  } else if (colorDisc?.status === 'user_override') {
+    provenance.color = 'USER_EDITED';
+    details.color = { status: 'USER_EDITED', source: 'User-approved override', updatedAt: now };
+  } else if (colorDisc?.status === 'supported') {
+    provenance.color = 'VERIFIED';
+    details.color = { status: 'VERIFIED', source: colorDisc.evidenceSource, updatedAt: now };
+  } else if (colorDisc?.status === 'contradicted') {
+    provenance.color = 'UNVERIFIED';
+    details.color = {
+      status: 'UNVERIFIED',
+      source: colorDisc.evidenceSource,
+      note: `Conflicts with source evidence ("${colorDisc.proposedValue}"). ${colorDisc.reason}`,
       updatedAt: now,
     };
-  } else if (verified.material) {
-    md.material = verified.material;
-    provenance.material = 'VERIFIED';
-    details.material = { status: 'VERIFIED', source: 'Extracted from page specifications', updatedAt: now };
+  } else if (prior.color && prior.color !== md.color) {
+    provenance.color = 'OPTIMIZED';
+    details.color = { status: 'OPTIMIZED', source: 'Derived by AI from product strategy & options', updatedAt: now };
+  } else if (item.fieldProvenance?.color) {
+    provenance.color = item.fieldProvenance.color;
+    details.color = item.fieldProvenanceDetails?.color || { status: provenance.color, updatedAt: now };
   } else {
+    provenance.color = 'UNVERIFIED';
+    details.color = {
+      status: 'UNVERIFIED',
+      note: 'Value provenance unknown; not verified against explicit source specifications',
+      updatedAt: now,
+    };
+  }
+
+  // Material
+  if (!md.material || !md.material.trim()) {
     provenance.material = 'UNAVAILABLE';
     details.material = { status: 'UNAVAILABLE', note: 'Not specified in product evidence', updatedAt: now };
-  }
-
-  if (md.size) {
-    provenance.size = verified.size ? 'VERIFIED' : 'GENERATED';
-    details.size = {
-      status: provenance.size,
-      source: verified.size ? 'Extracted from page specifications' : 'Derived by AI from product strategy & options',
+  } else if (matDisc?.status === 'user_override') {
+    provenance.material = 'USER_EDITED';
+    details.material = { status: 'USER_EDITED', source: 'User-approved override', updatedAt: now };
+  } else if (matDisc?.status === 'supported') {
+    provenance.material = 'VERIFIED';
+    details.material = { status: 'VERIFIED', source: matDisc.evidenceSource, updatedAt: now };
+  } else if (matDisc?.status === 'contradicted') {
+    provenance.material = 'UNVERIFIED';
+    details.material = {
+      status: 'UNVERIFIED',
+      source: matDisc.evidenceSource,
+      note: `Conflicts with source evidence ("${matDisc.proposedValue}"). ${matDisc.reason}`,
       updatedAt: now,
     };
-  } else if (verified.size) {
-    md.size = verified.size;
-    provenance.size = 'VERIFIED';
-    details.size = { status: 'VERIFIED', source: 'Extracted from page specifications', updatedAt: now };
+  } else if (prior.material && prior.material !== md.material) {
+    provenance.material = 'OPTIMIZED';
+    details.material = { status: 'OPTIMIZED', source: 'Derived by AI from product strategy & options', updatedAt: now };
+  } else if (item.fieldProvenance?.material) {
+    provenance.material = item.fieldProvenance.material;
+    details.material = item.fieldProvenanceDetails?.material || { status: provenance.material, updatedAt: now };
   } else {
+    provenance.material = 'UNVERIFIED';
+    details.material = {
+      status: 'UNVERIFIED',
+      note: 'Value provenance unknown; not verified against explicit source specifications',
+      updatedAt: now,
+    };
+  }
+
+  // Size
+  if (!md.size || !md.size.trim()) {
     provenance.size = 'UNAVAILABLE';
     details.size = { status: 'UNAVAILABLE', note: 'Not applicable or unverified', updatedAt: now };
+  } else if (sizeDisc?.status === 'user_override') {
+    provenance.size = 'USER_EDITED';
+    details.size = { status: 'USER_EDITED', source: 'User-approved override', updatedAt: now };
+  } else if (sizeDisc?.status === 'supported') {
+    provenance.size = 'VERIFIED';
+    details.size = { status: 'VERIFIED', source: sizeDisc.evidenceSource, updatedAt: now };
+  } else if (sizeDisc?.status === 'contradicted') {
+    provenance.size = 'UNVERIFIED';
+    details.size = {
+      status: 'UNVERIFIED',
+      source: sizeDisc.evidenceSource,
+      note: `Conflicts with source evidence ("${sizeDisc.proposedValue}"). ${sizeDisc.reason}`,
+      updatedAt: now,
+    };
+  } else if (prior.size && prior.size !== md.size) {
+    provenance.size = 'OPTIMIZED';
+    details.size = { status: 'OPTIMIZED', source: 'Derived by AI from product strategy & options', updatedAt: now };
+  } else if (item.fieldProvenance?.size) {
+    provenance.size = item.fieldProvenance.size;
+    details.size = item.fieldProvenanceDetails?.size || { status: provenance.size, updatedAt: now };
+  } else {
+    provenance.size = 'UNVERIFIED';
+    details.size = {
+      status: 'UNVERIFIED',
+      note: 'Value provenance unknown; not verified against explicit source specifications',
+      updatedAt: now,
+    };
   }
 
   // 3. Identifier Fields (NEVER FABRICATED)
@@ -724,12 +828,28 @@ export function computeFieldProvenance(
         updatedAt: now,
       };
     } else {
-      provenance[field] = 'VERIFIED';
-      details[field] = {
-        status: 'VERIFIED',
-        source: 'Preserved from existing verified data',
-        updatedAt: now,
-      };
+      if (item.evidence.userCorrections?.[field]) {
+        provenance[field] = 'USER_EDITED';
+        details[field] = {
+          status: 'USER_EDITED',
+          source: 'User-approved override',
+          updatedAt: now,
+        };
+      } else if (item.fieldProvenance?.[field]) {
+        provenance[field] = item.fieldProvenance[field];
+        details[field] = item.fieldProvenanceDetails?.[field] || {
+          status: item.fieldProvenance[field],
+          source: 'Preserved existing status',
+          updatedAt: now,
+        };
+      } else {
+        provenance[field] = 'VERIFIED';
+        details[field] = {
+          status: 'VERIFIED',
+          source: 'Preserved from existing verified data',
+          updatedAt: now,
+        };
+      }
     }
   };
 
@@ -834,37 +954,56 @@ export async function optimizeAndApplyAll(
     }
     if (suggestedMerchantData.google_product_category) {
       const wasEmpty = !priorMerchantData.google_product_category || !priorMerchantData.google_product_category.trim();
+      const isCorrection = !wasEmpty && priorMerchantData.google_product_category !== suggestedMerchantData.google_product_category;
       item.merchantData.google_product_category = suggestedMerchantData.google_product_category;
-      appliedFields.push(`${wasEmpty ? 'Generated' : 'Optimized'} Google Product Category`);
+      appliedFields.push(
+        isCorrection
+          ? `Corrected Google Product Category ("${priorMerchantData.google_product_category}" → "${suggestedMerchantData.google_product_category}")`
+          : `${wasEmpty ? 'Generated' : 'Optimized'} Google Product Category`
+      );
     }
     if (suggestedMerchantData.product_type) {
       const wasEmpty = !priorMerchantData.product_type || !priorMerchantData.product_type.trim();
+      const isCorrection = !wasEmpty && priorMerchantData.product_type !== suggestedMerchantData.product_type;
       item.merchantData.product_type = suggestedMerchantData.product_type;
-      appliedFields.push(`${wasEmpty ? 'Generated' : 'Optimized'} Product Type`);
+      appliedFields.push(
+        isCorrection
+          ? `Corrected Product Type ("${priorMerchantData.product_type}" → "${suggestedMerchantData.product_type}")`
+          : `${wasEmpty ? 'Generated' : 'Optimized'} Product Type`
+      );
     }
-    if (suggestedMerchantData.color || item.evidence.verifiedAttributes?.color) {
-      const colorVal = suggestedMerchantData.color || item.evidence.verifiedAttributes?.color;
-      if (colorVal) {
-        const wasEmpty = !priorMerchantData.color || !priorMerchantData.color.trim();
-        item.merchantData.color = colorVal;
-        appliedFields.push(`${wasEmpty ? 'Generated' : 'Optimized'} Color (${colorVal})`);
-      }
+    if (suggestedMerchantData.color) {
+      const colorVal = suggestedMerchantData.color;
+      const wasEmpty = !priorMerchantData.color || !priorMerchantData.color.trim();
+      const isCorrection = !wasEmpty && priorMerchantData.color !== colorVal;
+      item.merchantData.color = colorVal;
+      appliedFields.push(
+        isCorrection
+          ? `Corrected Color ("${priorMerchantData.color}" → "${colorVal}")`
+          : `${wasEmpty ? 'Generated' : 'Optimized'} Color (${colorVal})`
+      );
     }
-    if (suggestedMerchantData.size || item.evidence.verifiedAttributes?.size) {
-      const sizeVal = suggestedMerchantData.size || item.evidence.verifiedAttributes?.size;
-      if (sizeVal) {
-        const wasEmpty = !priorMerchantData.size || !priorMerchantData.size.trim();
-        item.merchantData.size = sizeVal;
-        appliedFields.push(`${wasEmpty ? 'Generated' : 'Optimized'} Size (${sizeVal})`);
-      }
+    if (suggestedMerchantData.size) {
+      const sizeVal = suggestedMerchantData.size;
+      const wasEmpty = !priorMerchantData.size || !priorMerchantData.size.trim();
+      const isCorrection = !wasEmpty && priorMerchantData.size !== sizeVal;
+      item.merchantData.size = sizeVal;
+      appliedFields.push(
+        isCorrection
+          ? `Corrected Size ("${priorMerchantData.size}" → "${sizeVal}")`
+          : `${wasEmpty ? 'Generated' : 'Optimized'} Size (${sizeVal})`
+      );
     }
-    if (suggestedMerchantData.material || item.evidence.verifiedAttributes?.material) {
-      const matVal = suggestedMerchantData.material || item.evidence.verifiedAttributes?.material;
-      if (matVal) {
-        const wasEmpty = !priorMerchantData.material || !priorMerchantData.material.trim();
-        item.merchantData.material = matVal;
-        appliedFields.push(`${wasEmpty ? 'Generated' : 'Optimized'} Material (${matVal})`);
-      }
+    if (suggestedMerchantData.material) {
+      const matVal = suggestedMerchantData.material;
+      const wasEmpty = !priorMerchantData.material || !priorMerchantData.material.trim();
+      const isCorrection = !wasEmpty && priorMerchantData.material !== matVal;
+      item.merchantData.material = matVal;
+      appliedFields.push(
+        isCorrection
+          ? `Corrected Material ("${priorMerchantData.material}" → "${matVal}")`
+          : `${wasEmpty ? 'Generated' : 'Optimized'} Material (${matVal})`
+      );
     }
     if (suggestedMerchantData.custom_label_0) {
       item.merchantData.custom_label_0 = suggestedMerchantData.custom_label_0;
@@ -922,8 +1061,8 @@ export async function optimizeAndApplyAll(
   item.fieldProvenance = provenanceResult.fieldProvenance;
   item.fieldProvenanceDetails = provenanceResult.fieldProvenanceDetails;
 
-  // Step 7: Automatically re-run quality audit post-generation
-  const postAudit = await performAIAudit(item, config);
+  // Step 7: Automatically re-run quality audit post-generation (using lightning-fast heuristic audit engine)
+  const postAudit = createHeuristicAudit(item, beforeScore);
   postAudit.previousScore = beforeScore;
   postAudit.fixedAutomatically = [...appliedFields, ...autoFixedIssues];
   item.audit = postAudit;
@@ -1048,33 +1187,19 @@ export async function fixSingleAuditIssue(
     }
     item.merchantData.description = desc;
     appliedChanges.description = desc;
-  } else if (field === 'custom_label_0') {
-    const aud = item.giftIntelligence?.targetAudience?.[0] || 'History Buffs';
-    item.merchantData.custom_label_0 = aud;
-    appliedChanges.custom_label_0 = aud;
-    fixSummary = `Set Custom Label 0 to "${aud}"`;
-  } else if (field === 'custom_label_1') {
-    const numPrice = parseFloat(item.merchantData.price?.replace(/[^0-9.]/g, '') || '25') || 25;
-    const matchedTier = config.priceTiers.find((t) => numPrice >= t.min && (!t.max || numPrice <= t.max));
-    const tier = matchedTier ? matchedTier.label : 'Mid-Tier Gifts ($20 - $40)';
-    item.merchantData.custom_label_1 = tier;
-    appliedChanges.custom_label_1 = tier;
-    fixSummary = `Set Custom Label 1 to Price Tier "${tier}"`;
-  } else if (field === 'custom_label_2') {
-    const season = 'Year-Round Essential';
-    item.merchantData.custom_label_2 = season;
-    appliedChanges.custom_label_2 = season;
-    fixSummary = `Set Custom Label 2 to Seasonality "${season}"`;
-  } else if (field === 'custom_label_3') {
-    const theme = item.giftIntelligence?.theme || item.strategy?.dominantTheme || 'Science of Gifts';
-    item.merchantData.custom_label_3 = theme;
-    appliedChanges.custom_label_3 = theme;
-    fixSummary = `Set Custom Label 3 to Theme "${theme}"`;
-  } else if (field === 'custom_label_4') {
-    const cat = item.strategy?.productCategory || 'Apparel';
-    item.merchantData.custom_label_4 = cat;
-    appliedChanges.custom_label_4 = cat;
-    fixSummary = `Set Custom Label 4 to Product Type "${cat}"`;
+  } else if (field.startsWith('custom_label')) {
+    const allocated = allocateCustomLabels(item, config);
+    item.merchantData.custom_label_0 = allocated.custom_label_0;
+    item.merchantData.custom_label_1 = allocated.custom_label_1;
+    item.merchantData.custom_label_2 = allocated.custom_label_2;
+    item.merchantData.custom_label_3 = allocated.custom_label_3;
+    item.merchantData.custom_label_4 = allocated.custom_label_4;
+    appliedChanges.custom_label_0 = allocated.custom_label_0;
+    appliedChanges.custom_label_1 = allocated.custom_label_1;
+    appliedChanges.custom_label_2 = allocated.custom_label_2;
+    appliedChanges.custom_label_3 = allocated.custom_label_3;
+    appliedChanges.custom_label_4 = allocated.custom_label_4;
+    fixSummary = `Allocated 5 semantic custom labels (Audience: ${allocated.custom_label_0}, Price: ${allocated.custom_label_1}, Seasonality: ${allocated.custom_label_2}, Theme: ${allocated.custom_label_3}, Product Type: ${allocated.custom_label_4})`;
   } else if (field === 'google_product_category') {
     const gpc = item.strategy?.recommendedGoogleCategory || 'Apparel & Accessories > Clothing';
     item.merchantData.google_product_category = gpc;
@@ -1085,14 +1210,36 @@ export async function fixSingleAuditIssue(
     item.merchantData.product_type = pt;
     appliedChanges.product_type = pt;
     fixSummary = `Set Product Type to "${pt}"`;
-  } else if (field === 'color' && verified.color) {
-    item.merchantData.color = verified.color;
-    appliedChanges.color = verified.color;
-    fixSummary = `Applied verified color "${verified.color}"`;
-  } else if (field === 'material' && verified.material) {
-    item.merchantData.material = verified.material;
-    appliedChanges.material = verified.material;
-    fixSummary = `Applied verified material "${verified.material}"`;
+  } else if (field === 'size') {
+    const corrections = getEvidenceAwareCorrections(item);
+    const targetSize = corrections.size || verified.size || verified.dimensions || verified.capacity || '';
+    if (targetSize) {
+      item.merchantData.size = targetSize;
+      appliedChanges.size = targetSize;
+      fixSummary = `Applied verified size / specification "${targetSize}"`;
+    } else {
+      fixSummary = targetIssue.suggestedFix || `Resolved issue for ${field}`;
+    }
+  } else if (field === 'color') {
+    const corrections = getEvidenceAwareCorrections(item);
+    const targetColor = corrections.color || verified.color || '';
+    if (targetColor) {
+      item.merchantData.color = targetColor;
+      appliedChanges.color = targetColor;
+      fixSummary = `Applied verified color "${targetColor}"`;
+    } else {
+      fixSummary = targetIssue.suggestedFix || `Resolved issue for ${field}`;
+    }
+  } else if (field === 'material') {
+    const corrections = getEvidenceAwareCorrections(item);
+    const targetMat = corrections.material || verified.material || '';
+    if (targetMat) {
+      item.merchantData.material = targetMat;
+      appliedChanges.material = targetMat;
+      fixSummary = `Applied verified material "${targetMat}"`;
+    } else {
+      fixSummary = targetIssue.suggestedFix || `Resolved issue for ${field}`;
+    }
   } else {
     // Default fallback safe assignment
     fixSummary = targetIssue.suggestedFix || `Resolved issue for ${field}`;
@@ -1549,7 +1696,7 @@ function createHeuristicStrategy(item: ProductItem, config: StrategyConfig): AIS
   };
 }
 
-function createHeuristicFields(
+export function createHeuristicFields(
   item: ProductItem,
   strategy: AIStrategy,
   _config: StrategyConfig
@@ -1633,20 +1780,22 @@ function createHeuristicFields(
       ? item.merchantData.description
       : `An authentic Science of Gifts creation celebrating ${theme}. Designed with meticulous attention to detail and historical appreciation, this ${prodCat} makes a memorable gift for passionate ${strategy.realisticRecipient}s. Crafted with durable materials and vivid print quality for daily enjoyment.`;
 
+  const corrections = getEvidenceAwareCorrections(item);
+
   return {
     suggestedMerchantData: {
       title: candidate1.title,
       description: suggestedDescription,
-      color: item.evidence.verifiedAttributes?.color || item.merchantData.color || '',
-      size: item.evidence.verifiedAttributes?.size || item.merchantData.size || '',
-      material: item.evidence.verifiedAttributes?.material || item.merchantData.material || '',
-      google_product_category: strategy.recommendedGoogleCategory,
-      product_type: strategy.productTypeStrategy,
-      custom_label_0: 'History Buffs',
-      custom_label_1: 'Mid-Tier Gifts ($20 - $40)',
-      custom_label_2: 'Year-Round Essential',
-      custom_label_3: theme,
-      custom_label_4: prodCat,
+      color: corrections.color || item.evidence.verifiedAttributes?.color || item.merchantData.color || '',
+      size: corrections.size || item.evidence.verifiedAttributes?.size || item.merchantData.size || '',
+      material: corrections.material || item.evidence.verifiedAttributes?.material || item.merchantData.material || '',
+      google_product_category: corrections.google_product_category || strategy.recommendedGoogleCategory,
+      product_type: corrections.product_type || strategy.productTypeStrategy,
+    custom_label_0: allocateCustomLabels(item, INITIAL_STRATEGY_CONFIG).custom_label_0,
+    custom_label_1: allocateCustomLabels(item, INITIAL_STRATEGY_CONFIG).custom_label_1,
+    custom_label_2: allocateCustomLabels(item, INITIAL_STRATEGY_CONFIG).custom_label_2,
+    custom_label_3: allocateCustomLabels(item, INITIAL_STRATEGY_CONFIG).custom_label_3,
+    custom_label_4: allocateCustomLabels(item, INITIAL_STRATEGY_CONFIG).custom_label_4,
     },
     suggestedGiftIntelligence: {
       theme: strategy.dominantTheme,
@@ -1662,7 +1811,7 @@ function createHeuristicFields(
   };
 }
 
-function createHeuristicAudit(item: ProductItem, previousScore?: number): AIAudit {
+export function createHeuristicAudit(item: ProductItem, previousScore?: number): AIAudit {
   const warnings: string[] = [];
   const criticalErrors: string[] = [];
   const suggestedFixes: Array<{ field: string; issue: string; fix: string }> = [];
@@ -1690,6 +1839,25 @@ function createHeuristicAudit(item: ProductItem, previousScore?: number): AIAudi
     });
     warnings.push('Merchant data contains subjects contradicting original source product evidence.');
     accuracyScore -= 20;
+  }
+
+  // Attribute Evidence Discrepancy Checks
+  const discrepancies = reconcileProductAttributes(item);
+  for (const d of discrepancies) {
+    if (d.status === 'contradicted') {
+      issues.push({
+        id: `iss_contradicted_${d.field}`,
+        field: d.field,
+        title: `Contradicted ${d.field}: "${d.currentValue}" conflicts with source evidence`,
+        description: `Current value "${d.currentValue}" contradicts verified source evidence. Recommended replacement: "${d.proposedValue}". ${d.reason}`,
+        state: d.isSafeToFix ? 'safe_to_fix' : 'requires_review',
+        verifiedEvidence: `${d.evidenceSource}: "${d.proposedValue}"`,
+        suggestedFix: `Update ${d.field} from "${d.currentValue}" to verified "${d.proposedValue}"`,
+      });
+      warnings.push(`Contradicted ${d.field}: "${d.currentValue}" conflicts with source evidence (${d.proposedValue}).`);
+      suggestedFixes.push({ field: d.field, issue: `Contradicted ${d.field}`, fix: `Update to ${d.proposedValue}` });
+      accuracyScore -= 8;
+    }
   }
 
   // Issue 1: Description missing verified specs

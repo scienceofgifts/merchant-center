@@ -18,6 +18,7 @@ import {
   fixSingleAuditIssue,
   fixAllSafeAuditIssues,
   inferProductGroupAndSubgroup,
+  computeFieldProvenance,
 } from './server/aiStrategist';
 import { computeProductStatus } from './src/utils/validation';
 import {
@@ -25,7 +26,7 @@ import {
   parseCsvText,
   convertParsedCsvToProducts,
 } from './src/utils/csv';
-import { ProductItem } from './src/types/feed';
+import { ProductItem, MerchantData } from './src/types/feed';
 
 dotenv.config();
 
@@ -97,11 +98,51 @@ app.put('/api/products/:id', (req: Request, res: Response) => {
       return res.status(404).json({ success: false, error: 'Product not found' });
     }
 
+    const prev = catalog[index];
+    const incomingMd = req.body.merchantData || {};
+    const userCorrections = { ...(prev.evidence?.userCorrections || {}) };
+    const changedFields: string[] = [];
+
+    // Track user-edited fields
+    for (const key of ['size', 'color', 'material', 'title', 'description', 'google_product_category', 'product_type'] as const) {
+      if (incomingMd[key] !== undefined && incomingMd[key] !== (prev.merchantData as any)[key]) {
+        userCorrections[key] = incomingMd[key];
+        changedFields.push(key);
+      }
+    }
+
+    const history = [...(prev.history || [])];
+    if (changedFields.length > 0) {
+      history.unshift({
+        timestamp: new Date().toISOString(),
+        note: `User manual edit: ${changedFields.join(', ')}`,
+        snapshot: { ...prev.merchantData },
+      });
+    }
+
     const updated: ProductItem = {
-      ...catalog[index],
+      ...prev,
       ...req.body,
+      id: prev.id, // Strictly preserve existing ID
+      merchantData: {
+        ...prev.merchantData,
+        ...incomingMd,
+        id: prev.id, // Strictly preserve existing ID
+        link: prev.merchantData.link, // Strictly preserve landing URL
+      },
+      evidence: {
+        ...prev.evidence,
+        ...(req.body.evidence || {}),
+        userCorrections,
+      },
+      history,
       updatedAt: new Date().toISOString(),
     };
+
+    // Recompute provenance accurately
+    const provResult = computeFieldProvenance(updated, prev.merchantData);
+    updated.fieldProvenance = provResult.fieldProvenance;
+    updated.fieldProvenanceDetails = provResult.fieldProvenanceDetails;
 
     const { status, validation } = computeProductStatus(updated, catalog);
     updated.status = status;
@@ -147,11 +188,47 @@ app.post('/api/products/batch-extract', async (req: Request, res: Response) => {
         // Replace or add to catalog
         const idx = catalog.findIndex((p) => p.id === extracted.id || p.merchantData.link === url);
         if (idx >= 0) {
-          catalog[idx] = extracted;
+          const existing = catalog[idx];
+          // Preserve valid existing data if extracted was empty or failed
+          const mergedMerchantData: MerchantData = {
+            ...existing.merchantData,
+            ...extracted.merchantData,
+            id: existing.id, // Strictly preserve existing ID
+            link: existing.merchantData.link,
+            color: extracted.merchantData.color || existing.merchantData.color || '',
+            size: extracted.merchantData.size || existing.merchantData.size || '',
+            material: extracted.merchantData.material || existing.merchantData.material || '',
+            gtin: extracted.merchantData.gtin || existing.merchantData.gtin || '',
+            mpn: extracted.merchantData.mpn || existing.merchantData.mpn || '',
+          };
+
+          const mergedProduct: ProductItem = {
+            ...existing,
+            ...extracted,
+            id: existing.id, // Strictly preserve existing ID
+            merchantData: mergedMerchantData,
+            evidence: {
+              ...existing.evidence,
+              ...extracted.evidence,
+              userCorrections: existing.evidence?.userCorrections || {},
+            },
+            history: [
+              {
+                timestamp: new Date().toISOString(),
+                note: 'Re-extracted from URL (preserved existing attributes and ID)',
+                snapshot: { ...existing.merchantData },
+              },
+              ...(existing.history || []),
+            ],
+            updatedAt: new Date().toISOString(),
+          };
+
+          catalog[idx] = mergedProduct;
+          results.push({ url, success: true, product: mergedProduct });
         } else {
           catalog.unshift(extracted);
+          results.push({ url, success: true, product: extracted });
         }
-        results.push({ url, success: true, product: extracted });
       } catch (err: any) {
         results.push({ url, success: false, error: err.message });
       }
@@ -571,8 +648,17 @@ app.post('/api/products/batch-action', async (req: Request, res: Response) => {
 
         if (action === 'approve_all') {
           if (item.suggestedMerchantData) {
+            item.history.unshift({
+              timestamp: new Date().toISOString(),
+              note: 'Batch approved all suggestions',
+              snapshot: { ...item.merchantData },
+            });
+            const priorMd = { ...item.merchantData };
             item.merchantData = { ...item.merchantData, ...item.suggestedMerchantData };
             item.suggestedMerchantData = undefined;
+            const provResult = computeFieldProvenance(item, priorMd);
+            item.fieldProvenance = provResult.fieldProvenance;
+            item.fieldProvenanceDetails = provResult.fieldProvenanceDetails;
           }
           if (item.suggestedGiftIntelligence) {
             item.giftIntelligence = { ...item.giftIntelligence, ...item.suggestedGiftIntelligence };

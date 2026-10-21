@@ -26,9 +26,11 @@ import {
 } from 'lucide-react';
 import { ProductItem, MerchantData, TitleCandidate, StrategyConfig, FieldProvenanceStatus, AuditIssue } from '../types/feed';
 import { COMMON_GOOGLE_PRODUCT_CATEGORIES } from '../utils/taxonomy';
+import { reconcileProductAttributes } from '../utils/attributeReconciler';
 import { AiApprovalDiff } from './AiApprovalDiff';
 import { ValidationBadge } from './ValidationBadge';
 import { FieldProvenanceBadge } from './FieldProvenanceBadge';
+import { SingleProductProgressModal } from './SingleProductProgressModal';
 
 interface ProductWorkspaceProps {
   product: ProductItem;
@@ -74,12 +76,110 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
+  // Single-product optimization progress & cancellation state
+  const [isSingleModalOpen, setIsSingleModalOpen] = useState(false);
+  const [singleRunning, setSingleRunning] = useState(false);
+  const [singleStage, setSingleStage] = useState(0);
+  const [singleCancelled, setSingleCancelled] = useState(false);
+  const [singleError, setSingleError] = useState<string | null>(null);
+  const [singleSuccessMsg, setSingleSuccessMsg] = useState<string | null>(null);
+  const singleAbortRef = React.useRef<AbortController | null>(null);
+
+  const handleStartSingleOptimize = async () => {
+    if (singleRunning) return;
+    setIsSingleModalOpen(true);
+    setSingleRunning(true);
+    setSingleStage(0);
+    setSingleCancelled(false);
+    setSingleError(null);
+    setSingleSuccessMsg(null);
+
+    const abortController = new AbortController();
+    singleAbortRef.current = abortController;
+
+    try {
+      setSingleStage(0);
+      await new Promise((r) => setTimeout(r, 60));
+      if (abortController.signal.aborted) return;
+
+      setSingleStage(1);
+      await new Promise((r) => setTimeout(r, 60));
+      if (abortController.signal.aborted) return;
+
+      setSingleStage(2);
+      setSingleStage(3);
+      setSingleStage(4);
+      setSingleStage(5);
+      setSingleStage(6);
+
+      const response = await fetch(`/api/ai/optimize-and-apply/${product.id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: abortController.signal,
+      });
+
+      if (abortController.signal.aborted) return;
+
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setSingleRunning(false);
+        setSingleSuccessMsg(`Score improved: ${data.beforeScore} → ${data.afterScore} (+${Math.max(0, data.afterScore - data.beforeScore)} pts). Applied ${data.appliedFields?.length || 0} improvements.`);
+        await onRunOptimizeAndApply(product.id);
+      } else {
+        throw new Error(data.error || 'Optimization failed');
+      }
+    } catch (err: any) {
+      if (err.name === 'AbortError' || abortController.signal.aborted) {
+        setSingleCancelled(true);
+        setSingleRunning(false);
+        return;
+      }
+      setSingleError(err.message || 'Optimization request failed');
+      setSingleRunning(false);
+    } finally {
+      singleAbortRef.current = null;
+    }
+  };
+
+  const handleCancelSingleOptimize = () => {
+    if (singleAbortRef.current) {
+      singleAbortRef.current.abort();
+    }
+    setSingleCancelled(true);
+    setSingleRunning(false);
+  };
+
   // Safe issue fixing state tracking for immediate visual feedback
   const [issueFixStates, setIssueFixStates] = useState<
     Record<string, { status: 'idle' | 'fixing' | 'fixed' | 'failed'; error?: string; message?: string }>
   >({});
   const [isFixingAll, setIsFixingAll] = useState(false);
   const [fixToast, setFixToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const attributeDiscrepancies = React.useMemo(() => {
+    return reconcileProductAttributes(product);
+  }, [product]);
+
+  const fieldEvidenceNotes = React.useMemo(() => {
+    const map: Record<string, { evidenceSource?: string; reason?: string; status?: string }> = {};
+    for (const d of attributeDiscrepancies) {
+      map[d.field] = {
+        evidenceSource: d.evidenceSource,
+        reason: d.reason,
+        status:
+          d.status === 'supported'
+            ? 'VERIFIED'
+            : d.status === 'contradicted'
+            ? d.isSafeToFix
+              ? 'VERIFIED REPLACEMENT'
+              : 'REQUIRES REVIEW'
+            : d.status === 'user_override'
+            ? 'USER OVERRIDE'
+            : 'UNRESOLVED',
+      };
+    }
+    return map;
+  }, [attributeDiscrepancies]);
 
   React.useEffect(() => {
     setFormData({ ...product.merchantData });
@@ -268,13 +368,13 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
           <div className="flex items-center gap-2">
             {/* Primary 1-Click Action */}
             <button
-              onClick={() => onRunOptimizeAndApply(product.id)}
-              disabled={isLoading}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 rounded-lg shadow-md shadow-indigo-950/40 transition ring-1 ring-indigo-400/40"
+              onClick={handleStartSingleOptimize}
+              disabled={isLoading || singleRunning}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 rounded-lg shadow-md shadow-indigo-950/40 transition ring-1 ring-indigo-400/40 disabled:opacity-50"
               title="1-Click: Generate missing values from scratch, optimize existing fields, apply safe fixes, and re-audit compliance"
             >
-              <Sparkles className="w-3.5 h-3.5 text-indigo-200 animate-pulse" />
-              <span>Generate & Optimize</span>
+              <Sparkles className={`w-3.5 h-3.5 text-indigo-200 ${singleRunning ? 'animate-spin' : 'animate-pulse'}`} />
+              <span>{singleRunning ? 'Optimizing...' : 'Generate & Optimize'}</span>
             </button>
 
             <button
@@ -455,6 +555,7 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
             suggestedMerchantData={product.suggestedMerchantData}
             currentGiftIntelligence={giftData}
             suggestedGiftIntelligence={product.suggestedGiftIntelligence}
+            fieldEvidenceNotes={fieldEvidenceNotes}
             onApplyField={(field) => onApplySuggestions(product.id, [field])}
             onApplyAll={() => onApplySuggestions(product.id)}
             onDiscard={() => {
@@ -1030,10 +1131,10 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
                       <FieldProvenanceBadge
                         status={
                           product.fieldProvenance?.color ||
-                          (product.evidence.verifiedAttributes?.color
-                            ? 'VERIFIED'
+                          (product.evidence.userCorrections?.color
+                            ? 'USER_EDITED'
                             : formData.color
-                            ? 'GENERATED'
+                            ? 'UNVERIFIED'
                             : 'UNAVAILABLE')
                         }
                       />
@@ -1052,10 +1153,10 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
                       <FieldProvenanceBadge
                         status={
                           product.fieldProvenance?.size ||
-                          (product.evidence.verifiedAttributes?.size
-                            ? 'VERIFIED'
+                          (product.evidence.userCorrections?.size
+                            ? 'USER_EDITED'
                             : formData.size
-                            ? 'GENERATED'
+                            ? 'UNVERIFIED'
                             : 'UNAVAILABLE')
                         }
                       />
@@ -1074,10 +1175,10 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
                       <FieldProvenanceBadge
                         status={
                           product.fieldProvenance?.material ||
-                          (product.evidence.verifiedAttributes?.material
-                            ? 'VERIFIED'
+                          (product.evidence.userCorrections?.material
+                            ? 'USER_EDITED'
                             : formData.material
-                            ? 'GENERATED'
+                            ? 'UNVERIFIED'
                             : 'UNAVAILABLE')
                         }
                       />
@@ -1820,6 +1921,20 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
           </div>
         </div>
       </div>
+
+      <SingleProductProgressModal
+        isOpen={isSingleModalOpen}
+        productName={formData.title || product.evidence.pageTitle}
+        productImageUrl={formData.image_link}
+        isRunning={singleRunning}
+        currentStage={singleStage}
+        isCancelled={singleCancelled}
+        error={singleError}
+        successMessage={singleSuccessMsg}
+        onCancel={handleCancelSingleOptimize}
+        onRetry={handleStartSingleOptimize}
+        onClose={() => setIsSingleModalOpen(false)}
+      />
     </div>
   );
 };

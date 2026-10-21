@@ -4,7 +4,8 @@ export type BulkItemStatus =
   | 'OPTIMIZING'
   | 'COMPLETED'
   | 'FAILED'
-  | 'SKIPPED';
+  | 'SKIPPED'
+  | 'CANCELLED';
 
 export interface BulkOptimizationItem {
   id: string;
@@ -24,6 +25,7 @@ export interface BulkQueueSummary {
   completedCount: number;
   failedCount: number;
   skippedCount: number;
+  cancelledCount?: number;
   avgBeforeScore: number;
   avgAfterScore: number;
   fieldCounts: {

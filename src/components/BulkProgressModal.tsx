@@ -55,11 +55,12 @@ export const BulkProgressModal: React.FC<BulkProgressModalProps> = ({
   const completed = items.filter((i) => i.status === 'COMPLETED').length;
   const failed = items.filter((i) => i.status === 'FAILED').length;
   const skipped = items.filter((i) => i.status === 'SKIPPED').length;
-  const processed = completed + failed + skipped;
-  const currentItem = isRunning && items[currentIndex] ? items[currentIndex] : null;
+  const cancelled = items.filter((i) => i.status === 'CANCELLED').length;
+  const processed = completed + failed + skipped + cancelled;
+  const currentItem = isRunning && !isCancelled && items[currentIndex] ? items[currentIndex] : null;
 
   const progressPercent = total > 0 ? Math.round((processed / total) * 100) : 0;
-  const isFinished = !isRunning && processed > 0;
+  const isFinished = (!isRunning || isCancelled) && processed > 0;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
@@ -68,8 +69,10 @@ export const BulkProgressModal: React.FC<BulkProgressModalProps> = ({
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800/80 bg-slate-950/60">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-xl bg-indigo-950/80 border border-indigo-700/60 text-indigo-400">
-              {isRunning ? (
+              {isRunning && !isCancelled ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
+              ) : isCancelled ? (
+                <MinusCircle className="w-5 h-5 text-amber-400" />
               ) : isFinished ? (
                 <CheckCircle2 className="w-5 h-5 text-emerald-400" />
               ) : (
@@ -79,18 +82,18 @@ export const BulkProgressModal: React.FC<BulkProgressModalProps> = ({
             <div>
               <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider flex items-center gap-2">
                 <span>Optimizing Products</span>
-                {!isRunning && isFinished && (
+                {!isRunning && isFinished && !isCancelled && (
                   <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-semibold lowercase">
                     Completed
                   </span>
                 )}
-                {isPaused && (
+                {isPaused && !isCancelled && (
                   <span className="px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 text-[10px] font-semibold lowercase">
                     Paused
                   </span>
                 )}
                 {isCancelled && (
-                  <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 text-[10px] font-semibold lowercase">
+                  <span className="px-2 py-0.5 rounded bg-slate-800 text-amber-300 border border-amber-700/60 text-[10px] font-semibold lowercase">
                     Cancelled
                   </span>
                 )}
@@ -101,11 +104,12 @@ export const BulkProgressModal: React.FC<BulkProgressModalProps> = ({
             </div>
           </div>
 
-          {!isRunning && (
+          {(!isRunning || isCancelled) && (
             <button
               onClick={onClose}
               className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
               title="Close modal"
+              aria-label="Close"
             >
               <X className="w-5 h-5" />
             </button>
@@ -123,7 +127,13 @@ export const BulkProgressModal: React.FC<BulkProgressModalProps> = ({
             <div className="w-full bg-slate-950 rounded-full h-2.5 overflow-hidden border border-slate-800/80">
               <div
                 className={`h-2.5 rounded-full transition-all duration-300 ${
-                  isFinished ? 'bg-emerald-500' : isPaused ? 'bg-amber-500' : 'bg-gradient-to-r from-indigo-500 to-purple-500'
+                  isFinished && !isCancelled
+                    ? 'bg-emerald-500'
+                    : isCancelled
+                    ? 'bg-amber-600/80'
+                    : isPaused
+                    ? 'bg-amber-500'
+                    : 'bg-gradient-to-r from-indigo-500 to-purple-500'
                 }`}
                 style={{ width: `${progressPercent}%` }}
               />
@@ -132,12 +142,23 @@ export const BulkProgressModal: React.FC<BulkProgressModalProps> = ({
               <span className="text-emerald-400 font-medium">✓ {completed} completed</span>
               {failed > 0 && <span className="text-rose-400 font-medium">✕ {failed} failed</span>}
               {skipped > 0 && <span className="text-amber-400 font-medium">– {skipped} skipped</span>}
-              <span>{total - processed} remaining</span>
+              {cancelled > 0 && <span className="text-slate-400 font-medium">– {cancelled} cancelled</span>}
+              <span>{Math.max(0, total - processed)} remaining</span>
             </div>
           </div>
 
+          {/* Cancellation Notice Banner */}
+          {isCancelled && (
+            <div className="p-3 rounded-xl bg-amber-950/30 border border-amber-800/50 text-xs text-amber-200 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>Queue cancelled. Completed products ({completed}) are saved; remaining products were not changed.</span>
+              </div>
+            </div>
+          )}
+
           {/* Currently Optimizing Highlight Banner */}
-          {isRunning && currentItem && (
+          {isRunning && !isCancelled && currentItem && (
             <div className="p-3.5 rounded-xl bg-gradient-to-r from-indigo-950/80 via-slate-900 to-purple-950/60 border border-indigo-600/50 shadow-md space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -267,6 +288,8 @@ export const BulkProgressModal: React.FC<BulkProgressModalProps> = ({
                           ? 'bg-rose-950/20 border-rose-900/50'
                           : item.status === 'SKIPPED'
                           ? 'bg-amber-950/20 border-amber-900/40'
+                          : item.status === 'CANCELLED'
+                          ? 'bg-slate-900/50 border-slate-800/80 text-slate-400'
                           : 'bg-slate-950/60 border-slate-800/80 opacity-70'
                       }`}
                     >
@@ -326,6 +349,11 @@ export const BulkProgressModal: React.FC<BulkProgressModalProps> = ({
                               <MinusCircle className="w-3.5 h-3.5 text-amber-400" />
                               <span>Skipped</span>
                             </span>
+                          ) : item.status === 'CANCELLED' ? (
+                            <span className="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 text-[11px] font-semibold flex items-center gap-1">
+                              <MinusCircle className="w-3.5 h-3.5 text-slate-400" />
+                              <span>Cancelled</span>
+                            </span>
                           ) : (
                             <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-400 border border-slate-800 text-[11px] font-medium">
                               ○ Queued
@@ -367,20 +395,22 @@ export const BulkProgressModal: React.FC<BulkProgressModalProps> = ({
         {/* Modal Footer Controls */}
         <div className="flex items-center justify-between px-6 py-4 border-t border-slate-800 bg-slate-950/80">
           <div className="text-xs text-slate-400">
-            {isRunning ? (
+            {isRunning && !isCancelled ? (
               <span className="flex items-center gap-1.5 text-indigo-400 font-medium">
                 <Loader2 className="w-3.5 h-3.5 animate-spin" /> Sequential queue running (Concurrency = 1)
               </span>
-            ) : isPaused ? (
+            ) : isPaused && !isCancelled ? (
               <span className="text-amber-400 font-medium">Queue paused. Click Resume to continue.</span>
+            ) : isCancelled ? (
+              <span className="text-slate-400 font-medium">Queue cancelled. {completed} of {total} products were saved.</span>
             ) : (
               <span>Completed queue processing.</span>
             )}
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Running controls */}
-            {isRunning && !isPaused && (
+            {/* Running controls (only active when running and NOT cancelled) */}
+            {isRunning && !isPaused && !isCancelled && (
               <>
                 <button
                   type="button"
@@ -401,8 +431,8 @@ export const BulkProgressModal: React.FC<BulkProgressModalProps> = ({
               </>
             )}
 
-            {/* Paused controls */}
-            {isRunning && isPaused && (
+            {/* Paused controls (only active when paused and NOT cancelled) */}
+            {isRunning && isPaused && !isCancelled && (
               <>
                 <button
                   type="button"
@@ -424,16 +454,16 @@ export const BulkProgressModal: React.FC<BulkProgressModalProps> = ({
             )}
 
             {/* Finished / Cancelled controls */}
-            {!isRunning && (
+            {(!isRunning || isCancelled) && (
               <>
-                {failed > 0 && (
+                {(failed > 0 || (isCancelled && (cancelled > 0 || failed > 0))) && (
                   <button
                     type="button"
                     onClick={onRetryFailed}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs shadow-md transition"
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md transition"
                   >
                     <RotateCcw className="w-4 h-4" />
-                    <span>Retry Failed ({failed})</span>
+                    <span>{isCancelled ? 'Resume Remaining' : `Retry Failed (${failed})`}</span>
                   </button>
                 )}
                 <button
@@ -442,7 +472,7 @@ export const BulkProgressModal: React.FC<BulkProgressModalProps> = ({
                   className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md transition"
                 >
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Review Results</span>
+                  <span>{isCancelled ? 'Close Dialog' : 'Review Results'}</span>
                 </button>
               </>
             )}

@@ -7,6 +7,7 @@ interface AiApprovalDiffProps {
   suggestedMerchantData?: Partial<MerchantData>;
   currentGiftIntelligence: GiftIntelligence;
   suggestedGiftIntelligence?: Partial<GiftIntelligence>;
+  fieldEvidenceNotes?: Record<string, { evidenceSource?: string; reason?: string; status?: string }>;
   onApplyField: (fieldName: string) => void;
   onApplyAll: () => void;
   onDiscard: () => void;
@@ -17,6 +18,7 @@ export const AiApprovalDiff: React.FC<AiApprovalDiffProps> = ({
   suggestedMerchantData,
   currentGiftIntelligence,
   suggestedGiftIntelligence,
+  fieldEvidenceNotes = {},
   onApplyField,
   onApplyAll,
   onDiscard,
@@ -83,15 +85,32 @@ export const AiApprovalDiff: React.FC<AiApprovalDiffProps> = ({
         {merchantDiffKeys.map((key) => {
           const curr = (currentMerchantData as any)[key] || '(empty)';
           const sugg = (suggestedMerchantData as any)[key];
+          const note = fieldEvidenceNotes[key];
           return (
             <div
               key={key}
               className="flex items-start justify-between gap-3 p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 text-xs"
             >
-              <div className="space-y-1 flex-1 min-w-0">
-                <div className="font-mono text-[10px] text-indigo-400 uppercase tracking-wider font-bold">
-                  {key.replace(/_/g, ' ')}
+              <div className="space-y-1.5 flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[10px] text-indigo-400 uppercase tracking-wider font-bold">
+                    {key.replace(/_/g, ' ')}
+                  </span>
+                  {note?.status && (
+                    <span
+                      className={`text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
+                        note.status === 'VERIFIED REPLACEMENT' || note.status === 'VERIFIED'
+                          ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'
+                          : note.status === 'REQUIRES REVIEW'
+                          ? 'bg-amber-950 text-amber-300 border border-amber-800'
+                          : 'bg-purple-950 text-purple-300 border border-purple-800'
+                      }`}
+                    >
+                      {note.status}
+                    </span>
+                  )}
                 </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
                   <div className="p-2 rounded bg-slate-950/60 text-slate-400 border border-slate-800 line-clamp-2">
                     <span className="text-[10px] uppercase font-bold text-slate-500 block mb-0.5">Current:</span>
@@ -102,6 +121,23 @@ export const AiApprovalDiff: React.FC<AiApprovalDiffProps> = ({
                     {String(sugg)}
                   </div>
                 </div>
+
+                {note && (note.evidenceSource || note.reason) && (
+                  <div className="p-2 rounded bg-slate-950/90 border border-slate-800/80 text-[11px] text-slate-300 space-y-0.5">
+                    {note.evidenceSource && (
+                      <div>
+                        <span className="text-indigo-300 font-semibold">Evidence: </span>
+                        <span>{note.evidenceSource}</span>
+                      </div>
+                    )}
+                    {note.reason && (
+                      <div className="text-slate-400">
+                        <span className="text-slate-500 font-medium">Why differ: </span>
+                        <span>{note.reason}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
               <button
                 onClick={() => onApplyField(key)}
