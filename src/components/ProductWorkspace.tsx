@@ -85,6 +85,90 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
   const [singleSuccessMsg, setSingleSuccessMsg] = useState<string | null>(null);
   const singleAbortRef = React.useRef<AbortController | null>(null);
 
+  // Refresh Attributes (Color, Size, Material) state
+  const [isRefreshingAttributes, setIsRefreshingAttributes] = useState(false);
+  const [refreshPreview, setRefreshPreview] = useState<Array<{
+    field: 'color' | 'size' | 'material';
+    currentValue: string;
+    proposedValue: string;
+    status: string;
+    evidenceSource: string;
+    reason: string;
+    isSupportedChange: boolean;
+  }> | null>(null);
+  const [selectedRefreshFields, setSelectedRefreshFields] = useState<Record<string, boolean>>({
+    color: true,
+    size: true,
+    material: true,
+  });
+  const [refreshedEvidenceData, setRefreshedEvidenceData] = useState<any>(null);
+
+  const handleRefreshAttributes = async () => {
+    if (isRefreshingAttributes) return;
+    setIsRefreshingAttributes(true);
+    setRefreshPreview(null);
+    try {
+      const res = await fetch(`/api/products/refresh-attributes/${product.id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await res.json();
+      if (res.ok && data.success && data.preview) {
+        setRefreshPreview(data.preview);
+        setRefreshedEvidenceData(data.freshEvidence);
+        const sel: Record<string, boolean> = {};
+        data.preview.forEach((item: any) => {
+          sel[item.field] = item.isSupportedChange;
+        });
+        setSelectedRefreshFields(sel);
+        setFixToast({ message: '✓ Re-evaluated Color, Size, and Material successfully', type: 'success' });
+        setTimeout(() => setFixToast(null), 3000);
+      } else {
+        throw new Error(data.error || 'Failed to refresh attributes');
+      }
+    } catch (err: any) {
+      console.error('Refresh attributes error:', err);
+      setFixToast({ message: `⚠ Refresh failed: ${err.message || 'Error'}`, type: 'error' });
+      setTimeout(() => setFixToast(null), 4000);
+    } finally {
+      setIsRefreshingAttributes(false);
+    }
+  };
+
+  const handleApplyRefreshedAttributes = async () => {
+    if (!refreshPreview) return;
+    const updates: Record<string, string> = {};
+    refreshPreview.forEach((item) => {
+      if (selectedRefreshFields[item.field]) {
+        updates[item.field] = item.proposedValue;
+      }
+    });
+
+    try {
+      const res = await fetch(`/api/products/apply-refreshed-attributes/${product.id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates, freshEvidence: refreshedEvidenceData }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success && data.product) {
+        setFormData({ ...data.product.merchantData });
+        setRefreshPreview(null);
+        setFixToast({ message: `✓ Applied refreshed attributes (${data.appliedFields?.join(', ') || 'none'})`, type: 'success' });
+        setTimeout(() => setFixToast(null), 3500);
+        if (onSave) {
+          await onSave(data.product);
+        }
+      } else {
+        throw new Error(data.error || 'Failed to apply attributes');
+      }
+    } catch (err: any) {
+      console.error('Apply refreshed attributes error:', err);
+      setFixToast({ message: `⚠ Apply failed: ${err.message || 'Error'}`, type: 'error' });
+      setTimeout(() => setFixToast(null), 4000);
+    }
+  };
+
   const handleStartSingleOptimize = async () => {
     if (singleRunning) return;
     setIsSingleModalOpen(true);
@@ -1112,8 +1196,106 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
                   </div>
                 </div>
 
+                {/* Variant Attributes Header with Refresh Attributes Button */}
+                <div className="flex items-center justify-between pt-2 border-t border-slate-800">
+                  <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
+                    Physical & Variant Attributes (Color, Size, Material)
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleRefreshAttributes}
+                    disabled={isRefreshingAttributes}
+                    className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-indigo-300 bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-800/80 rounded-lg transition disabled:opacity-50 shadow-sm"
+                    title="Fetch source page once and re-evaluate Color, Size, and Material together"
+                  >
+                    {isRefreshingAttributes ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-indigo-400" />
+                    ) : (
+                      <RefreshCw className="w-3.5 h-3.5 text-indigo-400" />
+                    )}
+                    <span>{isRefreshingAttributes ? 'Refreshing...' : 'Refresh Attributes'}</span>
+                  </button>
+                </div>
+
+                {/* Inline Compact Preview Box */}
+                {refreshPreview && (
+                  <div className="p-3.5 rounded-xl bg-slate-950 border border-indigo-500/40 shadow-lg space-y-3 animate-in fade-in duration-200">
+                    <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-indigo-400" />
+                        <span className="text-xs font-bold text-slate-100 uppercase tracking-wider">
+                          Attribute Refresh Preview (Color, Size, Material)
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setRefreshPreview(null)}
+                        className="text-slate-400 hover:text-white p-1 rounded"
+                        title="Dismiss preview"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      {refreshPreview.map((item) => (
+                        <div key={item.field} className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-semibold text-slate-200 uppercase">{item.field}</span>
+                            <label className="flex items-center gap-1.5 text-[11px] text-slate-400 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={selectedRefreshFields[item.field] || false}
+                                onChange={(e) =>
+                                  setSelectedRefreshFields((prev) => ({ ...prev, [item.field]: e.target.checked }))
+                                }
+                                className="rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-indigo-500 w-3.5 h-3.5"
+                              />
+                              <span>Apply</span>
+                            </label>
+                          </div>
+
+                          <div className="space-y-1 text-[11px]">
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">Current:</span>
+                              <span className="text-slate-300 font-mono">{item.currentValue || '(Empty)'}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">Proposed:</span>
+                              <span className="text-indigo-300 font-mono font-bold">{item.proposedValue || '(None)'}</span>
+                            </div>
+                            <div className="text-[10px] text-slate-400 pt-1 border-t border-slate-800/80">
+                              <span className="font-semibold text-slate-300">Status:</span> <span className="uppercase text-emerald-400 font-medium">{item.status}</span>
+                            </div>
+                            <div className="text-[10px] text-slate-400">
+                              <span className="font-semibold text-slate-300">Evidence:</span> {item.reason}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="flex items-center justify-end gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => setRefreshPreview(null)}
+                        className="px-3 py-1.5 text-xs font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-lg transition"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleApplyRefreshedAttributes}
+                        className="px-3.5 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg shadow-sm transition"
+                      >
+                        Apply Selected Changes
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 {/* Variant Attributes */}
-                <div className="grid grid-cols-2 md:grid-cols-6 gap-3 text-xs pt-2 border-t border-slate-800">
+                <div className="grid grid-cols-2 md:grid-cols-6 gap-3 text-xs">
                   <div>
                     <label className="text-[11px] text-slate-400 block mb-1">Item Group ID</label>
                     <input

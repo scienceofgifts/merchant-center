@@ -21,6 +21,7 @@ import {
   computeFieldProvenance,
 } from './server/aiStrategist';
 import { computeProductStatus } from './src/utils/validation';
+import { reconcileProductAttributes } from './src/utils/attributeReconciler';
 import {
   generateMerchantCenterCsv,
   parseCsvText,
@@ -351,6 +352,139 @@ const handleGenerateAndOptimize = async (req: Request, res: Response) => {
 
 app.post('/api/ai/optimize-and-apply/:id', handleGenerateAndOptimize);
 app.post('/api/ai/generate-and-optimize/:id', handleGenerateAndOptimize);
+
+// Refresh Attributes (Color, Size, Material) - single fetch, deterministic re-evaluation
+app.post('/api/products/refresh-attributes/:id', async (req: Request, res: Response) => {
+  try {
+    const catalog = loadCatalog();
+    const item = catalog.find((p) => p.id === req.params.id);
+    if (!item) {
+      return res.status(404).json({ success: false, error: 'Product not found' });
+    }
+
+    const sourceUrl = item.evidence?.sourceUrl || item.merchantData.link;
+    if (!sourceUrl) {
+      return res.status(400).json({ success: false, error: 'No source URL available for this product' });
+    }
+
+    // Fetch source page once
+    const freshExtracted = await extractProductFromUrl(sourceUrl);
+
+    const tempItem: ProductItem = {
+      ...item,
+      evidence: {
+        ...item.evidence,
+        ...freshExtracted.evidence,
+        verifiedAttributes: {
+          ...item.evidence.verifiedAttributes,
+          ...freshExtracted.evidence.verifiedAttributes,
+        },
+        variants: freshExtracted.evidence.variants || item.evidence.variants,
+      },
+    };
+
+    const discrepancies = reconcileProductAttributes(tempItem);
+
+    const attributesToRefresh = ['color', 'size', 'material'] as const;
+    const preview = attributesToRefresh.map((field) => {
+      const disc = discrepancies.find((d) => d.field === field);
+      const currentValue = item.merchantData[field] || '';
+      const proposedValue = disc?.proposedValue || currentValue;
+      const status = disc?.status || 'supported';
+      const evidenceSource = disc?.evidenceSource || 'Source extracted evidence';
+      const reason = disc?.reason || 'Attribute matches verified evidence.';
+
+      return {
+        field,
+        currentValue,
+        proposedValue,
+        status,
+        evidenceSource,
+        reason,
+        isSupportedChange: status === 'contradicted' || (!currentValue && !!proposedValue),
+      };
+    });
+
+    res.json({
+      success: true,
+      productId: item.id,
+      sourceUrl,
+      preview,
+      freshEvidence: freshExtracted.evidence,
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/products/apply-refreshed-attributes/:id', async (req: Request, res: Response) => {
+  try {
+    const catalog = loadCatalog();
+    const id = req.params.id;
+    const index = catalog.findIndex((p) => p.id === id);
+    if (index === -1) {
+      return res.status(404).json({ success: false, error: 'Product not found' });
+    }
+
+    const prev = catalog[index];
+    const { updates, freshEvidence } = req.body;
+    if (!updates || typeof updates !== 'object') {
+      return res.status(400).json({ success: false, error: 'No attribute updates provided' });
+    }
+
+    const priorMerchantData = { ...prev.merchantData };
+    const changedFields: string[] = [];
+    const newMerchantData = { ...prev.merchantData };
+
+    for (const field of ['color', 'size', 'material'] as const) {
+      if (updates[field] !== undefined) {
+        newMerchantData[field] = updates[field];
+        if (updates[field] !== priorMerchantData[field]) {
+          changedFields.push(field);
+        }
+      }
+    }
+
+    const history = [...(prev.history || [])];
+    if (changedFields.length > 0) {
+      history.unshift({
+        timestamp: new Date().toISOString(),
+        note: `Refreshed physical attributes: ${changedFields.join(', ')}`,
+        snapshot: priorMerchantData,
+      });
+    }
+
+    const updated: ProductItem = {
+      ...prev,
+      merchantData: newMerchantData,
+      evidence: freshEvidence ? {
+        ...prev.evidence,
+        ...freshEvidence,
+        userCorrections: {
+          ...(prev.evidence?.userCorrections || {}),
+          ...updates,
+        },
+      } : prev.evidence,
+      history,
+      updatedAt: new Date().toISOString(),
+    };
+
+    const provResult = computeFieldProvenance(updated, priorMerchantData);
+    updated.fieldProvenance = provResult.fieldProvenance;
+    updated.fieldProvenanceDetails = provResult.fieldProvenanceDetails;
+
+    const { status, validation } = computeProductStatus(updated, catalog);
+    updated.status = status;
+    updated.validation = validation;
+
+    catalog[index] = updated;
+    saveCatalog(catalog);
+
+    res.json({ success: true, product: updated, appliedFields: changedFields });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 
 // Recovery Endpoint: Reset Product to Original Imported Source Data
 app.post('/api/ai/reset-to-original/:id', (req: Request, res: Response) => {
