@@ -43,6 +43,7 @@ interface ProductWorkspaceProps {
   onFixIssue?: (id: string, issueId: string) => Promise<any>;
   onFixAllSafeIssues?: (id: string) => Promise<any>;
   onApplySuggestions: (id: string, fields?: string[], note?: string) => Promise<void>;
+  onResetToOriginal?: (id: string) => Promise<void>;
   isLoading: boolean;
 }
 
@@ -59,6 +60,7 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
   onFixIssue,
   onFixAllSafeIssues,
   onApplySuggestions,
+  onResetToOriginal,
   isLoading,
 }) => {
   const [activeTab, setActiveTab] = useState<
@@ -67,7 +69,7 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
 
   const [formData, setFormData] = useState<MerchantData>({ ...product.merchantData });
   const [giftData, setGiftData] = useState({ ...product.giftIntelligence });
-  const [productGroup, setProductGroup] = useState<string>(product.productGroup || 'History');
+  const [productGroup, setProductGroup] = useState<string>(product.productGroup || '');
   const [productSubgroup, setProductSubgroup] = useState<string>(product.productSubgroup || '');
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
@@ -82,9 +84,10 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
   React.useEffect(() => {
     setFormData({ ...product.merchantData });
     setGiftData({ ...product.giftIntelligence });
-    setProductGroup(product.productGroup || 'History');
+    setProductGroup(product.productGroup || '');
     setProductSubgroup(product.productSubgroup || '');
-  }, [product]);
+    setIssueFixStates({});
+  }, [product.id, product.updatedAt]);
 
   const handleApplySafeFix = async (issue: AuditIssue) => {
     const issueId = issue.id || issue.field;
@@ -293,6 +296,24 @@ export const ProductWorkspace: React.FC<ProductWorkspaceProps> = ({
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
               <span>Audit</span>
             </button>
+
+            {onResetToOriginal && (
+              <button
+                onClick={async () => {
+                  if (confirm(`Restore "${product.merchantData.title}" to its original imported source values and clear AI cache?`)) {
+                    await onResetToOriginal(product.id);
+                    setFixToast({ message: '✓ Restored original imported data & cleared cache', type: 'success' });
+                    setTimeout(() => setFixToast(null), 3500);
+                  }
+                }}
+                disabled={isLoading}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-amber-200 bg-amber-950/80 hover:bg-amber-900/90 rounded-lg border border-amber-800/80 transition"
+                title="Restore product to original imported source values and clear AI strategy cache"
+              >
+                <RefreshCw className="w-3.5 h-3.5 text-amber-400" />
+                <span>Reset to Original</span>
+              </button>
+            )}
 
             <button
               onClick={handleSaveAll}

@@ -808,6 +808,15 @@ export async function optimizeAndApplyAll(
   const { suggestedMerchantData, suggestedGiftIntelligence, titleCandidates } =
     await generateOptimizedFields(item, strategy, config);
 
+  // Step 2.5: Semantic Domain Validation (Prevent Cross-Product Contamination)
+  const semanticCheck = validateSemanticConsistency(item, suggestedMerchantData, strategy);
+  if (semanticCheck.isMismatch) {
+    console.warn(`[Semantic Domain Mismatch Blocked] Product ${item.id}:`, semanticCheck.reason);
+    for (const field of semanticCheck.mismatchedFields) {
+      delete (suggestedMerchantData as any)[field];
+    }
+  }
+
   const appliedFields: string[] = [];
   const autoFixedIssues: string[] = [];
 
@@ -1352,29 +1361,133 @@ Verified Attributes: ${JSON.stringify(item.evidence.verifiedAttributes)}`;
   }
 }
 
+// Helper to infer product group and subgroup from product title, description, and URL
+export function inferProductGroupAndSubgroup(
+  title: string,
+  desc: string,
+  url: string = ''
+): { productGroup: string; productSubgroup: string } {
+  const text = `${title} ${desc} ${url}`.toLowerCase();
+
+  // TV & Film
+  if (text.includes('how i met your mother') || text.includes('himym') || text.includes('barney stinson') || text.includes('suit up') || text.includes('maclaren')) {
+    return { productGroup: 'TV & Film', productSubgroup: 'How I Met Your Mother' };
+  }
+  if (text.includes('screenwriter') || text.includes('cinematography') || text.includes('clapperboard') || text.includes('filmmaker') || text.includes('movie director')) {
+    return { productGroup: 'TV & Film', productSubgroup: 'Filmmakers' };
+  }
+
+  // Music
+  if (text.includes('jazz') || text.includes('miles davis') || text.includes('coltrane')) {
+    return { productGroup: 'Music', productSubgroup: 'Jazz' };
+  }
+  if (text.includes('classical music') || text.includes('beethoven') || text.includes('mozart') || text.includes('symphony')) {
+    return { productGroup: 'Music', productSubgroup: 'Classical Music' };
+  }
+
+  // Professions
+  if (text.includes('history teacher') || text.includes('english teacher') || text.includes('professor')) {
+    return { productGroup: 'Professions', productSubgroup: 'Teachers' };
+  }
+  if (text.includes('pilot') || text.includes('aviator')) {
+    return { productGroup: 'Professions', productSubgroup: 'Pilots' };
+  }
+
+  // History Subgroups
+  if (text.includes('viking') || text.includes('norse') || text.includes('valhalla') || text.includes('thor') || text.includes('odin') || text.includes('asgard') || text.includes('runes') || text.includes('shieldmaiden')) {
+    return { productGroup: 'History', productSubgroup: 'Vikings' };
+  }
+  if (text.includes('wwii') || text.includes('world war ii') || text.includes('spitfire') || text.includes('b-17') || text.includes('warbird') || text.includes('d-day') || text.includes('churchill')) {
+    return { productGroup: 'History', productSubgroup: 'WWII' };
+  }
+  if (text.includes('civil war') || text.includes('gettysburg') || text.includes('1861') || text.includes('1863') || text.includes('1865')) {
+    return { productGroup: 'History', productSubgroup: 'Civil War' };
+  }
+  if (text.includes('american revolution') || text.includes('1776') || text.includes('founding fathers')) {
+    return { productGroup: 'History', productSubgroup: 'American Revolution' };
+  }
+  if (text.includes('lincoln') || text.includes('gettysburg address')) {
+    return { productGroup: 'History', productSubgroup: 'Abraham Lincoln' };
+  }
+
+  if (text.includes('history') || text.includes('historian') || text.includes('archival')) {
+    return { productGroup: 'History', productSubgroup: 'General History' };
+  }
+
+  return { productGroup: 'Other', productSubgroup: 'General Gifts' };
+}
+
+// Lightweight Semantic Validator to catch cross-product domain contamination
+export function validateSemanticConsistency(
+  item: ProductItem,
+  proposedMerchantData: Partial<MerchantData>,
+  proposedStrategy?: AIStrategy
+): { isMismatch: boolean; reason?: string; mismatchedFields: string[] } {
+  const sourceText = `${item.originalImported?.title || ''} ${item.originalImported?.description || ''} ${item.evidence.pageTitle || ''} ${item.evidence.rawDescription || ''} ${item.evidence.sourceUrl || ''}`.toLowerCase();
+
+  const proposedText = `${proposedMerchantData.title || ''} ${proposedMerchantData.description || ''} ${proposedStrategy?.dominantTheme || ''} ${proposedMerchantData.custom_label_3 || ''}`.toLowerCase();
+
+  const mismatchedFields: string[] = [];
+
+  // Source Domains
+  const isSourceViking = /\b(viking|norse|valhalla|thor|odin|asgard|runes|shieldmaiden)\b/i.test(sourceText);
+  const isSourceHIMYM = /\b(how i met your mother|himym|barney stinson|suit up|yellow umbrella|maclaren)\b/i.test(sourceText);
+  const isSourceMusic = /\b(jazz|classical music|beethoven|mozart|miles davis|orchestra|vinyl)\b/i.test(sourceText);
+
+  // Proposed Contradictory Domains
+  const isProposedWWII = /\b(wwii|world war ii|spitfire|b-17|warbird|d-day|1776 american revolution)\b/i.test(proposedText);
+  const isProposedCivilWar = /\b(civil war|gettysburg|1863 battle map|union army|confederate)\b/i.test(proposedText);
+
+  if ((isSourceViking || isSourceHIMYM || isSourceMusic) && (isProposedWWII || isProposedCivilWar)) {
+    if (proposedMerchantData.title && (isProposedWWII || isProposedCivilWar)) mismatchedFields.push('title');
+    if (proposedMerchantData.description && (isProposedWWII || isProposedCivilWar)) mismatchedFields.push('description');
+    if (proposedMerchantData.custom_label_3 && (isProposedWWII || isProposedCivilWar)) mismatchedFields.push('custom_label_3');
+
+    const sourceLabel = isSourceViking ? 'Norse / Viking' : isSourceHIMYM ? 'How I Met Your Mother' : 'Music';
+    const proposedLabel = isProposedWWII ? 'WWII Aviation / Revolution' : 'Civil War';
+
+    return {
+      isMismatch: true,
+      reason: `Semantic Domain Mismatch: Source product is ${sourceLabel}, but proposed output contains ${proposedLabel} terms (${mismatchedFields.join(', ')}).`,
+      mismatchedFields,
+    };
+  }
+
+  return { isMismatch: false, mismatchedFields: [] };
+}
+
 // Heuristic Fallbacks for instant offline/resilient responses
 function getSpecificTheme(title: string, rawDesc: string, fallbackTheme: string): string {
   const text = `${title} ${rawDesc}`.toLowerCase();
 
+  if (text.includes('how i met your mother') || text.includes('himym') || text.includes('suit up')) return 'How I Met Your Mother';
+  if (text.includes('viking') || text.includes('norse') || text.includes('valhalla') || text.includes('thor') || text.includes('odin')) return 'Viking & Norse Mythology';
   if (text.includes('lincoln') || text.includes('gettysburg address')) return 'Abraham Lincoln';
   if (text.includes('civil war') || text.includes('gettysburg') || text.includes('1861') || text.includes('1863') || text.includes('1865')) return 'Civil War';
   if (text.includes('aviation') || text.includes('spitfire') || text.includes('warbird') || text.includes('b-17') || text.includes('raf') || text.includes('pilot')) return 'WWII Aviation';
   if (text.includes('wwii') || text.includes('world war ii') || text.includes('d-day') || text.includes('churchill') || text.includes('enigma')) return 'WWII History';
   if (text.includes('athena') || text.includes('greek mythology') || text.includes('zeus') || text.includes('poseidon') || text.includes('spartan') || text.includes('mythology')) return 'Greek Mythology';
   if (text.includes('marcus aurelius') || text.includes('stoic') || text.includes('stoicism') || text.includes('spqr') || text.includes('roman') || text.includes('caesar')) return 'Ancient Rome';
-  if (text.includes('history teacher') || text.includes('history professor')) return 'History Teacher';
   if (text.includes('screenwriter') || text.includes('filmmaker') || text.includes('clapperboard') || text.includes('35mm')) return 'Screenwriting & Cinema';
+  if (text.includes('jazz') || text.includes('miles davis') || text.includes('coltrane')) return 'Jazz Music';
   if (text.includes('physics') || text.includes('quantum') || text.includes('einstein') || text.includes('astronomy')) return 'Science & Physics';
+  if (text.includes('history teacher') || text.includes('history professor')) return 'History Teacher';
   if (text.includes('history buff') || text.includes('timeline') || text.includes('bc ad')) return 'History Buff';
 
-  return fallbackTheme.replace(/^History\s*&\s*World Events$/i, 'History');
+  return fallbackTheme ? fallbackTheme.replace(/^History\s*&\s*World Events$/i, 'History') : 'Themed Design';
 }
 
 function createHeuristicStrategy(item: ProductItem, config: StrategyConfig): AIStrategy {
   const title = item.evidence.pageTitle || item.merchantData.title;
-  let dominantTheme = item.productSubgroup || item.productGroup || 'History';
-  
-  if (!item.productGroup && !item.productSubgroup) {
+
+  if (!item.productGroup) {
+    const inferred = inferProductGroupAndSubgroup(title, item.evidence.rawDescription, item.evidence.sourceUrl);
+    item.productGroup = inferred.productGroup;
+    if (!item.productSubgroup) item.productSubgroup = inferred.productSubgroup;
+  }
+
+  let dominantTheme = item.productSubgroup || item.productGroup || '';
+  if (!dominantTheme || dominantTheme === 'History') {
     const matchedTheme = config.themes.find((t) =>
       t.keywords.some((kw) => title.toLowerCase().includes(kw.toLowerCase())) ||
       title.toLowerCase().includes(t.name.toLowerCase())
@@ -1382,7 +1495,7 @@ function createHeuristicStrategy(item: ProductItem, config: StrategyConfig): AIS
     if (matchedTheme) dominantTheme = matchedTheme.name;
     dominantTheme = getSpecificTheme(title, item.evidence.rawDescription, dominantTheme);
   }
-  const specificTheme = dominantTheme;
+  const specificTheme = dominantTheme || 'Specialized Design';
 
   let productCat = 'Apparel / Drinkware / Decor';
   if (title.toLowerCase().includes('hoodie')) productCat = 'Hoodie';
@@ -1562,6 +1675,22 @@ function createHeuristicAudit(item: ProductItem, previousScore?: number): AIAudi
   let descScore = 93;
   let naturalScore = 96;
   let complianceScore = 98;
+
+  // Semantic Domain Mismatch Check
+  const semCheck = validateSemanticConsistency(item, item.merchantData, item.strategy);
+  if (semCheck.isMismatch) {
+    issues.push({
+      id: 'iss_semantic_domain_mismatch',
+      field: 'title',
+      title: '⚠ Cross-Domain Context Contamination Detected',
+      description: semCheck.reason || 'Merchant data contains thematic subjects that contradict original product evidence.',
+      state: 'requires_review',
+      verifiedEvidence: `Original Title: ${item.originalImported?.title || item.evidence.pageTitle}`,
+      suggestedFix: 'Use Recovery Controls to restore original imported data or re-optimize with clean product context.',
+    });
+    warnings.push('Merchant data contains subjects contradicting original source product evidence.');
+    accuracyScore -= 20;
+  }
 
   // Issue 1: Description missing verified specs
   const verified = item.evidence.verifiedAttributes;

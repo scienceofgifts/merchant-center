@@ -17,6 +17,7 @@ import {
   optimizeAndApplyAll,
   fixSingleAuditIssue,
   fixAllSafeAuditIssues,
+  inferProductGroupAndSubgroup,
 } from './server/aiStrategist';
 import { computeProductStatus } from './src/utils/validation';
 import {
@@ -273,6 +274,55 @@ const handleGenerateAndOptimize = async (req: Request, res: Response) => {
 
 app.post('/api/ai/optimize-and-apply/:id', handleGenerateAndOptimize);
 app.post('/api/ai/generate-and-optimize/:id', handleGenerateAndOptimize);
+
+// Recovery Endpoint: Reset Product to Original Imported Source Data
+app.post('/api/ai/reset-to-original/:id', (req: Request, res: Response) => {
+  try {
+    const catalog = loadCatalog();
+    const item = catalog.find((p) => p.id === req.params.id);
+    if (!item) {
+      return res.status(404).json({ success: false, error: 'Product not found' });
+    }
+
+    const original = item.originalImported || { ...item.merchantData };
+
+    item.merchantData = {
+      ...item.merchantData,
+      ...original,
+      color: item.evidence.verifiedAttributes?.color || original.color || '',
+      size: item.evidence.verifiedAttributes?.size || original.size || '',
+      material: item.evidence.verifiedAttributes?.material || original.material || '',
+    };
+
+    item.strategy = undefined;
+    item.suggestedMerchantData = undefined;
+    item.suggestedGiftIntelligence = undefined;
+    item.titleCandidates = [];
+    item.selectedTitleCandidateId = undefined;
+
+    const inferred = inferProductGroupAndSubgroup(
+      item.merchantData.title,
+      item.merchantData.description,
+      item.evidence.sourceUrl
+    );
+    item.productGroup = inferred.productGroup;
+    item.productSubgroup = inferred.productSubgroup;
+
+    item.updatedAt = new Date().toISOString();
+    const { status, validation } = computeProductStatus(item, catalog);
+    item.status = status;
+    item.validation = validation;
+
+    saveCatalog(catalog);
+    res.json({
+      success: true,
+      product: item,
+      message: 'Successfully restored original imported data and cleared stale AI cache.',
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 
 app.post('/api/ai/audit/:id', async (req: Request, res: Response) => {
   try {

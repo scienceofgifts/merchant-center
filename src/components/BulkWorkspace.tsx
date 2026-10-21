@@ -419,7 +419,7 @@ export const BulkWorkspace: React.FC<BulkWorkspaceProps> = ({
                                 {item.id}
                               </span>
                               <span className="text-[10px] px-1.5 py-0.2 rounded bg-purple-950/80 text-purple-300 border border-purple-800/60 font-semibold">
-                                {item.productGroup || 'History'} {item.productSubgroup ? `› ${item.productSubgroup}` : ''}
+                                {item.productGroup || 'Unassigned'} {item.productSubgroup ? `› ${item.productSubgroup}` : ''}
                               </span>
                               {hasSuggestions && (
                                 <span className="text-[10px] px-1.5 py-0.2 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/60 font-medium">

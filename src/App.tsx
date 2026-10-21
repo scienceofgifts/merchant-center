@@ -52,10 +52,37 @@ export default function App() {
     loadInitialData();
   }, [loadInitialData]);
 
-  // Keep selectedProduct in sync with updated list
+  // Keep selectedProduct in sync with updated list ONLY if user is still viewing the target product
   const syncSelectedProduct = (updatedList: ProductItem[], targetId: string) => {
-    const found = updatedList.find((p) => p.id === targetId);
-    if (found) setSelectedProduct(found);
+    setSelectedProduct((prev) => {
+      if (prev && prev.id === targetId) {
+        const found = updatedList.find((p) => p.id === targetId);
+        return found || prev;
+      }
+      return prev;
+    });
+  };
+
+  // Reset Product to Original Source Data
+  const handleResetToOriginal = async (id: string) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/ai/reset-to-original/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await response.json();
+      if (data.success && data.product) {
+        setProducts((prev) =>
+          prev.map((p) => (p.id === data.product.id ? data.product : p))
+        );
+        setSelectedProduct((prev) => (prev && prev.id === id ? data.product : prev));
+      }
+    } catch (err: any) {
+      console.error('Reset to original error:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Immediate Product Update Callback for Sequential Bulk Optimization Queue
@@ -429,6 +456,7 @@ export default function App() {
           onFixIssue={handleFixIssue}
           onFixAllSafeIssues={handleFixAllSafeIssues}
           onApplySuggestions={handleApplySuggestions}
+          onResetToOriginal={handleResetToOriginal}
           isLoading={isLoading}
         />
       )}
