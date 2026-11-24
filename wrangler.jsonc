@@ -29,7 +29,7 @@
     {
       "binding": "DB",
       "database_name": "science-of-gifts-merchant-feed-db",
-      "database_id": "<YOUR_D1_DATABASE_ID>",
+      "database_id": "merchant-center",
       "migrations_dir": "migrations"
     }
   ],
