@@ -4,7 +4,7 @@
   // Single authoritative Wrangler configuration (wrangler.jsonc)
   // ==========================================================================
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "science-of-gifts-merchant-feed-optimizer",
+  "name": "merchant-center",
   "main": "worker.ts",
   "compatibility_date": "2025-03-01",
   "compatibility_flags": [
