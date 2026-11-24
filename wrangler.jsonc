@@ -1,0 +1,46 @@
+{
+  // ==========================================================================
+  // Science of Gifts Merchant Feed Optimizer — Cloudflare Worker + Static Assets + D1
+  // Single authoritative Wrangler configuration (wrangler.jsonc)
+  // ==========================================================================
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "science-of-gifts-merchant-feed-optimizer",
+  "main": "worker.ts",
+  "compatibility_date": "2025-03-01",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+
+  // Cloudflare Workers Static Assets (serves React + Vite build from ./dist)
+  // API routes (/api/*) always execute worker.ts first; frontend paths use SPA fallback.
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": [
+      "/api/*"
+    ]
+  },
+
+  // Cloudflare D1 Persistent Relational Catalog Database
+  // Replace <YOUR_D1_DATABASE_ID> with the database_id output from:
+  //   npx wrangler d1 create science-of-gifts-merchant-feed-db
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "science-of-gifts-merchant-feed-db",
+      "database_id": "<YOUR_D1_DATABASE_ID>",
+      "migrations_dir": "migrations"
+    }
+  ],
+
+  // Non-secret runtime variables (Secrets such as GEMINI_API_KEY and ADMIN_API_TOKEN
+  // must be configured via `npx wrangler secret put <NAME>`, never committed here)
+  "vars": {
+    "ENVIRONMENT": "production"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}

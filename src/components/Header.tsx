@@ -19,6 +19,7 @@ interface HeaderProps {
   products: ProductItem[];
   modelName: string;
   onOpenBatchUrlModal: () => void;
+  onOpenWebsiteFeedSyncModal: () => void;
   onOpenCsvModal: (initialTab?: 'import' | 'export') => void;
   onOpenStrategyModal: () => void;
   onRefreshCatalog: () => void;
@@ -29,6 +30,7 @@ export const Header: React.FC<HeaderProps> = ({
   products,
   modelName,
   onOpenBatchUrlModal,
+  onOpenWebsiteFeedSyncModal,
   onOpenCsvModal,
   onOpenStrategyModal,
   onRefreshCatalog,
@@ -40,6 +42,10 @@ export const Header: React.FC<HeaderProps> = ({
   const warnings = products.filter((p) => p.status === 'warnings').length;
   const errors = products.filter((p) => p.status === 'errors').length;
   const notAnalyzed = products.filter((p) => p.status === 'not_analyzed').length;
+  const syncedVariantsCount = products.reduce(
+    (sum, p) => sum + (p.syncedVariants && p.syncedVariants.length > 0 ? p.syncedVariants.length : 0),
+    0
+  );
 
   return (
     <header className="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-30 px-6 py-3.5">
@@ -72,7 +78,12 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800/90 border border-slate-700/70 text-slate-200">
             <Layers className="w-3.5 h-3.5 text-slate-400" />
             <span className="font-semibold">{total}</span>
-            <span className="text-slate-400">Total</span>
+            <span className="text-slate-400">Designs</span>
+            {syncedVariantsCount > 0 && (
+              <span className="text-[11px] text-indigo-300 font-medium ml-1">
+                ({syncedVariantsCount} Variants)
+              </span>
+            )}
           </div>
 
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-950/40 border border-emerald-800/60 text-emerald-300">
@@ -110,7 +121,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Global Action Tools */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={onRefreshCatalog}
             disabled={isLoading}
@@ -118,6 +129,14 @@ export const Header: React.FC<HeaderProps> = ({
             className="p-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg border border-slate-700/60 transition disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin text-indigo-400' : ''}`} />
+          </button>
+
+          <button
+            onClick={onOpenWebsiteFeedSyncModal}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-indigo-950/80 hover:bg-indigo-900/80 text-indigo-200 border border-indigo-700/70 shadow-sm transition"
+          >
+            <Database className="w-3.5 h-3.5 text-indigo-400" />
+            <span>Website Feed Sync</span>
           </button>
 
           <button
@@ -141,7 +160,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white shadow-sm transition"
           >
             <Download className="w-4 h-4" />
-            <span>Export Feed CSV</span>
+            <span>Export Feed</span>
           </button>
 
           <button

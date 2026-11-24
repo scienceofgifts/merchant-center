@@ -223,6 +223,53 @@ export interface ProductGroupConfig {
   description?: string;
 }
 
+export interface WebsiteVariant {
+  id: string; // Website feed <g:id>
+  item_group_id: string; // Website feed <g:item_group_id> (empty for standalone single-variant items)
+  title: string;
+  description: string;
+  link: string;
+  image_link: string;
+  additional_image_link?: string;
+  availability: 'in_stock' | 'out_of_stock' | 'preorder' | 'backorder';
+  quantity?: number;
+  price: string;
+  sale_price?: string;
+  brand?: string;
+  mpn?: string;
+  gtin?: string;
+  identifier_exists?: 'yes' | 'no';
+  color?: string;
+  size?: string;
+  size_type?: 'regular' | 'petite' | 'plus' | 'big_and_tall' | 'maternity' | '';
+  material?: string;
+  pattern?: string;
+  gender?: 'unisex' | 'male' | 'female' | '';
+  age_group?: 'adult' | 'all_ages' | 'teen' | 'kids' | 'toddler' | 'infant' | '';
+  condition?: 'new' | 'refurbished' | 'used';
+  shipping_weight?: string;
+  extraAttributes?: Record<string, string>;
+}
+
+export type WebsiteSyncMatchMethod =
+  | 'mapped_id'
+  | 'item_group_id'
+  | 'mpn_sku'
+  | 'canonical_url'
+  | 'manual';
+
+export interface WebsiteSyncMetadata {
+  lastSyncedAt: string;
+  feedUrl: string;
+  websiteItemGroupId?: string;
+  websitePrimaryVariantId?: string;
+  canonicalProductUrl?: string;
+  matchMethod: WebsiteSyncMatchMethod;
+  variantCount: number;
+  preservedAppId: string;
+  idChangedWarning?: string;
+}
+
 export interface ProductItem {
   id: string;
   productGroup?: string;
@@ -244,8 +291,124 @@ export interface ProductItem {
   lastOptimizationSummary?: OptimizationSummary;
   appliedSuggestions: Array<{ timestamp: string; fields: string[]; note: string }>;
   history: Array<{ timestamp: string; note: string; snapshot: Partial<MerchantData> }>;
+  syncedVariants?: WebsiteVariant[];
+  websiteSyncMeta?: WebsiteSyncMetadata;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface FeedSyncFieldDiff {
+  field: string;
+  label: string;
+  currentAppValue: string;
+  websiteValue: string;
+  action: 'update_factual' | 'preserve_custom' | 'warning_id_change';
+  reason: string;
+}
+
+export type FeedSyncMode = 'add_only' | 'sync_factual';
+
+export interface FeedSyncMatchedItem {
+  catalogProductId: string;
+  catalogTitle: string;
+  catalogLink: string;
+  websiteGroupKey: string;
+  websiteItemGroupId: string;
+  websiteTitle: string;
+  websiteLink: string;
+  matchMethod: WebsiteSyncMatchMethod;
+  previousVariantCount: number;
+  newVariantCount: number;
+  missingVariantCount: number;
+  newVariants: WebsiteVariant[];
+  variants: WebsiteVariant[];
+  fieldDiffs: FeedSyncFieldDiff[];
+  idChangeWarning?: string;
+  hasNewVariants: boolean;
+  hasFactualChanges: boolean;
+  hasChanges: boolean;
+}
+
+export interface FeedSyncUnmatchedFeedGroup {
+  groupKey: string;
+  itemGroupId: string;
+  primaryVariantId: string;
+  title: string;
+  link: string;
+  variantCount: number;
+  sizes: string[];
+  colors: string[];
+  priceRange: string;
+  variants: WebsiteVariant[];
+}
+
+export interface FeedSyncUnmatchedCatalogItem {
+  catalogProductId: string;
+  title: string;
+  link: string;
+  status: ProductStatus;
+  syncedVariantCount: number;
+}
+
+export interface FeedSyncAmbiguousMatch {
+  websiteGroupKey: string;
+  websiteTitle: string;
+  websiteLink: string;
+  candidateCatalogIds: Array<{
+    catalogProductId: string;
+    title: string;
+    link: string;
+    reason: string;
+  }>;
+  reason: string;
+}
+
+export interface FeedSyncPreviewResult {
+  feedUrl: string;
+  fetchedAt: string;
+  totalFeedVariantItems: number;
+  totalFeedDesignGroups: number;
+  totalCatalogProducts: number;
+  matchedProducts: FeedSyncMatchedItem[];
+  unmatchedFeedGroups: FeedSyncUnmatchedFeedGroup[];
+  unmatchedCatalogItems: FeedSyncUnmatchedCatalogItem[];
+  ambiguousMatches: FeedSyncAmbiguousMatch[];
+  summary: {
+    matchedCount: number;
+    matchedWithChangesCount: number;
+    matchedWithNewVariantsCount: number;
+    newVariantsForExistingCount: number;
+    newProductsVariantCount: number;
+    unchangedMatchedCount: number;
+    totalUnchangedProductsCount: number;
+    totalVariantsToSync: number;
+    unmatchedFeedGroupCount: number;
+    unmatchedCatalogCount: number;
+    ambiguousCount: number;
+    idChangeWarningCount: number;
+  };
+}
+
+export interface FeedSyncApplyOptions {
+  syncMode?: FeedSyncMode; // Defaults to 'add_only' (add new products & attach missing variants only)
+  approvedCatalogIds?: string[]; // If omitted, applies all matchedProducts with pending changes
+  manualMappings?: Record<string, string>; // websiteGroupKey -> catalogProductId
+  importUnmatchedFeedGroupKeys?: string[]; // Import selected genuinely new website products
+  overrideCustomTitleForIds?: string[]; // Explicit opt-in only; empty by default
+  overrideCustomDescriptionForIds?: string[]; // Explicit opt-in only; empty by default
+}
+
+export interface FeedSyncApplyResult {
+  appliedAt: string;
+  syncMode: FeedSyncMode;
+  updatedProductCount: number;
+  importedNewProductCount: number;
+  attachedVariantsCount: number;
+  unchangedProductCount: number;
+  totalVariantsSynced: number;
+  skippedCount: number;
+  updatedProductIds: string[];
+  importedProductIds: string[];
 }
 
 export interface ThemeConfig {
@@ -297,3 +460,92 @@ export interface StrategyConfig {
   geminiModel: string;
   googleTaxonomyPresets: GoogleCategoryOption[];
 }
+
+export type CsvImportMode = 'merge' | 'update' | 'replace';
+
+export type CsvImportMatchMethod =
+  | 'id'
+  | 'variant_id'
+  | 'item_group_id'
+  | 'canonical_url';
+
+export type CsvImportConflictType =
+  | 'item_group_id_url_conflict'
+  | 'url_item_group_id_conflict'
+  | 'mixed_group_id_on_url'
+  | 'ambiguous_url_grouping'
+  | 'duplicate_variant_id_across_groups'
+  | 'catalog_item_group_id_url_conflict'
+  | 'catalog_url_item_group_id_conflict'
+  | 'catalog_variant_id_conflict'
+  | 'ambiguous_catalog_match';
+
+export interface CsvImportConflict {
+  type: CsvImportConflictType;
+  identifier: string;
+  message: string;
+  resolution: string;
+  affectedRowIndexes?: number[];
+  affectedProductIds?: string[];
+}
+
+export interface CsvImportMatchedPreview {
+  catalogProductId: string;
+  catalogTitle: string;
+  csvTitle: string;
+  matchMethod: CsvImportMatchMethod;
+  existingVariantCount: number;
+  incomingVariantCount: number;
+  resultingVariantCount: number;
+  preservedCustomFields: string[];
+  willModify: boolean;
+}
+
+export interface CsvImportNewProductPreview {
+  proposedId: string;
+  title: string;
+  link: string;
+  itemGroupId: string;
+  variantCount: number;
+  sizes: string[];
+  colors: string[];
+}
+
+export interface CsvImportPreview {
+  mode: CsvImportMode;
+  totalCsvRows: number;
+  uniqueProducts: number;
+  totalVariants: number;
+  duplicateVariantRowsDeduplicated: number;
+  newProductsCount: number;
+  matchedExistingCount: number;
+  conflictsCount: number;
+  existingCatalogCount: number;
+  unmatchedExistingCount: number;
+  resultingProductCount: number;
+  resultingVariantCount: number;
+  requiresConfirmation: boolean;
+  newProducts: CsvImportNewProductPreview[];
+  matchedProducts: CsvImportMatchedPreview[];
+  conflicts: CsvImportConflict[];
+}
+
+export interface CsvImportApplySummary {
+  mode: CsvImportMode;
+  totalCsvRows: number;
+  uniqueCsvProducts: number;
+  totalCsvVariants: number;
+  duplicateVariantRowsDeduplicated: number;
+  newProductsAdded: number;
+  matchedProductsCount: number;
+  matchedProductsModified: number;
+  matchedProductsUnchanged: number;
+  variantsAdded: number;
+  conflictsCount: number;
+  catalogCountBefore: number;
+  catalogCountAfter: number;
+  totalCatalogVariantsAfter: number;
+  conflicts: CsvImportConflict[];
+}
+
+

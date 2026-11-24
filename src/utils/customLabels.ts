@@ -215,8 +215,20 @@ export function deriveGiftAudienceLabel(
 ): string {
   if (candidate && !isPriceLikeString(candidate) && !isProductTypeLikeString(candidate) && candidate.trim()) {
     const c = candidate.trim();
-    // Do not allow raw theme as audience if clearly a theme (unless theme-specific fans)
-    if (!c.toLowerCase().endsWith('hoodie') && !c.toLowerCase().endsWith('t-shirt')) {
+    const cLower = c.toLowerCase();
+    // Do not allow raw theme or product form factor as audience
+    const isPureTheme =
+      cLower === 'norse mythology' ||
+      cLower === 'vikings' ||
+      cLower === 'wwii aviation' ||
+      cLower === 'world war ii' ||
+      cLower === 'civil war' ||
+      cLower === 'american revolution' ||
+      cLower === 'ancient rome' ||
+      cLower === 'greek mythology' ||
+      cLower === 'how i met your mother';
+
+    if (!isPureTheme && !cLower.endsWith('hoodie') && !cLower.endsWith('t-shirt') && !cLower.endsWith('mug')) {
       return c;
     }
   }
@@ -225,7 +237,16 @@ export function deriveGiftAudienceLabel(
   if (Array.isArray(targetAudiences) && targetAudiences.length > 0) {
     const first = targetAudiences[0];
     if (first && !isPriceLikeString(first) && !isProductTypeLikeString(first)) {
-      return first;
+      const fLower = first.toLowerCase().trim();
+      if (fLower === 'norse mythology' || fLower === 'vikings') {
+        return 'Norse Mythology Enthusiasts';
+      }
+      if (fLower === 'how i met your mother' || fLower === 'himym') {
+        return 'Sitcom Fans';
+      }
+      if (!['civil war', 'world war ii', 'ancient rome', 'american revolution'].includes(fLower)) {
+        return first;
+      }
     }
   }
 
@@ -234,7 +255,8 @@ export function deriveGiftAudienceLabel(
   const theme = (item.giftIntelligence?.theme || item.strategy?.dominantTheme || '').toLowerCase();
   const text = `${title} ${desc} ${theme}`;
 
-  if (text.includes('himym') || text.includes('how i met your mother')) return 'Sitcom & TV Fans';
+  if (text.includes('himym') || text.includes('how i met your mother') || text.includes('barney stinson')) return 'Sitcom Fans';
+  if (text.includes('norse') || text.includes('viking') || text.includes('yggdrasil') || text.includes('valhalla') || text.includes('odin')) return 'Norse Mythology Enthusiasts';
   if (text.includes('filmmaker') || text.includes('director') || text.includes('screenwriter')) return 'Filmmakers & Video Creators';
   if (text.includes('science') || text.includes('physics') || text.includes('astronomy')) return 'Scientists & STEM Students';
   if (text.includes('teacher') || text.includes('professor')) return 'History & Science Teachers';
@@ -242,7 +264,6 @@ export function deriveGiftAudienceLabel(
   if (text.includes('police') || text.includes('law enforcement')) return 'Law Enforcement';
   if (text.includes('pilot') || text.includes('aviation')) return 'Aviation Enthusiasts';
   if (text.includes('greek mythology') || text.includes('mythology')) return 'History Buffs';
-  if (text.includes('norse') || text.includes('viking')) return 'History Buffs';
   if (text.includes('music') || text.includes('jazz') || text.includes('composer')) return 'Music Lovers';
 
   if (config?.giftAudiences && config.giftAudiences.length > 0) {
@@ -329,8 +350,11 @@ export function allocateCustomLabels(
   }
   const productType = deriveProductTypeLabel(item, productTypeCandidate);
 
-  // 3. Label 3: Theme / Niche - Actual subject or collection
+  // 3. Label 3: Theme / Niche - Actual subject or collection (NEVER Price)
   let themeCandidate = options?.theme || ai.custom_label_3;
+  if (themeCandidate && isPriceLikeString(themeCandidate)) {
+    themeCandidate = undefined;
+  }
   // If AI mistakenly placed theme in custom_label_0 (e.g. "World War II")
   if (!themeCandidate || isPriceLikeString(themeCandidate) || isProductTypeLikeString(themeCandidate)) {
     if (ai.custom_label_0 && !isPriceLikeString(ai.custom_label_0) && !isProductTypeLikeString(ai.custom_label_0)) {
@@ -341,24 +365,37 @@ export function allocateCustomLabels(
       }
     }
   }
-  const theme = deriveThemeLabel(item, config, themeCandidate);
+  let theme = deriveThemeLabel(item, config, themeCandidate);
+  if (isPriceLikeString(theme)) {
+    theme = item.productSubgroup || item.productGroup || 'History';
+  }
 
-  // 4. Label 0: Gift Audience - Intended recipient or interest audience
+  // 4. Label 0: Gift Audience - Intended recipient or interest audience (NEVER Theme or Price)
   let audienceCandidate = options?.targetAudience || ai.custom_label_0;
   // If AI placed audience in custom_label_2 (e.g. "History Buffs")
   if (
     !audienceCandidate ||
     isPriceLikeString(audienceCandidate) ||
     isProductTypeLikeString(audienceCandidate) ||
-    audienceCandidate === theme
+    audienceCandidate === theme ||
+    (theme && audienceCandidate.toLowerCase() === theme.toLowerCase())
   ) {
     if (ai.custom_label_2 && (ai.custom_label_2.toLowerCase().includes('buff') || ai.custom_label_2.toLowerCase().includes('enthusiast') || ai.custom_label_2.toLowerCase().includes('fans') || ai.custom_label_2.toLowerCase().includes('teachers'))) {
       audienceCandidate = ai.custom_label_2;
     } else if (ai.custom_label_4 && !isPriceLikeString(ai.custom_label_4) && !isProductTypeLikeString(ai.custom_label_4)) {
       audienceCandidate = ai.custom_label_4;
+    } else {
+      audienceCandidate = undefined;
     }
   }
-  const audience = deriveGiftAudienceLabel(item, config, audienceCandidate);
+  // Prevent Theme from ever being assigned to custom_label_0
+  if (audienceCandidate && config?.themes?.some((t) => t.name.toLowerCase() === audienceCandidate?.toLowerCase())) {
+    audienceCandidate = undefined;
+  }
+  let audience = deriveGiftAudienceLabel(item, config, audienceCandidate);
+  if (audience.toLowerCase() === theme.toLowerCase()) {
+    audience = 'History Buffs';
+  }
 
   // 5. Label 2: Seasonality - Commercial seasonality, default Year-Round Essential
   let seasonCandidate = options?.seasonality || ai.custom_label_2;

@@ -1,5 +1,6 @@
 import { EvidenceModel, MerchantData, ProductItem, ProductVariant, VerifiedAttributes } from '../src/types/feed';
 import { computeProductStatus } from '../src/utils/validation';
+import { isValidColorName } from '../src/utils/attributeReconciler';
 
 export async function extractProductFromUrl(url: string): Promise<ProductItem> {
   const now = new Date().toISOString();
@@ -138,7 +139,8 @@ export async function extractProductFromUrl(url: string): Promise<ProductItem> {
       const varTitle = off.name || off.sku || `Variant ${idx + 1}`;
       const { color: vColor, size: vSize } = parseVariantAttributes(varTitle);
 
-      const finalVarColor = off.color || vColor;
+      const rawVarColor = off.color || vColor;
+      const finalVarColor = rawVarColor && isValidColorName(rawVarColor) ? rawVarColor : undefined;
       const finalVarSize = off.size || vSize;
 
       if (finalVarColor && !extractedColors.includes(finalVarColor)) {
@@ -163,9 +165,9 @@ export async function extractProductFromUrl(url: string): Promise<ProductItem> {
   // Check OpenGraph & JSON-LD root attributes
   if (ogData['product:color'] || ogData['og:product:color']) {
     const c = ogData['product:color'] || ogData['og:product:color'];
-    if (c && !extractedColors.includes(c)) extractedColors.push(c);
+    if (c && isValidColorName(c) && !extractedColors.includes(c)) extractedColors.push(c);
   }
-  if (jsonLd?.color && !extractedColors.includes(jsonLd.color)) {
+  if (jsonLd?.color && isValidColorName(jsonLd.color) && !extractedColors.includes(jsonLd.color)) {
     extractedColors.push(jsonLd.color);
   }
 
@@ -177,24 +179,75 @@ export async function extractProductFromUrl(url: string): Promise<ProductItem> {
     verifiedAttributes.material = jsonLd.material;
   }
 
-  // 2. Extract verified material / physical specs from description, title, or taxonomy
+  // 2. Extract verified material / physical specs from description, title, or taxonomy (product-type aware)
   const descLower = (rawDescription + ' ' + finalTitle).toLowerCase();
 
+  const isDrinkware =
+    descLower.includes('mug') ||
+    descLower.includes('cup') ||
+    descLower.includes('drinkware') ||
+    descLower.includes('glass') ||
+    descLower.includes('tumbler') ||
+    descLower.includes('whiskey') ||
+    descLower.includes('shot glass') ||
+    descLower.includes('stemless') ||
+    descLower.includes('water bottle') ||
+    descLower.includes('travel mug');
+
+  const isFramed = descLower.includes('framed') || descLower.includes('frame');
+
+  const isPoster =
+    !isDrinkware &&
+    (descLower.includes('poster') || descLower.includes('print') || descLower.includes('wall art') || descLower.includes('art print'));
+
+  const isApparel =
+    !isDrinkware && !isPoster &&
+    (descLower.includes('hoodie') || descLower.includes('sweatshirt') || descLower.includes('t-shirt') || descLower.includes('shirt') || descLower.includes('tee') || descLower.includes('sweater') || descLower.includes('jacket') || descLower.includes('hat') || descLower.includes('cap') || descLower.includes('beanie'));
+
   if (!verifiedAttributes.material) {
-    if (descLower.includes('100% cotton') || descLower.includes('ring-spun cotton') || descLower.includes('combed cotton')) {
-      verifiedAttributes.material = '100% Cotton';
-    } else if (descLower.includes('cotton blend') || descLower.includes('poly/cotton') || descLower.includes('polyester') || descLower.includes('fleece')) {
-      verifiedAttributes.material = 'Cotton / Polyester Blend';
-    } else if (descLower.includes('ceramic') || descLower.includes('porcelain') || descLower.includes('11 oz') || descLower.includes('15 oz')) {
-      verifiedAttributes.material = 'Ceramic';
-    } else if (descLower.includes('museum-grade paper') || descLower.includes('archival paper') || descLower.includes('poster paper') || descLower.includes('fine art paper') || descLower.includes('matte paper') || descLower.includes('heavyweight paper') || descLower.includes('engraving style') || descLower.includes('poster') || finalTitle.toLowerCase().includes('poster') || finalTitle.toLowerCase().includes('print')) {
-      verifiedAttributes.material = 'Museum-grade Matte Paper';
-    } else if (descLower.includes('canvas')) {
-      verifiedAttributes.material = 'Canvas';
-    } else if (descLower.includes('hardcover') || descLower.includes('journal') || descLower.includes('notebook')) {
-      verifiedAttributes.material = 'Matte Hardcover with Archival Paper';
-    } else if (descLower.includes('twill') || descLower.includes('cap') || descLower.includes('hat')) {
-      verifiedAttributes.material = '100% Cotton Twill';
+    if (isDrinkware) {
+      if (/\b(stainless\s*steel|stainless|18\/8|insulated\s*steel|metal\s*tumbler|steel)\b/i.test(descLower)) {
+        verifiedAttributes.material = 'Stainless Steel';
+      } else if (/\b(ceramic|porcelain|stoneware|clay)\b/i.test(descLower)) {
+        verifiedAttributes.material = 'Ceramic';
+      } else if (/\b(crystal)\b/i.test(descLower)) {
+        verifiedAttributes.material = 'Crystal';
+      } else if (/\b(glass|stemless\s*glass|pint\s*glass)\b/i.test(descLower)) {
+        verifiedAttributes.material = 'Glass';
+      } else if (descLower.includes('tumbler') || descLower.includes('travel mug') || descLower.includes('water bottle')) {
+        verifiedAttributes.material = 'Stainless Steel';
+      } else if (descLower.includes('mug') || descLower.includes('coffee cup')) {
+        verifiedAttributes.material = 'Ceramic';
+      }
+      // Otherwise, leave verifiedAttributes.material empty rather than guessing incorrectly
+    } else if (isPoster) {
+      if (isFramed) {
+        if (descLower.includes('wood') || descLower.includes('wooden')) verifiedAttributes.material = 'Museum-grade Matte Paper with Wood Frame';
+        else if (descLower.includes('metal')) verifiedAttributes.material = 'Museum-grade Matte Paper with Metal Frame';
+        else verifiedAttributes.material = 'Museum-grade Matte Paper with Frame';
+      } else if (descLower.includes('canvas')) {
+        verifiedAttributes.material = 'Canvas';
+      } else {
+        verifiedAttributes.material = 'Museum-grade Matte Paper';
+      }
+    } else if (isApparel) {
+      if (/\b(100%\s*polyester|high-quality polyester|durable polyester|polyester fabric|100%\s*poly)\b/i.test(descLower)) {
+        verifiedAttributes.material = 'Polyester';
+      } else if (/\b(cotton\s*\/\s*polyester blend|cotton blend|poly\/cotton|cotton-poly|polyester blend|fleece)\b/i.test(descLower)) {
+        verifiedAttributes.material = 'Cotton / Polyester Blend';
+      } else if (/\bpolyester\b/i.test(descLower) && !/\bcotton\b/i.test(descLower)) {
+        verifiedAttributes.material = 'Polyester';
+      } else if (/\b(100%\s*cotton|ring-spun cotton|combed cotton|pure cotton|heavy cotton)\b/i.test(descLower)) {
+        verifiedAttributes.material = '100% Cotton';
+      } else if (/\b(cotton twill|twill)\b/i.test(descLower) || (/\b(baseball cap|dad cap|trucker cap|bucket hat)\b/i.test(descLower) && /\b(twill|cotton)\b/i.test(descLower))) {
+        verifiedAttributes.material = '100% Cotton Twill';
+      } else if (/\bcotton\b/i.test(descLower)) {
+        verifiedAttributes.material = '100% Cotton';
+      }
+    } else {
+      if (descLower.includes('100% cotton')) verifiedAttributes.material = '100% Cotton';
+      else if (descLower.includes('ceramic')) verifiedAttributes.material = 'Ceramic';
+      else if (descLower.includes('canvas')) verifiedAttributes.material = 'Canvas';
     }
   }
 
@@ -203,11 +256,12 @@ export async function extractProductFromUrl(url: string): Promise<ProductItem> {
   if (descLower.includes('15 oz')) verifiedAttributes.capacity = '15 oz';
 
   // 3. Extract verified color & size attributes
-  if (extractedColors.length > 0) {
-    verifiedAttributes.color = extractedColors[0];
+  const validExtractedColors = extractedColors.filter(isValidColorName);
+  if (validExtractedColors.length > 0) {
+    verifiedAttributes.color = validExtractedColors[0];
   } else {
     const textColor = detectColorFromText(finalTitle + ' ' + rawDescription);
-    if (textColor) {
+    if (textColor && isValidColorName(textColor)) {
       verifiedAttributes.color = textColor;
     }
   }
@@ -303,8 +357,12 @@ export async function extractProductFromUrl(url: string): Promise<ProductItem> {
     searchConcepts: [],
   };
 
+  const inferredGroup = inferProductGroupAndSubgroup(finalTitle, rawDescription, url);
+
   const product: ProductItem = {
     id: productId,
+    productGroup: inferredGroup.productGroup,
+    productSubgroup: inferredGroup.productSubgroup,
     status: 'not_analyzed',
     evidence,
     merchantData,
@@ -329,6 +387,157 @@ export async function extractProductFromUrl(url: string): Promise<ProductItem> {
   product.validation = validation;
 
   return product;
+}
+
+// Helper to infer product group and subgroup from product title, description, and URL
+export function inferProductGroupAndSubgroup(
+  title: string,
+  desc: string,
+  url: string = ''
+): { productGroup: string; productSubgroup: string } {
+  const text = `${title} ${desc} ${url}`.toLowerCase();
+
+  // 1. Detect TV & Film (including How I Met Your Mother & Sitcoms)
+  const isHIMYM =
+    text.includes('how i met your mother') ||
+    text.includes('himym') ||
+    text.includes('barney stinson') ||
+    text.includes('ted mosby') ||
+    text.includes('robin scherbatsky') ||
+    text.includes('robin sparkles') ||
+    text.includes('marshall eriksen') ||
+    text.includes('lily aldrin') ||
+    text.includes('maclaren') ||
+    text.includes('suit up') ||
+    text.includes('yellow umbrella') ||
+    text.includes('blue french horn') ||
+    text.includes('the playbook') ||
+    text.includes('slapsgiving') ||
+    text.includes('ducky tie') ||
+    text.includes('duck tie') ||
+    text.includes('goliath national bank') ||
+    text.includes('puzzles the bar');
+
+  if (isHIMYM) {
+    return { productGroup: 'TV & Film', productSubgroup: 'How I Met Your Mother' };
+  }
+
+  const isFilmTv =
+    text.includes('screenwriter') ||
+    text.includes('cinematography') ||
+    text.includes('clapperboard') ||
+    text.includes('filmmaker') ||
+    text.includes('filmmaking') ||
+    text.includes('movie director') ||
+    text.includes('cinema') ||
+    text.includes('sitcom') ||
+    text.includes('television series') ||
+    text.includes('tv show');
+
+  if (isFilmTv) {
+    return { productGroup: 'TV & Film', productSubgroup: 'Filmmakers' };
+  }
+
+  // 2. Detect Music
+  const isJazz = text.includes('jazz') || text.includes('miles davis') || text.includes('coltrane') || text.includes('thelonious');
+  if (isJazz) {
+    return { productGroup: 'Music', productSubgroup: 'Jazz' };
+  }
+  const isClassicalMusic = text.includes('classical music') || text.includes('beethoven') || text.includes('mozart') || text.includes('bach') || text.includes('symphony') || text.includes('orchestra') || text.includes('composer');
+  if (isClassicalMusic) {
+    return { productGroup: 'Music', productSubgroup: 'Classical Music' };
+  }
+  const isMusicGeneral = text.includes('rock & vinyl') || text.includes('vinyl record') || text.includes('guitarist') || text.includes('pianist');
+  if (isMusicGeneral) {
+    return { productGroup: 'Music', productSubgroup: 'Rock & Vinyl' };
+  }
+
+  // 3. Detect Professions
+  if (text.includes('history teacher') || text.includes('english teacher') || text.includes('professor') || text.includes('math teacher') || text.includes('science teacher')) {
+    return { productGroup: 'Professions', productSubgroup: 'Teachers' };
+  }
+  if (text.includes('pilot') || text.includes('aviator') || text.includes('flight crew') || text.includes('first officer')) {
+    return { productGroup: 'Professions', productSubgroup: 'Pilots' };
+  }
+  if (text.includes('police officer') || text.includes('law enforcement') || text.includes('sheriff')) {
+    return { productGroup: 'Professions', productSubgroup: 'Police' };
+  }
+  if (text.includes('engineer') || text.includes('software engineer')) {
+    return { productGroup: 'Professions', productSubgroup: 'Engineers' };
+  }
+  if (text.includes('nurse') || text.includes('nursing')) {
+    return { productGroup: 'Professions', productSubgroup: 'Nurses' };
+  }
+
+  // 4. Detect Vikings & Norse Mythology (with comprehensive Norse keywords)
+  const isViking =
+    text.includes('viking') ||
+    text.includes('norse') ||
+    text.includes('valhalla') ||
+    text.includes('thor') ||
+    text.includes('odin') ||
+    text.includes('asgard') ||
+    text.includes('runes') ||
+    text.includes('shieldmaiden') ||
+    text.includes('yggdrasil') ||
+    text.includes('ragnarok') ||
+    text.includes('midgard') ||
+    text.includes('fenrir') ||
+    text.includes('valkyrie') ||
+    text.includes('drakkar') ||
+    text.includes('longship') ||
+    text.includes('berserker') ||
+    text.includes('freya') ||
+    text.includes('loki');
+
+  if (isViking) {
+    return { productGroup: 'History', productSubgroup: 'Vikings' };
+  }
+
+  // 5. Specific History Subgroups
+  if (text.includes('wwii') || text.includes('world war ii') || text.includes('spitfire') || text.includes('b-17') || text.includes('warbird') || text.includes('d-day') || text.includes('churchill') || text.includes('pearl harbor')) {
+    return { productGroup: 'History', productSubgroup: 'WWII' };
+  }
+  if (text.includes('civil war') || text.includes('gettysburg') || text.includes('1861') || text.includes('1863') || text.includes('1865') || text.includes('confederate') || text.includes('union army') || text.includes('robert e lee') || text.includes('ulysses s grant')) {
+    return { productGroup: 'History', productSubgroup: 'Civil War' };
+  }
+  if (text.includes('american revolution') || text.includes('1776') || text.includes('founding fathers') || text.includes('george washington') || text.includes('declaration of independence')) {
+    return { productGroup: 'History', productSubgroup: 'American Revolution' };
+  }
+  if (text.includes('lincoln') || text.includes('gettysburg address') || text.includes('abraham lincoln') || text.includes('emancipation proclamation')) {
+    return { productGroup: 'History', productSubgroup: 'Abraham Lincoln' };
+  }
+
+  // AGGRESSIVE FILTER: Ensure that known non-historical themes (TV & Film, Sitcoms, Music, Pop Culture)
+  // are never assigned to the "History" group fallback even if the word "history", "historical", or "archival" appears in passing.
+  const hasNonHistoricalContext =
+    text.includes('sitcom') ||
+    text.includes('movie') ||
+    text.includes('film') ||
+    text.includes('tv') ||
+    text.includes('television') ||
+    text.includes('show') ||
+    text.includes('actor') ||
+    text.includes('actress') ||
+    text.includes('music') ||
+    text.includes('song') ||
+    text.includes('album') ||
+    text.includes('band') ||
+    text.includes('comedy') ||
+    text.includes('pop culture');
+
+  if (!hasNonHistoricalContext && (text.includes('history') || text.includes('historian') || text.includes('archival') || text.includes('historical') || text.includes('ancient') || text.includes('century') || text.includes('warfare'))) {
+    return { productGroup: 'History', productSubgroup: 'General History' };
+  }
+
+  if (hasNonHistoricalContext) {
+    if (text.includes('music') || text.includes('song') || text.includes('band')) {
+      return { productGroup: 'Music', productSubgroup: 'Rock & Vinyl' };
+    }
+    return { productGroup: 'TV & Film', productSubgroup: 'Film' };
+  }
+
+  return { productGroup: 'Other', productSubgroup: 'General Gifts' };
 }
 
 function decodeHtmlEntities(str: string): string {
@@ -364,7 +573,7 @@ function extractProductId(url: string, sku?: string): string {
   }
 }
 
-function guessTaxonomy(title: string, desc: string): {
+export function guessTaxonomy(title: string, desc: string): {
   gpc: string;
   productType: string;
   gender: string;
@@ -430,8 +639,8 @@ function guessTaxonomy(title: string, desc: string): {
   }
 
   return {
-    gpc: 'Home & Garden > Kitchen & Dining > Tableware > Drinkware > Mugs',
-    productType: 'Gifts & Collectibles > Themed Merchandise',
+    gpc: '',
+    productType: '',
     gender: '',
     ageGroup: '',
   };
@@ -451,7 +660,7 @@ function parseVariantAttributes(title: string): { color?: string; size?: string 
     if (isSize) {
       if (!size) size = part;
     } else {
-      if (!color && /[a-z]/i.test(part) && !/variant|default|select/i.test(part)) {
+      if (!color && isValidColorName(part)) {
         color = part;
       }
     }
@@ -463,7 +672,7 @@ function detectColorFromText(text: string): string | undefined {
   const lower = text.toLowerCase();
   const knownColors = [
     { name: 'Heather Charcoal', regex: /\bheather charcoal\b/i },
-    { name: 'Black', regex: /\b(black|monochrome)\b/i },
+    { name: 'Black', regex: /\b(black|monochrome|black-and-white|black & white)\b/i },
     { name: 'White', regex: /\b(white|glossy white)\b/i },
     { name: 'Navy', regex: /\b(navy|navy blue)\b/i },
     { name: 'Charcoal', regex: /\bcharcoal\b/i },

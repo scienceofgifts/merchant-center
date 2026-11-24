@@ -5,12 +5,19 @@ import { INITIAL_STRATEGY_CONFIG } from '../src/utils/taxonomy';
 import { computeProductStatus } from '../src/utils/validation';
 
 const DATA_DIR = path.resolve(process.cwd(), 'data');
+const BACKUPS_DIR = path.join(DATA_DIR, 'backups');
 const PRODUCTS_FILE = path.join(DATA_DIR, 'catalog.json');
 const STRATEGY_FILE = path.join(DATA_DIR, 'strategy.json');
 
 function ensureDataDir() {
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+}
+
+function ensureBackupsDir(backupsDir: string = BACKUPS_DIR) {
+  if (!fs.existsSync(backupsDir)) {
+    fs.mkdirSync(backupsDir, { recursive: true });
   }
 }
 
@@ -28,9 +35,102 @@ export function loadStrategyConfig(): StrategyConfig {
   return INITIAL_STRATEGY_CONFIG;
 }
 
+export function atomicWriteJson(
+  filePath: string,
+  data: unknown,
+  customWriteFn?: (tempPath: string, serialized: string) => void
+): void {
+  const dir = path.dirname(filePath);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  const tempPath = `${filePath}.tmp.${process.pid}.${Date.now()}.${Math.random().toString(36).slice(2, 8)}`;
+  try {
+    const serialized = JSON.stringify(data, null, 2);
+    if (customWriteFn) {
+      customWriteFn(tempPath, serialized);
+    } else {
+      fs.writeFileSync(tempPath, serialized, 'utf-8');
+    }
+    fs.renameSync(tempPath, filePath);
+  } catch (err) {
+    if (fs.existsSync(tempPath)) {
+      try {
+        fs.unlinkSync(tempPath);
+      } catch {
+        // ignore cleanup error
+      }
+    }
+    throw err;
+  }
+}
+
+/**
+ * Creates a timestamped backup of the catalog file in a separate backups directory (`data/backups/`).
+ * Uses exclusive file creation (`flag: 'wx'`) so an existing backup file can NEVER be overwritten.
+ * Never modifies or deletes the source catalog file.
+ */
+export function createCatalogBackup(
+  label: string = 'snapshot',
+  options?: { sourceFilePath?: string; backupsDir?: string }
+): string {
+  const sourceFilePath = options?.sourceFilePath ?? PRODUCTS_FILE;
+  const backupsDir = options?.backupsDir ?? BACKUPS_DIR;
+
+  if (!fs.existsSync(sourceFilePath)) {
+    throw new Error(`Cannot create backup: source catalog file not found at ${sourceFilePath}`);
+  }
+
+  ensureBackupsDir(backupsDir);
+
+  const rawCatalog = fs.readFileSync(sourceFilePath, 'utf-8');
+  // Verify the source catalog parses as valid JSON array before backing up
+  const parsed = JSON.parse(rawCatalog);
+  if (!Array.isArray(parsed)) {
+    throw new Error('Cannot create backup: source catalog is not a valid JSON array');
+  }
+
+  const safeTimestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const safeLabel = (label || 'snapshot')
+    .toLowerCase()
+    .replace(/[^a-z0-9-_]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'snapshot';
+
+  let attempt = 0;
+  while (attempt < 100) {
+    const suffix = attempt === 0 ? '' : `-${attempt}`;
+    const fileName = `catalog-backup-${safeTimestamp}-${safeLabel}${suffix}.json`;
+    const backupPath = path.join(backupsDir, fileName);
+
+    if (!fs.existsSync(backupPath)) {
+      try {
+        fs.writeFileSync(backupPath, rawCatalog, { encoding: 'utf-8', flag: 'wx' });
+        return backupPath;
+      } catch (err: any) {
+        if (err?.code === 'EEXIST') {
+          attempt++;
+          continue;
+        }
+        throw err;
+      }
+    }
+    attempt++;
+  }
+
+  throw new Error('Could not generate a unique backup filename without overwriting an existing backup.');
+}
+
+export function listCatalogBackups(backupsDir: string = BACKUPS_DIR): string[] {
+  if (!fs.existsSync(backupsDir)) return [];
+  return fs
+    .readdirSync(backupsDir)
+    .filter((f) => f.startsWith('catalog-backup-') && f.endsWith('.json'))
+    .sort()
+    .map((f) => path.join(backupsDir, f));
+}
+
 export function saveStrategyConfig(config: StrategyConfig): void {
-  ensureDataDir();
-  fs.writeFileSync(STRATEGY_FILE, JSON.stringify(config, null, 2), 'utf-8');
+  atomicWriteJson(STRATEGY_FILE, config);
 }
 
 export function loadCatalog(): ProductItem[] {
@@ -59,8 +159,7 @@ export function loadCatalog(): ProductItem[] {
 }
 
 export function saveCatalog(items: ProductItem[]): void {
-  ensureDataDir();
-  fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(items, null, 2), 'utf-8');
+  atomicWriteJson(PRODUCTS_FILE, items);
 }
 
 function createInitialSampleCatalog(): ProductItem[] {

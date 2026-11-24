@@ -16,35 +16,130 @@ import { reconcileProductAttributes, getEvidenceAwareCorrections } from '../src/
 import { allocateCustomLabels, derivePriceTier, detectCustomLabelAnomalies } from '../src/utils/customLabels';
 import { INITIAL_STRATEGY_CONFIG } from '../src/utils/taxonomy';
 
+const modelCooldownMap = new Map<string, number>();
+
+export function cleanErrorMessage(err: any): string {
+  if (!err) return 'Unknown error';
+  if (typeof err === 'string') return err.slice(0, 150);
+  if (err.message && typeof err.message === 'string') {
+    try {
+      if (err.message.trim().startsWith('{')) {
+        const parsed = JSON.parse(err.message);
+        if (parsed?.error?.message) {
+          const firstLine = parsed.error.message.split('\n')[0].trim();
+          return firstLine || parsed.error.status || 'API Error';
+        }
+      }
+    } catch {
+      // not JSON
+    }
+    return err.message.slice(0, 150);
+  }
+  return String(err).slice(0, 150);
+}
+
+function isDailyQuotaExhausted(err: any): boolean {
+  const msg = typeof err?.message === 'string' ? err.message : '';
+  return (
+    err?.status === 'RESOURCE_EXHAUSTED' ||
+    err?.code === 429 ||
+    msg.includes('RESOURCE_EXHAUSTED') ||
+    msg.includes('429') ||
+    msg.includes('Quota exceeded') ||
+    msg.includes('per day limit exceeded') ||
+    msg.includes('QuotaFailure') ||
+    msg.includes('retryDelay')
+  );
+}
+
+function withTimeout<T>(promise: Promise<T>, ms: number, errorMsg: string): Promise<T> {
+  let timer: any;
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error(errorMsg)), ms);
+    if (timer && typeof timer.unref === 'function') timer.unref();
+  });
+  return Promise.race([
+    promise.finally(() => {
+      if (timer) clearTimeout(timer);
+    }),
+    timeoutPromise,
+  ]);
+}
+
 async function callGeminiWithRetry(
   ai: any,
-  modelName: string,
+  requestedModel: string,
   params: { contents: string; config?: any },
-  maxRetries = 3
+  maxRetries = 2
 ): Promise<any> {
-  let attempt = 0;
-  while (attempt < maxRetries) {
-    try {
-      return await ai.models.generateContent({
-        model: modelName,
-        ...params,
-      });
-    } catch (err: any) {
-      const isRateLimit =
-        err?.status === 'RESOURCE_EXHAUSTED' ||
-        err?.code === 429 ||
-        (err?.message && (err.message.includes('429') || err.message.includes('Quota exceeded') || err.message.includes('RESOURCE_EXHAUSTED')));
+  if (
+    typeof process !== 'undefined' &&
+    process.env &&
+    (process.env.TEST_MODE || process.env.NODE_ENV === 'test')
+  ) {
+    throw new Error('[Test Mode] Fast fallback to heuristic pipeline');
+  }
 
-      if (isRateLimit && attempt < maxRetries - 1) {
-        attempt++;
-        const backoffMs = attempt * 5000; // 5s, 10s, 15s
-        console.warn(`[Gemini Rate Limit 429] Retrying in ${backoffMs / 1000}s (Attempt ${attempt}/${maxRetries})...`);
-        await new Promise((resolve) => setTimeout(resolve, backoffMs));
-        continue;
+  const supportedModels = [
+    'gemini-3.5-flash-lite',
+    'gemini-3.8-flash',
+    'gemini-3.6-flash',
+    'gemini-3.1-flash-lite',
+  ];
+
+  const candidateModels = [
+    ...(supportedModels.includes(requestedModel) ? [requestedModel] : []),
+    ...supportedModels,
+  ].filter((m, idx, arr) => arr.indexOf(m) === idx);
+
+  let lastError: any = null;
+
+  for (const modelName of candidateModels) {
+    const cooldownUntil = modelCooldownMap.get(modelName);
+    if (cooldownUntil && Date.now() < cooldownUntil) {
+      // Model is in daily quota cooldown, skip to next eligible candidate
+      continue;
+    }
+
+    let attempt = 0;
+    while (attempt < maxRetries) {
+      try {
+        return await withTimeout(
+          ai.models.generateContent({
+            model: modelName,
+            ...params,
+          }),
+          12000,
+          `Request to model ${modelName} timed out after 12s`
+        );
+      } catch (err: any) {
+        lastError = err;
+        const dailyExhausted = isDailyQuotaExhausted(err);
+
+        if (dailyExhausted) {
+          // Put this specific model on cooldown to avoid repeating failed network calls
+          modelCooldownMap.set(modelName, Date.now() + 30 * 60 * 1000);
+          console.log(`[Gemini API] Model ${modelName} daily quota reached; skipping retry loops.`);
+          break; // move to next candidate model immediately without waiting
+        }
+
+        const isTransient =
+          err?.status === 'UNAVAILABLE' ||
+          err?.code === 503 ||
+          (err?.message && (err.message.includes('503') || err.message.includes('high demand') || err.message.includes('UNAVAILABLE')));
+
+        if (isTransient && attempt < maxRetries - 1) {
+          attempt++;
+          await new Promise((resolve) => setTimeout(resolve, attempt * 1200));
+          continue;
+        }
+
+        break;
       }
-      throw err;
     }
   }
+
+  throw lastError || new Error('All AI models are currently unavailable or quota exhausted.');
 }
 
 export async function generateProductStrategy(
@@ -209,7 +304,8 @@ ${occasionsList.join(', ')}`;
       researchedAt: new Date().toISOString(),
     };
   } catch (err: any) {
-    console.warn('[AI Strategist] Falling back to heuristic strategy:', err.message);
+    const reason = cleanErrorMessage(err);
+    console.log(`[AI Strategist] Heuristic strategy pipeline active (${reason}).`);
     return createHeuristicStrategy(item, config);
   }
 }
@@ -422,12 +518,14 @@ Recommended GPC: ${strategy.recommendedGoogleCategory}`;
       strategy,
     });
 
+    const userCorrections = item.evidence?.userCorrections || {};
+
     const suggestedMerchantData: Partial<MerchantData> = {
       title: parsed.bestTitle || parsed.titleCandidates?.[0]?.title || item.merchantData.title,
       description: parsed.optimizedDescription || item.merchantData.description,
-      color: corrections.color || parsed.color || item.evidence.verifiedAttributes?.color || item.merchantData.color || '',
-      size: corrections.size || parsed.size || item.evidence.verifiedAttributes?.size || item.merchantData.size || '',
-      material: corrections.material || parsed.material || item.evidence.verifiedAttributes?.material || item.merchantData.material || '',
+      color: userCorrections.color || corrections.color || parsed.color || item.evidence.verifiedAttributes?.color || item.merchantData.color || '',
+      size: userCorrections.size || corrections.size || parsed.size || item.evidence.verifiedAttributes?.size || item.merchantData.size || '',
+      material: userCorrections.material || corrections.material || parsed.material || item.evidence.verifiedAttributes?.material || item.merchantData.material || '',
       google_product_category: corrections.google_product_category || parsed.googleProductCategory || strategy.recommendedGoogleCategory || item.merchantData.google_product_category,
       product_type: corrections.product_type || parsed.productType || item.merchantData.product_type,
       custom_label_0: allocatedLabels.custom_label_0,
@@ -454,7 +552,8 @@ Recommended GPC: ${strategy.recommendedGoogleCategory}`;
       titleCandidates: parsed.titleCandidates || [],
     };
   } catch (err: any) {
-    console.warn('[AI Field Generator] Falling back to heuristic field generation:', err.message);
+    const reason = cleanErrorMessage(err);
+    console.log(`[AI Field Generator] Heuristic field generation active (${reason}).`);
     return createHeuristicFields(item, strategy, config);
   }
 }
@@ -621,7 +720,8 @@ SOURCE EVIDENCE TO VERIFY AGAINST:
       auditedAt: new Date().toISOString(),
     };
   } catch (err: any) {
-    console.warn('[AI Audit] Falling back to heuristic audit:', err.message);
+    const reason = cleanErrorMessage(err);
+    console.log(`[AI Audit] Heuristic quality audit active (${reason}).`);
     return createHeuristicAudit(item, previousScore);
   }
 }
@@ -972,7 +1072,11 @@ export async function optimizeAndApplyAll(
           : `${wasEmpty ? 'Generated' : 'Optimized'} Product Type`
       );
     }
-    if (suggestedMerchantData.color) {
+    const userCorrections = item.evidence?.userCorrections || {};
+    const currentProv = item.fieldProvenance || computeFieldProvenance(item, priorMerchantData).fieldProvenance;
+
+    const isColorProtected = currentProv?.color === 'VERIFIED' || currentProv?.color === 'USER_EDITED' || Boolean(userCorrections.color);
+    if (suggestedMerchantData.color && !isColorProtected) {
       const colorVal = suggestedMerchantData.color;
       const wasEmpty = !priorMerchantData.color || !priorMerchantData.color.trim();
       const isCorrection = !wasEmpty && priorMerchantData.color !== colorVal;
@@ -983,7 +1087,9 @@ export async function optimizeAndApplyAll(
           : `${wasEmpty ? 'Generated' : 'Optimized'} Color (${colorVal})`
       );
     }
-    if (suggestedMerchantData.size) {
+
+    const isSizeProtected = currentProv?.size === 'VERIFIED' || currentProv?.size === 'USER_EDITED' || Boolean(userCorrections.size);
+    if (suggestedMerchantData.size && !isSizeProtected) {
       const sizeVal = suggestedMerchantData.size;
       const wasEmpty = !priorMerchantData.size || !priorMerchantData.size.trim();
       const isCorrection = !wasEmpty && priorMerchantData.size !== sizeVal;
@@ -994,7 +1100,9 @@ export async function optimizeAndApplyAll(
           : `${wasEmpty ? 'Generated' : 'Optimized'} Size (${sizeVal})`
       );
     }
-    if (suggestedMerchantData.material) {
+
+    const isMaterialProtected = currentProv?.material === 'VERIFIED' || currentProv?.material === 'USER_EDITED' || Boolean(userCorrections.material);
+    if (suggestedMerchantData.material && !isMaterialProtected) {
       const matVal = suggestedMerchantData.material;
       const wasEmpty = !priorMerchantData.material || !priorMerchantData.material.trim();
       const isCorrection = !wasEmpty && priorMerchantData.material !== matVal;
@@ -1044,8 +1152,8 @@ export async function optimizeAndApplyAll(
   }
 
   // Step 5: Fix Safe Attribute Gaps in Description (e.g. verified material/capacity if omitted)
-  const verified = item.evidence.verifiedAttributes;
-  let desc = item.merchantData.description;
+  const verified = item.evidence?.verifiedAttributes || {};
+  let desc = item.merchantData.description || '';
   if (verified.material && !desc.toLowerCase().includes(verified.material.toLowerCase())) {
     desc += ` Crafted from ${verified.material}.`;
     autoFixedIssues.push(`Added verified material (${verified.material}) to description`);
@@ -1201,15 +1309,23 @@ export async function fixSingleAuditIssue(
     appliedChanges.custom_label_4 = allocated.custom_label_4;
     fixSummary = `Allocated 5 semantic custom labels (Audience: ${allocated.custom_label_0}, Price: ${allocated.custom_label_1}, Seasonality: ${allocated.custom_label_2}, Theme: ${allocated.custom_label_3}, Product Type: ${allocated.custom_label_4})`;
   } else if (field === 'google_product_category') {
-    const gpc = item.strategy?.recommendedGoogleCategory || 'Apparel & Accessories > Clothing';
-    item.merchantData.google_product_category = gpc;
-    appliedChanges.google_product_category = gpc;
-    fixSummary = `Set Google Product Category to "${gpc}"`;
+    const gpc = item.strategy?.recommendedGoogleCategory || '';
+    if (gpc) {
+      item.merchantData.google_product_category = gpc;
+      appliedChanges.google_product_category = gpc;
+      fixSummary = `Set Google Product Category to "${gpc}"`;
+    } else {
+      fixSummary = `Could not resolve Google Product Category without verified strategy recommendation`;
+    }
   } else if (field === 'product_type') {
-    const pt = item.strategy?.productTypeStrategy || 'Apparel & Accessories > Themed Gifts';
-    item.merchantData.product_type = pt;
-    appliedChanges.product_type = pt;
-    fixSummary = `Set Product Type to "${pt}"`;
+    const pt = item.strategy?.productTypeStrategy || '';
+    if (pt) {
+      item.merchantData.product_type = pt;
+      appliedChanges.product_type = pt;
+      fixSummary = `Set Product Type to "${pt}"`;
+    } else {
+      fixSummary = `Could not resolve Product Type without verified strategy recommendation`;
+    }
   } else if (field === 'size') {
     const corrections = getEvidenceAwareCorrections(item);
     const targetSize = corrections.size || verified.size || verified.dimensions || verified.capacity || '';
@@ -1251,9 +1367,11 @@ export async function fixSingleAuditIssue(
   targetIssue.fixedValue = appliedChanges[field] || fixSummary;
 
   // Remove corresponding warning if present
-  item.audit.warnings = item.audit.warnings.filter(
-    (w) => !w.toLowerCase().includes(field.toLowerCase()) && !w.toLowerCase().includes(targetIssue.title.toLowerCase())
-  );
+  if (Array.isArray(item.audit.warnings)) {
+    item.audit.warnings = item.audit.warnings.filter(
+      (w) => !w.toLowerCase().includes(field.toLowerCase()) && !w.toLowerCase().includes(targetIssue.title.toLowerCase())
+    );
+  }
 
   // Update fixedAutomatically list
   if (!item.audit.fixedAutomatically) item.audit.fixedAutomatically = [];
@@ -1503,7 +1621,8 @@ Verified Attributes: ${JSON.stringify(item.evidence.verifiedAttributes)}`;
       suggestedGiftIntelligence: parsed.giftIntelligence,
     };
   } catch (err: any) {
-    console.warn(`[Granular AI ${operation}] Fallback:`, err.message);
+    const reason = cleanErrorMessage(err);
+    console.log(`[Granular AI ${operation}] Fallback active (${reason}).`);
     return {};
   }
 }
@@ -1516,49 +1635,144 @@ export function inferProductGroupAndSubgroup(
 ): { productGroup: string; productSubgroup: string } {
   const text = `${title} ${desc} ${url}`.toLowerCase();
 
-  // TV & Film
-  if (text.includes('how i met your mother') || text.includes('himym') || text.includes('barney stinson') || text.includes('suit up') || text.includes('maclaren')) {
+  // 1. Detect TV & Film (including How I Met Your Mother & Sitcoms)
+  const isHIMYM =
+    text.includes('how i met your mother') ||
+    text.includes('himym') ||
+    text.includes('barney stinson') ||
+    text.includes('ted mosby') ||
+    text.includes('robin scherbatsky') ||
+    text.includes('robin sparkles') ||
+    text.includes('marshall eriksen') ||
+    text.includes('lily aldrin') ||
+    text.includes('maclaren') ||
+    text.includes('suit up') ||
+    text.includes('yellow umbrella') ||
+    text.includes('blue french horn') ||
+    text.includes('the playbook') ||
+    text.includes('slapsgiving') ||
+    text.includes('ducky tie') ||
+    text.includes('duck tie') ||
+    text.includes('goliath national bank') ||
+    text.includes('puzzles the bar');
+
+  if (isHIMYM) {
     return { productGroup: 'TV & Film', productSubgroup: 'How I Met Your Mother' };
   }
-  if (text.includes('screenwriter') || text.includes('cinematography') || text.includes('clapperboard') || text.includes('filmmaker') || text.includes('movie director')) {
+
+  const isFilmTv =
+    text.includes('screenwriter') ||
+    text.includes('cinematography') ||
+    text.includes('clapperboard') ||
+    text.includes('filmmaker') ||
+    text.includes('filmmaking') ||
+    text.includes('movie director') ||
+    text.includes('cinema') ||
+    text.includes('sitcom') ||
+    text.includes('television series') ||
+    text.includes('tv show');
+
+  if (isFilmTv) {
     return { productGroup: 'TV & Film', productSubgroup: 'Filmmakers' };
   }
 
-  // Music
-  if (text.includes('jazz') || text.includes('miles davis') || text.includes('coltrane')) {
+  // 2. Detect Music
+  const isJazz = text.includes('jazz') || text.includes('miles davis') || text.includes('coltrane') || text.includes('thelonious');
+  if (isJazz) {
     return { productGroup: 'Music', productSubgroup: 'Jazz' };
   }
-  if (text.includes('classical music') || text.includes('beethoven') || text.includes('mozart') || text.includes('symphony')) {
+  const isClassicalMusic = text.includes('classical music') || text.includes('beethoven') || text.includes('mozart') || text.includes('bach') || text.includes('symphony') || text.includes('orchestra') || text.includes('composer');
+  if (isClassicalMusic) {
     return { productGroup: 'Music', productSubgroup: 'Classical Music' };
   }
+  const isMusicGeneral = text.includes('rock & vinyl') || text.includes('vinyl record') || text.includes('guitarist') || text.includes('pianist');
+  if (isMusicGeneral) {
+    return { productGroup: 'Music', productSubgroup: 'Rock & Vinyl' };
+  }
 
-  // Professions
-  if (text.includes('history teacher') || text.includes('english teacher') || text.includes('professor')) {
+  // 3. Detect Professions
+  if (text.includes('history teacher') || text.includes('english teacher') || text.includes('professor') || text.includes('math teacher') || text.includes('science teacher')) {
     return { productGroup: 'Professions', productSubgroup: 'Teachers' };
   }
-  if (text.includes('pilot') || text.includes('aviator')) {
+  if (text.includes('pilot') || text.includes('aviator') || text.includes('flight crew') || text.includes('first officer')) {
     return { productGroup: 'Professions', productSubgroup: 'Pilots' };
   }
+  if (text.includes('police officer') || text.includes('law enforcement') || text.includes('sheriff')) {
+    return { productGroup: 'Professions', productSubgroup: 'Police' };
+  }
+  if (text.includes('engineer') || text.includes('software engineer')) {
+    return { productGroup: 'Professions', productSubgroup: 'Engineers' };
+  }
+  if (text.includes('nurse') || text.includes('nursing')) {
+    return { productGroup: 'Professions', productSubgroup: 'Nurses' };
+  }
 
-  // History Subgroups
-  if (text.includes('viking') || text.includes('norse') || text.includes('valhalla') || text.includes('thor') || text.includes('odin') || text.includes('asgard') || text.includes('runes') || text.includes('shieldmaiden')) {
+  // 4. Detect Vikings & Norse Mythology (with comprehensive Norse keywords)
+  const isViking =
+    text.includes('viking') ||
+    text.includes('norse') ||
+    text.includes('valhalla') ||
+    text.includes('thor') ||
+    text.includes('odin') ||
+    text.includes('asgard') ||
+    text.includes('runes') ||
+    text.includes('shieldmaiden') ||
+    text.includes('yggdrasil') ||
+    text.includes('ragnarok') ||
+    text.includes('midgard') ||
+    text.includes('fenrir') ||
+    text.includes('valkyrie') ||
+    text.includes('drakkar') ||
+    text.includes('longship') ||
+    text.includes('berserker') ||
+    text.includes('freya') ||
+    text.includes('loki');
+
+  if (isViking) {
     return { productGroup: 'History', productSubgroup: 'Vikings' };
   }
-  if (text.includes('wwii') || text.includes('world war ii') || text.includes('spitfire') || text.includes('b-17') || text.includes('warbird') || text.includes('d-day') || text.includes('churchill')) {
+
+  // 5. Specific History Subgroups
+  if (text.includes('wwii') || text.includes('world war ii') || text.includes('spitfire') || text.includes('b-17') || text.includes('warbird') || text.includes('d-day') || text.includes('churchill') || text.includes('pearl harbor')) {
     return { productGroup: 'History', productSubgroup: 'WWII' };
   }
-  if (text.includes('civil war') || text.includes('gettysburg') || text.includes('1861') || text.includes('1863') || text.includes('1865')) {
+  if (text.includes('civil war') || text.includes('gettysburg') || text.includes('1861') || text.includes('1863') || text.includes('1865') || text.includes('confederate') || text.includes('union army') || text.includes('robert e lee') || text.includes('ulysses s grant')) {
     return { productGroup: 'History', productSubgroup: 'Civil War' };
   }
-  if (text.includes('american revolution') || text.includes('1776') || text.includes('founding fathers')) {
+  if (text.includes('american revolution') || text.includes('1776') || text.includes('founding fathers') || text.includes('george washington') || text.includes('declaration of independence')) {
     return { productGroup: 'History', productSubgroup: 'American Revolution' };
   }
-  if (text.includes('lincoln') || text.includes('gettysburg address')) {
+  if (text.includes('lincoln') || text.includes('gettysburg address') || text.includes('abraham lincoln') || text.includes('emancipation proclamation')) {
     return { productGroup: 'History', productSubgroup: 'Abraham Lincoln' };
   }
 
-  if (text.includes('history') || text.includes('historian') || text.includes('archival')) {
+  // AGGRESSIVE FILTER: Ensure that known non-historical themes (TV & Film, Sitcoms, Music, Pop Culture)
+  // are never assigned to the "History" group fallback even if the word "history", "historical", or "archival" appears in passing.
+  const hasNonHistoricalContext =
+    text.includes('sitcom') ||
+    text.includes('movie') ||
+    text.includes('film') ||
+    text.includes('tv') ||
+    text.includes('television') ||
+    text.includes('show') ||
+    text.includes('actor') ||
+    text.includes('actress') ||
+    text.includes('music') ||
+    text.includes('song') ||
+    text.includes('album') ||
+    text.includes('band') ||
+    text.includes('comedy') ||
+    text.includes('pop culture');
+
+  if (!hasNonHistoricalContext && (text.includes('history') || text.includes('historian') || text.includes('archival') || text.includes('historical') || text.includes('ancient') || text.includes('century') || text.includes('warfare'))) {
     return { productGroup: 'History', productSubgroup: 'General History' };
+  }
+
+  if (hasNonHistoricalContext) {
+    if (text.includes('music') || text.includes('song') || text.includes('band')) {
+      return { productGroup: 'Music', productSubgroup: 'Rock & Vinyl' };
+    }
+    return { productGroup: 'TV & Film', productSubgroup: 'Film' };
   }
 
   return { productGroup: 'Other', productSubgroup: 'General Gifts' };
@@ -1604,15 +1818,101 @@ export function validateSemanticConsistency(
 }
 
 // Heuristic Fallbacks for instant offline/resilient responses
-function getSpecificTheme(title: string, rawDesc: string, fallbackTheme: string): string {
+export function getSpecificTheme(
+  title: string,
+  rawDesc: string,
+  fallbackTheme: string,
+  productGroup?: string,
+  productSubgroup?: string
+): string {
+  const grp = (productGroup || '').toLowerCase();
+  const subgrp = (productSubgroup || '').toLowerCase();
   const text = `${title} ${rawDesc}`.toLowerCase();
 
-  if (text.includes('how i met your mother') || text.includes('himym') || text.includes('suit up')) return 'How I Met Your Mother';
-  if (text.includes('viking') || text.includes('norse') || text.includes('valhalla') || text.includes('thor') || text.includes('odin')) return 'Viking & Norse Mythology';
-  if (text.includes('lincoln') || text.includes('gettysburg address')) return 'Abraham Lincoln';
-  if (text.includes('civil war') || text.includes('gettysburg') || text.includes('1861') || text.includes('1863') || text.includes('1865')) return 'Civil War';
+  // 1. Strict Domain Checks based on Product Group & Subgroup FIRST
+  // TV & Film Domain
+  const isTVFilmDomain =
+    grp.includes('tv') ||
+    grp.includes('film') ||
+    subgrp.includes('mother') ||
+    subgrp.includes('himym') ||
+    subgrp.includes('film') ||
+    subgrp.includes('cinema');
+  const hasTVFilmKeywords =
+    text.includes('how i met your mother') ||
+    text.includes('himym') ||
+    text.includes('maclaren') ||
+    text.includes('ducky tie') ||
+    text.includes('barney stinson') ||
+    text.includes('suit up') ||
+    text.includes('yellow umbrella') ||
+    text.includes('blue french horn');
+
+  if (isTVFilmDomain || hasTVFilmKeywords) {
+    if (
+      text.includes('screenwriter') ||
+      text.includes('filmmaker') ||
+      text.includes('clapperboard') ||
+      text.includes('35mm') ||
+      subgrp.includes('filmmaker')
+    ) {
+      return 'Screenwriting & Cinema';
+    }
+    return 'How I Met Your Mother';
+  }
+
+  // Vikings & Norse Mythology Domain
+  const isVikingDomain =
+    subgrp.includes('viking') ||
+    subgrp.includes('norse') ||
+    subgrp.includes('mythology') ||
+    grp.includes('viking') ||
+    grp.includes('norse');
+  const hasVikingKeywords =
+    text.includes('yggdrasil') ||
+    text.includes('nine realms') ||
+    text.includes('norse') ||
+    text.includes('viking') ||
+    text.includes('valhalla') ||
+    text.includes('thor') ||
+    text.includes('odin') ||
+    text.includes('asgard') ||
+    text.includes('runes') ||
+    text.includes('shieldmaiden') ||
+    text.includes('cosmogony') ||
+    text.includes('ragnarok') ||
+    text.includes('einherjar') ||
+    text.includes('berserker') ||
+    text.includes('longship') ||
+    text.includes('huginn');
+
+  if (isVikingDomain || hasVikingKeywords) {
+    return 'Viking & Norse Mythology';
+  }
+
+  // Music Domain
+  if (grp.includes('music') || subgrp.includes('jazz') || subgrp.includes('classical')) {
+    if (text.includes('jazz') || text.includes('miles davis') || text.includes('coltrane') || subgrp.includes('jazz')) {
+      return 'Jazz Music';
+    }
+    return 'Classical Music';
+  }
+
+  // Professions Domain
+  if (grp.includes('profession') || subgrp.includes('teacher') || subgrp.includes('pilot')) {
+    if (text.includes('history teacher') || text.includes('history professor') || subgrp.includes('teacher')) {
+      return 'History Teacher';
+    }
+    if (text.includes('pilot') || text.includes('aviator') || subgrp.includes('pilot')) {
+      return 'Pilots & Aviation';
+    }
+  }
+
+  // History & Other Domains: strictly disallowed if product was TV/Film or Vikings
+  if (text.includes('lincoln') || text.includes('gettysburg address') || subgrp.includes('lincoln')) return 'Abraham Lincoln';
+  if (text.includes('civil war') || text.includes('gettysburg') || text.includes('1861') || text.includes('1863') || text.includes('1865') || subgrp.includes('civil war')) return 'Civil War';
   if (text.includes('aviation') || text.includes('spitfire') || text.includes('warbird') || text.includes('b-17') || text.includes('raf') || text.includes('pilot')) return 'WWII Aviation';
-  if (text.includes('wwii') || text.includes('world war ii') || text.includes('d-day') || text.includes('churchill') || text.includes('enigma')) return 'WWII History';
+  if (text.includes('wwii') || text.includes('world war ii') || text.includes('d-day') || text.includes('churchill') || text.includes('enigma') || subgrp.includes('wwii')) return 'WWII History';
   if (text.includes('athena') || text.includes('greek mythology') || text.includes('zeus') || text.includes('poseidon') || text.includes('spartan') || text.includes('mythology')) return 'Greek Mythology';
   if (text.includes('marcus aurelius') || text.includes('stoic') || text.includes('stoicism') || text.includes('spqr') || text.includes('roman') || text.includes('caesar')) return 'Ancient Rome';
   if (text.includes('screenwriter') || text.includes('filmmaker') || text.includes('clapperboard') || text.includes('35mm')) return 'Screenwriting & Cinema';
@@ -1624,8 +1924,8 @@ function getSpecificTheme(title: string, rawDesc: string, fallbackTheme: string)
   return fallbackTheme ? fallbackTheme.replace(/^History\s*&\s*World Events$/i, 'History') : 'Themed Design';
 }
 
-function createHeuristicStrategy(item: ProductItem, config: StrategyConfig): AIStrategy {
-  const title = item.evidence.pageTitle || item.merchantData.title;
+export function createHeuristicStrategy(item: ProductItem, config: StrategyConfig): AIStrategy {
+  const title = item.evidence?.pageTitle || item.merchantData?.title || 'Science of Gifts Product';
 
   if (!item.productGroup) {
     const inferred = inferProductGroupAndSubgroup(title, item.evidence.rawDescription, item.evidence.sourceUrl);
@@ -1640,31 +1940,48 @@ function createHeuristicStrategy(item: ProductItem, config: StrategyConfig): AIS
       title.toLowerCase().includes(t.name.toLowerCase())
     );
     if (matchedTheme) dominantTheme = matchedTheme.name;
-    dominantTheme = getSpecificTheme(title, item.evidence.rawDescription, dominantTheme);
+    dominantTheme = getSpecificTheme(title, item.evidence.rawDescription, dominantTheme, item.productGroup, item.productSubgroup);
+  } else {
+    dominantTheme = getSpecificTheme(title, item.evidence.rawDescription, dominantTheme, item.productGroup, item.productSubgroup);
   }
   const specificTheme = dominantTheme || 'Specialized Design';
 
-  let productCat = 'Apparel / Drinkware / Decor';
+  let productCat = 'Uncategorized Gift Item';
   if (title.toLowerCase().includes('hoodie')) productCat = 'Hoodie';
   else if (title.toLowerCase().includes('shirt') || title.toLowerCase().includes('tee') || title.toLowerCase().includes('t-shirt')) productCat = 'T-Shirt';
   else if (title.toLowerCase().includes('mug')) productCat = 'Mug';
   else if (title.toLowerCase().includes('poster') || title.toLowerCase().includes('print')) productCat = 'Poster';
   else if (title.toLowerCase().includes('notebook') || title.toLowerCase().includes('journal')) productCat = 'Journal';
+  else if (title.toLowerCase().includes('water bottle')) productCat = 'Water Bottle';
+  else if (title.toLowerCase().includes('sleeve')) productCat = 'Laptop Sleeve';
+  else if (title.toLowerCase().includes('case')) productCat = 'Phone Case';
+
+  const allocatedLabels = allocateCustomLabels(item, config, {
+    theme: specificTheme,
+    productType: productCat,
+  });
+
+  const recipient =
+    specificTheme === 'How I Met Your Mother'
+      ? 'Sitcom fan or How I Met Your Mother enthusiast'
+      : specificTheme === 'Viking & Norse Mythology'
+      ? 'Norse mythology enthusiast or Viking history admirer'
+      : `${specificTheme} enthusiast or curious learner`;
 
   return {
     exactProductSummary: `${productCat} featuring ${title} design for ${specificTheme} enthusiasts.`,
     dominantTheme: specificTheme,
     productCategory: productCat,
-    verifiedPhysicalAttributes: Object.entries(item.evidence.verifiedAttributes)
+    verifiedPhysicalAttributes: Object.entries(item.evidence?.verifiedAttributes || {})
       .filter(([_, v]) => Boolean(v))
       .map(([k, v]) => `${k}: ${v}`),
     realisticBuyer: `${specificTheme} enthusiast, student, teacher, or gift buyer.`,
-    realisticRecipient: `${specificTheme} enthusiast or curious learner.`,
+    realisticRecipient: recipient,
     giftRationale: `Celebrates authentic interest in ${specificTheme} with practical, high-quality merchandise.`,
     relevantSearchIntents: [
       `${specificTheme.toLowerCase()} gifts`,
       `${specificTheme.toLowerCase()} ${productCat.toLowerCase()}`,
-      `gifts for history buffs`,
+      `gifts for ${allocatedLabels.custom_label_0.toLowerCase()}`,
     ],
     differentiatingAttributes: ['Authentic thematic artwork', 'Durable premium construction', 'Specialized subject focus'],
     titleStrategy: `Prioritize specific subject (${specificTheme}), followed by product type (${productCat}), gift intent, and key design attribute.`,
@@ -1675,14 +1992,16 @@ function createHeuristicStrategy(item: ProductItem, config: StrategyConfig): AIS
       `4. Differentiating Attribute`,
     ],
     titleStrategyReasoning: `Prioritizes the most specific commercially meaningful subject (${specificTheme}) instead of broad umbrella prefixes for precise product matching.`,
-    descriptionStrategy: 'Describe the specific historical narrative, verified physical specs, and gifting context.',
-    productTypeStrategy: item.merchantData.product_type || 'Gifts & Collectibles > Themed Merchandise',
+    descriptionStrategy: 'Describe the specific subject narrative, verified physical specs, and gifting context.',
+    productTypeStrategy:
+      item.merchantData.product_type ||
+      (productCat !== 'Uncategorized Gift Item' ? `Gifts > ${productCat}` : ''),
     customLabelsStrategy: {
-      custom_label_0: 'History Buffs',
-      custom_label_1: 'Mid-Tier Gifts ($20 - $40)',
-      custom_label_2: 'Year-Round Essential',
-      custom_label_3: specificTheme,
-      custom_label_4: productCat,
+      custom_label_0: allocatedLabels.custom_label_0,
+      custom_label_1: allocatedLabels.custom_label_1,
+      custom_label_2: allocatedLabels.custom_label_2,
+      custom_label_3: allocatedLabels.custom_label_3,
+      custom_label_4: allocatedLabels.custom_label_4,
     },
     antiRecommendations: [
       'Do not claim unverified organic materials',
@@ -1691,7 +2010,25 @@ function createHeuristicStrategy(item: ProductItem, config: StrategyConfig): AIS
       'Avoid spam keywords like "Best cheap gift ever"',
     ],
     googleCategoryRationale: 'Standard Google Product Category representing physical product form factor.',
-    recommendedGoogleCategory: item.merchantData.google_product_category || 'Apparel & Accessories > Clothing > Shirts & Tops',
+    recommendedGoogleCategory:
+      item.merchantData.google_product_category ||
+      (productCat === 'T-Shirt'
+        ? 'Apparel & Accessories > Clothing > Shirts & Tops'
+        : productCat === 'Hoodie'
+        ? 'Apparel & Accessories > Clothing > Outerwear > Sweatshirts & Hoodies'
+        : productCat === 'Mug'
+        ? 'Home & Garden > Kitchen & Dining > Tableware > Drinkware > Mugs'
+        : productCat === 'Poster'
+        ? 'Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork'
+        : productCat === 'Journal'
+        ? 'Office Supplies > Paper Products > Notebooks & Notepads'
+        : productCat === 'Water Bottle'
+        ? 'Home & Garden > Kitchen & Dining > Food & Beverage Carriers > Water Bottles'
+        : productCat === 'Laptop Sleeve'
+        ? 'Electronics > Electronics Accessories > Computer Accessories > Laptop Cases'
+        : productCat === 'Phone Case'
+        ? 'Electronics > Electronics Accessories > Communications > Telephony Accessories > Mobile Phone Accessories > Mobile Phone Cases'
+        : ''),
     researchedAt: new Date().toISOString(),
   };
 }
@@ -1708,7 +2045,7 @@ export function createHeuristicFields(
   const baseTitle = item.merchantData.title || item.evidence.pageTitle;
   const theme = strategy.dominantTheme;
   const prodCat = strategy.productCategory;
-  const differentiator = item.evidence.verifiedAttributes.material || 'Thematic Edition';
+  const differentiator = item.evidence?.verifiedAttributes?.material || item.merchantData?.material || 'Thematic Edition';
 
   const priorityOrder = [
     `1. Specific Theme: ${theme}`,
@@ -1776,35 +2113,41 @@ export function createHeuristicFields(
   };
 
   const suggestedDescription =
-    item.merchantData.description.length > 80
+    (item.merchantData.description || '').length > 80
       ? item.merchantData.description
       : `An authentic Science of Gifts creation celebrating ${theme}. Designed with meticulous attention to detail and historical appreciation, this ${prodCat} makes a memorable gift for passionate ${strategy.realisticRecipient}s. Crafted with durable materials and vivid print quality for daily enjoyment.`;
 
+  const userCorrections = item.evidence?.userCorrections || {};
   const corrections = getEvidenceAwareCorrections(item);
+
+  const allocatedCustomLabelsResult = allocateCustomLabels(item, _config || INITIAL_STRATEGY_CONFIG, {
+    theme,
+    productType: prodCat,
+  });
 
   return {
     suggestedMerchantData: {
       title: candidate1.title,
       description: suggestedDescription,
-      color: corrections.color || item.evidence.verifiedAttributes?.color || item.merchantData.color || '',
-      size: corrections.size || item.evidence.verifiedAttributes?.size || item.merchantData.size || '',
-      material: corrections.material || item.evidence.verifiedAttributes?.material || item.merchantData.material || '',
+      color: userCorrections.color || corrections.color || item.evidence.verifiedAttributes?.color || item.merchantData.color || '',
+      size: userCorrections.size || corrections.size || item.evidence.verifiedAttributes?.size || item.merchantData.size || '',
+      material: userCorrections.material || corrections.material || item.evidence.verifiedAttributes?.material || item.merchantData.material || '',
       google_product_category: corrections.google_product_category || strategy.recommendedGoogleCategory,
       product_type: corrections.product_type || strategy.productTypeStrategy,
-    custom_label_0: allocateCustomLabels(item, INITIAL_STRATEGY_CONFIG).custom_label_0,
-    custom_label_1: allocateCustomLabels(item, INITIAL_STRATEGY_CONFIG).custom_label_1,
-    custom_label_2: allocateCustomLabels(item, INITIAL_STRATEGY_CONFIG).custom_label_2,
-    custom_label_3: allocateCustomLabels(item, INITIAL_STRATEGY_CONFIG).custom_label_3,
-    custom_label_4: allocateCustomLabels(item, INITIAL_STRATEGY_CONFIG).custom_label_4,
+      custom_label_0: allocatedCustomLabelsResult.custom_label_0,
+      custom_label_1: allocatedCustomLabelsResult.custom_label_1,
+      custom_label_2: allocatedCustomLabelsResult.custom_label_2,
+      custom_label_3: allocatedCustomLabelsResult.custom_label_3,
+      custom_label_4: allocatedCustomLabelsResult.custom_label_4,
     },
     suggestedGiftIntelligence: {
       theme: strategy.dominantTheme,
       subtheme: '',
-      targetAudience: ['History Buffs', 'Teachers & Professors'],
+      targetAudience: [allocatedCustomLabelsResult.custom_label_0],
       recipientPersonas: [strategy.realisticRecipient],
       occasions: ['Birthday', 'Christmas / Holidays'],
       primaryGiftIntent: `${strategy.dominantTheme.toLowerCase()} gifts`,
-      secondaryGiftIntents: ['gifts for history buffs', 'unique educational gifts'],
+      secondaryGiftIntents: [`gifts for ${allocatedCustomLabelsResult.custom_label_0.toLowerCase()}`, 'unique educational gifts'],
       searchConcepts: [strategy.dominantTheme, prodCat, 'Science of Gifts'],
     },
     titleCandidates: [candidate1, candidate2, candidate3],
@@ -1861,8 +2204,8 @@ export function createHeuristicAudit(item: ProductItem, previousScore?: number):
   }
 
   // Issue 1: Description missing verified specs
-  const verified = item.evidence.verifiedAttributes;
-  const descLower = item.merchantData.description.toLowerCase();
+  const verified = item.evidence?.verifiedAttributes || {};
+  const descLower = (item.merchantData.description || '').toLowerCase();
 
   if (verified.material && !descLower.includes(verified.material.toLowerCase())) {
     issues.push({
@@ -1989,7 +2332,7 @@ export function createHeuristicAudit(item: ProductItem, previousScore?: number):
     complianceScore -= 3;
   }
 
-  if (item.merchantData.title.length > 130) {
+  if ((item.merchantData.title || '').length > 130) {
     warnings.push('Title is approaching 150 characters. Consider keeping key identifiers in the first 70 characters.');
     searchScore -= 2;
   }

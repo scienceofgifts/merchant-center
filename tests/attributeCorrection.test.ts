@@ -5,6 +5,9 @@ import {
   reconcileProductAttributes,
   getEvidenceAwareCorrections,
   isSpecificVariantItem,
+  isValidColorName,
+  detectMaterialFromEvidence,
+  normalizeSize,
 } from '../src/utils/attributeReconciler';
 import {
   computeFieldProvenance,
@@ -68,7 +71,7 @@ function createMockProduct(overrides: Partial<ProductItem> = {}): ProductItem {
       identifier_exists: 'no',
       item_group_id: 'prod_test_001',
       color: 'Black', // Contradicted: evidence says Navy Blue
-      size: 'M',      // Contradicted: parent listing provides S - 3XL
+      size: 'One Size', // Contradicted: parent listing provides S - 3XL
       material: 'Polyester', // Contradicted: evidence says 100% Cotton
       gender: 'unisex',
       age_group: 'adult',
@@ -95,7 +98,7 @@ function createMockProduct(overrides: Partial<ProductItem> = {}): ProductItem {
     originalImported: {
       title: 'WWII RAF Spitfire Mk IX Blueprint Hoodie',
       color: 'Black',
-      size: 'M',
+      size: 'One Size',
       material: 'Polyester',
     },
     appliedSuggestions: [],
@@ -137,7 +140,7 @@ function runTest(testName: string, fn: () => void | Promise<void>) {
 async function runAllTests() {
   // Test 1: Incorrect manually entered value is corrected when explicit source evidence supports replacement
   await runTest(
-    'Incorrect manually entered clothing size "M", color "Black", and material "Polyester" are corrected to verified specs',
+    'Incorrect manually entered clothing size "One Size", color "Black", and material "Polyester" are corrected to verified specs',
     async () => {
       const product = createMockProduct();
       const discrepancies = reconcileProductAttributes(product);
@@ -199,7 +202,7 @@ async function runAllTests() {
     async () => {
       const product = createMockProduct({
         merchantData: {
-          size: 'M',
+          size: 'One Size',
         } as any,
       });
 
@@ -367,7 +370,7 @@ async function runAllTests() {
     async () => {
       const product = createMockProduct({
         merchantData: {
-          size: 'M',
+          size: 'One Size',
         } as any,
       });
 
@@ -376,7 +379,7 @@ async function runAllTests() {
 
       assert.strictEqual(product.history.length, initialHistoryLength + 1);
       const snapshot = product.history[0].snapshot;
-      assert.strictEqual(snapshot.size, 'M', 'Snapshot must record the prior value M');
+      assert.strictEqual(snapshot.size, 'One Size', 'Snapshot must record the prior value One Size');
       assert.strictEqual(product.merchantData.size, 'S - 3XL', 'Current value must be updated to S - 3XL');
 
       const lastSuggestion = product.appliedSuggestions[product.appliedSuggestions.length - 1];
@@ -483,6 +486,7 @@ async function runAllTests() {
         evidence: {
           pageTitle: 'Athena Owl Hoodie',
           rawDescription: 'Greek mythology hoodie available in S, M, L, XL, 2XL, 3XL.',
+          userCorrections: { size: 'M' },
           variants: [
             { id: 'v1', title: 'Black / S', size: 'S', color: 'Black' },
             { id: 'v2', title: 'Black / M', size: 'M', color: 'Black' },
@@ -494,8 +498,357 @@ async function runAllTests() {
       const discrepancies = reconcileProductAttributes(athenaOwlHoodie);
       const sizeDisc = discrepancies.find((d) => d.field === 'size');
       assert.ok(sizeDisc);
-      assert.strictEqual(sizeDisc.status, 'unresolved', 'Ambiguous size must be flagged as unresolved');
-      assert.strictEqual(sizeDisc.isSafeToFix, false, 'Ambiguous size must not be auto-fixed');
+      assert.strictEqual(sizeDisc.status, 'user_override', 'User override size is preserved');
+      assert.strictEqual(sizeDisc.isSafeToFix, false, 'User override size must not be auto-fixed');
+    }
+  );
+
+  // Test 13: 100% Cotton Twill from irrelevant evidence is rejected for a whiskey glass
+  await runTest(
+    '100% Cotton Twill from irrelevant evidence is rejected for Abraham Lincoln whiskey glass and corrected to Glass',
+    () => {
+      const whiskeyGlass = createMockProduct({
+        id: 'lincoln_whiskey_glass',
+        merchantData: {
+          title: 'Abraham Lincoln Whiskey Glass',
+          description: 'High quality glassware. Note: apparel category also features 100% Cotton Twill caps in our catalog.',
+          material: '100% Cotton Twill', // Incorrectly contaminated or entered material
+          color: 'Clear',
+          size: '11 oz',
+        } as any,
+        evidence: {
+          pageTitle: 'Abraham Lincoln Whiskey Glass',
+          rawDescription: 'Heavy-bottom whiskey glass featuring historical engraving.',
+          verifiedAttributes: {},
+          variants: [],
+        } as any,
+      });
+
+      const discrepancies = reconcileProductAttributes(whiskeyGlass);
+      const matDisc = discrepancies.find((d) => d.field === 'material');
+      assert.ok(matDisc, 'Material discrepancy must be detected for whiskey glass with cotton twill');
+      assert.strictEqual(matDisc.status, 'contradicted');
+      assert.strictEqual(matDisc.proposedValue, 'Glass');
+    }
+  );
+
+  // Test 14: Explicit drinkware material evidence is accepted
+  await runTest(
+    'Explicit drinkware material (Glass) is supported and accepted',
+    () => {
+      const whiskeyGlass = createMockProduct({
+        id: 'lincoln_whiskey_glass_correct',
+        merchantData: {
+          title: 'Abraham Lincoln Whiskey Glass',
+          description: 'Heavy-bottom whiskey glass.',
+          material: 'Glass',
+          color: 'Clear',
+          size: '11 oz',
+        } as any,
+        evidence: {
+          pageTitle: 'Abraham Lincoln Whiskey Glass',
+          rawDescription: 'Heavy-bottom glass vessel.',
+          verifiedAttributes: { material: 'Glass' },
+        } as any,
+      });
+
+      const discrepancies = reconcileProductAttributes(whiskeyGlass);
+      const matDisc = discrepancies.find((d) => d.field === 'material');
+      assert.ok(matDisc);
+      assert.strictEqual(matDisc.status, 'supported');
+      assert.strictEqual(matDisc.proposedValue, 'Glass');
+    }
+  );
+
+  // Test 15: Apparel fabric evidence is accepted for appropriate apparel product
+  await runTest(
+    'Apparel fabric evidence (100% Cotton) is accepted for appropriate apparel product',
+    () => {
+      const tshirt = createMockProduct({
+        id: 'history_tshirt',
+        merchantData: {
+          title: 'American History T-Shirt',
+          description: 'Comfortable cotton tee.',
+          material: '100% Cotton',
+          color: 'Black',
+          size: 'L',
+        } as any,
+        evidence: {
+          pageTitle: 'American History T-Shirt',
+          rawDescription: 'Crafted from 100% ring-spun cotton.',
+          verifiedAttributes: { material: '100% Cotton' },
+        } as any,
+      });
+
+      const discrepancies = reconcileProductAttributes(tshirt);
+      const matDisc = discrepancies.find((d) => d.field === 'material');
+      assert.ok(matDisc);
+      assert.strictEqual(matDisc.status, 'supported');
+      assert.strictEqual(matDisc.proposedValue, '100% Cotton');
+    }
+  );
+
+  // Test 16: Material evidence for a frame is distinguished from the print itself
+  await runTest(
+    'Material evidence for a framed poster distinguishes frame component from print substrate',
+    () => {
+      const framedPoster = createMockProduct({
+        id: 'framed_poster_test',
+        merchantData: {
+          title: 'Framed Gettysburg Address Poster',
+          description: 'Archival matte paper poster with wooden frame.',
+          material: 'Museum-grade Matte Paper with Wood Frame',
+          size: '18" x 24"',
+        } as any,
+        evidence: {
+          pageTitle: 'Framed Gettysburg Address Poster',
+          rawDescription: 'Archival matte paper poster housed in a solid wood frame.',
+          verifiedAttributes: { material: 'Museum-grade Matte Paper with Wood Frame' },
+        } as any,
+      });
+
+      const discrepancies = reconcileProductAttributes(framedPoster);
+      const matDisc = discrepancies.find((d) => d.field === 'material');
+      assert.ok(matDisc);
+      assert.strictEqual(matDisc.status, 'supported');
+      assert.strictEqual(matDisc.proposedValue, 'Museum-grade Matte Paper with Wood Frame');
+    }
+  );
+
+  // Test 17: Evidence from a previously processed product cannot contaminate current product
+  await runTest(
+    'Evidence from previously processed product cannot contaminate current product item',
+    () => {
+      // Product A: T-Shirt with cotton material
+      const tshirt = createMockProduct({
+        id: 'prod_a_shirt',
+        merchantData: { title: 'T-Shirt', material: '100% Cotton' } as any,
+      });
+
+      // Product B: Whiskey glass processed immediately after
+      const whiskeyGlass = createMockProduct({
+        id: 'prod_b_glass',
+        merchantData: { title: 'Whiskey Glass', material: 'Glass' } as any,
+        evidence: {
+          pageTitle: 'Whiskey Glass',
+          rawDescription: 'Glass vessel.',
+          verifiedAttributes: { material: 'Glass' },
+        } as any,
+      });
+
+      // Verify Product B state is clean and unpolluted by Product A
+      const discrepanciesB = reconcileProductAttributes(whiskeyGlass);
+      const matDiscB = discrepanciesB.find((d) => d.field === 'material');
+      assert.ok(matDiscB);
+      assert.strictEqual(matDiscB.proposedValue, 'Glass');
+    }
+  );
+
+  // Test 18: Color, Size, and unrelated product fields remain unchanged when only Material is corrected
+  await runTest(
+    'Color, Size, and unrelated product fields remain unchanged when only Material is corrected',
+    () => {
+      const item = createMockProduct({
+        merchantData: {
+          title: 'Abraham Lincoln Whiskey Glass',
+          description: 'Whiskey glass',
+          color: 'Clear',
+          size: '11 oz',
+          material: '100% Cotton Twill', // Incorrect material
+          price: '29.99 USD',
+        } as any,
+        evidence: {
+          pageTitle: 'Abraham Lincoln Whiskey Glass',
+          rawDescription: 'Whiskey glass',
+          verifiedAttributes: { color: 'Clear', size: '11 oz', capacity: '11 oz' },
+        } as any,
+      });
+
+      const discrepancies = reconcileProductAttributes(item);
+      const matDisc = discrepancies.find((d) => d.field === 'material');
+      const colorDisc = discrepancies.find((d) => d.field === 'color');
+      const sizeDisc = discrepancies.find((d) => d.field === 'size');
+
+      assert.strictEqual(matDisc?.status, 'contradicted');
+      assert.strictEqual(matDisc?.proposedValue, 'Glass');
+      assert.strictEqual(colorDisc?.status, 'supported');
+      assert.strictEqual(sizeDisc?.status, 'supported');
+    }
+  );
+
+  // Test 19: Invalid color "Generic brand (One Size)" is rejected as a color
+  await runTest(
+    'Invalid color string like "Generic brand (One Size)" is rejected as a color and flagged as contradicted',
+    () => {
+      const item = createMockProduct({
+        id: 'invalid_color_test',
+        merchantData: {
+          title: 'History Tee',
+          color: 'Generic brand (One Size)',
+          size: 'L',
+          material: '100% Cotton',
+        } as any,
+        evidence: {
+          pageTitle: 'History Tee',
+          rawDescription: 'Cotton t-shirt in black.',
+          verifiedAttributes: { color: 'Black' },
+        } as any,
+      });
+
+      const discrepancies = reconcileProductAttributes(item);
+      const colorDisc = discrepancies.find((d) => d.field === 'color');
+      assert.ok(colorDisc, 'Color discrepancy must be detected for invalid color string');
+      assert.strictEqual(colorDisc.status, 'contradicted');
+      assert.strictEqual(colorDisc.proposedValue, 'Black');
+    }
+  );
+
+  // Test 20: Field boundaries prevent size/dimension strings from being used as color or material
+  await runTest(
+    'Field boundaries ensure size, dimension, and capacity strings are never accepted as color or material evidence',
+    () => {
+      const item = createMockProduct({
+        id: 'boundary_test',
+        merchantData: {
+          title: 'Poster 18x24 with 15 oz capacity',
+          color: '18" x 24"', // Invalid color trying to use dimensions
+          material: '15 oz', // Invalid material trying to use capacity
+          size: 'M',
+        } as any,
+        evidence: {
+          pageTitle: 'Poster 18x24',
+          rawDescription: 'Wall art poster on matte paper.',
+          verifiedAttributes: {},
+        } as any,
+      });
+
+      const discrepancies = reconcileProductAttributes(item);
+      const colorDisc = discrepancies.find((d) => d.field === 'color');
+      const matDisc = discrepancies.find((d) => d.field === 'material');
+
+      assert.ok(colorDisc);
+      assert.strictEqual(colorDisc.status, 'contradicted');
+      assert.notStrictEqual(colorDisc.proposedValue, '18" x 24"', 'Dimensions must not be proposed as color');
+
+      assert.ok(matDisc);
+      assert.strictEqual(matDisc.status, 'contradicted');
+      assert.notStrictEqual(matDisc.proposedValue, '15 oz', 'Capacity must not be proposed as material');
+    }
+  );
+
+  // Test 21: Missing evidence produces UNRESOLVED status without incorrect contradiction
+  await runTest(
+    'Missing evidence produces UNRESOLVED status rather than false contradiction',
+    () => {
+      const item = createMockProduct({
+        id: 'unresolved_test',
+        merchantData: {
+          title: 'Unique Mystery Artifact',
+          color: 'Custom Bronze',
+          size: 'Unique',
+          material: 'Unknown Alloy',
+        } as any,
+        evidence: {
+          pageTitle: 'Unique Mystery Artifact',
+          rawDescription: 'A fascinating artifact of unknown origin.',
+          verifiedAttributes: {},
+          variants: [],
+        } as any,
+      });
+
+      const discrepancies = reconcileProductAttributes(item);
+      const colorDisc = discrepancies.find((d) => d.field === 'color');
+      const matDisc = discrepancies.find((d) => d.field === 'material');
+
+      assert.ok(colorDisc);
+      assert.strictEqual(colorDisc.status, 'unresolved');
+      assert.ok(matDisc);
+      assert.strictEqual(matDisc.status, 'unresolved');
+    }
+  );
+
+  // Test 22: Regression for Refresh Attributes on apparel with current Black, M, Polyester
+  await runTest(
+    'Refresh Attributes for apparel product with current Black, M, Polyester preserves verified values without false contradictions',
+    () => {
+      // Product like Barney Stinson Suit Up Sweater with current Black, M, Polyester
+      const sweater = createMockProduct({
+        id: 'suit-up-sweater',
+        merchantData: {
+          id: 'suit-up-sweater',
+          title: 'Barney Stinson Suit Up Gift Sweater - How I Met Your Mother Sitcom Fan Apparel',
+          description: 'Crafted from durable, high-quality polyester, it provides dependable warmth and a smooth feel. The subtle black-and-white design also makes it easy to wear casually.',
+          color: 'Black',
+          size: 'M',
+          material: 'Polyester',
+          google_product_category: 'Apparel & Accessories > Clothing > Sweaters',
+          product_type: 'Apparel > Sweaters',
+        } as any,
+        evidence: {
+          pageTitle: 'Suit Up Sweater',
+          rawDescription: 'Crafted from durable, high-quality polyester. That design captures Barney Stinson signature command. The subtle black-and-white design also makes it easy to wear casually.',
+          verifiedAttributes: {
+            brand: 'Science of Gifts',
+            color: 'Black',
+            material: 'Polyester',
+          },
+          variants: [
+            { id: 'v1', title: 'Knitted, S', size: 'S' },
+            { id: 'v2', title: 'Knitted, M', size: 'M' },
+            { id: 'v3', title: 'Knitted, L', size: 'L' },
+            { id: 'v4', title: 'Knitted, XL', size: 'XL' },
+            { id: 'v5', title: 'Knitted, 2XL', size: '2XL' },
+          ],
+        } as any,
+      });
+
+      const discrepancies = reconcileProductAttributes(sweater);
+
+      const colorDisc = discrepancies.find((d) => d.field === 'color');
+      assert.ok(colorDisc, 'Color discrepancy object must exist');
+      assert.strictEqual(colorDisc.status, 'supported', 'Current color Black must be SUPPORTED, not contradicted by Knitted');
+      assert.strictEqual(colorDisc.proposedValue, 'Black');
+
+      const sizeDisc = discrepancies.find((d) => d.field === 'size');
+      assert.ok(sizeDisc, 'Size discrepancy object must exist');
+      assert.strictEqual(sizeDisc.status, 'supported', 'Current variant size M must be SUPPORTED, not replaced by S - 2XL');
+      assert.strictEqual(sizeDisc.proposedValue, 'M');
+
+      const matDisc = discrepancies.find((d) => d.field === 'material');
+      assert.ok(matDisc, 'Material discrepancy object must exist');
+      assert.strictEqual(matDisc.status, 'supported', 'Current material Polyester must be SUPPORTED, not replaced by 100% Cotton Twill');
+      assert.strictEqual(matDisc.proposedValue, 'Polyester');
+    }
+  );
+
+  // Test 23: Knitted is rejected as a color and words like "that" or "capturing" do not trigger 100% Cotton Twill
+  await runTest(
+    'Knitted is rejected as color in variant parsing and "that"/"capturing" do not trigger 100% Cotton Twill',
+    () => {
+      assert.strictEqual(isValidColorName('Knitted'), false, 'Knitted must be rejected as a color');
+      assert.strictEqual(isValidColorName('Knitted, M'), false, 'Knitted, M must be rejected as a color');
+      assert.strictEqual(isValidColorName('Black'), true, 'Black must be valid color');
+
+      const itemWithSubstrings = createMockProduct({
+        id: 'test_substrings',
+        merchantData: {
+          title: 'Vintage History Tee',
+          description: 'A design that captures history. Whatever you think of that event.',
+          material: 'Polyester',
+          color: 'Black',
+          size: 'M',
+        } as any,
+        evidence: {
+          rawDescription: 'A design that captures history. Whatever you think of that event. Crafted from durable polyester.',
+          pageTitle: 'Vintage History Tee',
+          verifiedAttributes: {},
+          variants: [{ size: 'M' }],
+        } as any,
+      });
+
+      const detectedMat = detectMaterialFromEvidence(itemWithSubstrings);
+      assert.notStrictEqual(detectedMat, '100% Cotton Twill', '"that" or "capturing" must not trigger 100% Cotton Twill');
+      assert.strictEqual(detectedMat, 'Polyester', 'Polyester should be correctly detected from evidence');
     }
   );
 

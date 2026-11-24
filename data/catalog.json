@@ -579,7 +579,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "maclarens-pub-t-shirt",
+      "item_group_id": "",
       "color": "Black",
       "size": "S-3XL",
       "material": "100% Cotton",
@@ -710,7 +710,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "maclarens-pub-t-shirt",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -1112,7 +1112,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "its-a-match-french-horn-phone-case",
+      "item_group_id": "",
       "color": "Multicolor",
       "size": "Multiple Device Models",
       "material": "Polycarbonate / TPU",
@@ -1242,7 +1242,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "its-a-match-french-horn-phone-case",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -1644,7 +1644,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "viking-norse-mythology-hoodie",
+      "item_group_id": "",
       "color": "Black",
       "size": "S-3XL",
       "material": "Cotton Blend Fleece",
@@ -1775,7 +1775,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "viking-norse-mythology-hoodie",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -2178,18 +2178,18 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
+      "item_group_id": "",
       "color": "Charcoal",
       "size": "S-3XL",
       "material": "100% Cotton",
       "gender": "unisex",
       "age_group": "adult",
       "condition": "new",
-      "custom_label_0": "Norse Mythology",
-      "custom_label_1": "Apparel",
-      "custom_label_2": "Gift for History Buffs",
-      "custom_label_3": "T-Shirt",
-      "custom_label_4": "Science of Gifts"
+      "custom_label_0": "Norse Mythology Enthusiasts",
+      "custom_label_1": "Mid-Tier Gifts ($20 - $40)",
+      "custom_label_2": "Year-Round Essential",
+      "custom_label_3": "Norse Mythology",
+      "custom_label_4": "T-Shirts"
     },
     "giftIntelligence": {
       "theme": "Norse Mythology & Viking History",
@@ -2307,18 +2307,18 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
       "gender": "unisex",
       "age_group": "adult",
       "condition": "new",
-      "custom_label_0": "Vikings & Norse Mythology",
-      "custom_label_1": "T-Shirts",
-      "custom_label_2": "Apparel",
-      "custom_label_3": "Under 35 USD",
-      "custom_label_4": "History & Literature Gift"
+      "custom_label_0": "Norse Mythology Enthusiasts",
+      "custom_label_1": "Mid-Tier Gifts ($20 - $40)",
+      "custom_label_2": "Year-Round Essential",
+      "custom_label_3": "Norse Mythology",
+      "custom_label_4": "T-Shirts"
     },
     "appliedSuggestions": [
       {
@@ -2485,270 +2485,6 @@
       }
     ],
     "history": [
-      {
-        "timestamp": "2026-10-21T12:33:13.244Z",
-        "note": "Before 1-Click \"Generate & Optimize\" (Score: 82/100)",
-        "snapshot": {
-          "id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "link": "https://shop.scienceofgifts.com/products/the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "title": "WWII Aviation Gift T-Shirt - Spitfire Blueprint Military History Design",
-          "description": "Celebrate the legacy of iconic military aircraft with the WWII Aviation Gift T-Shirt from Science of Gifts. Thoughtfully designed for history buffs, aviation enthusiasts, and veterans of historical study, this premium apparel piece bridges intellectual curiosity and wearable art. Featuring detailed graphic illustrations inspired by historic blueprints and military aviation milestones, the artwork pays homage to the legendary Spitfire and the engineering marvels that shaped the skies during the Second World War. Rendered against high-quality fabric, the design offers exceptional comfort and durability for everyday wear. Whether you are expanding your own collection or searching for a memorable gift for an aviation historian or veteran, this T-shirt provides a sophisticated tribute to military aviation heritage.",
-          "image_link": "https://imgproxy.fourthwall.dev/0jNWybtTszhi2ode4vSOfXe1y9R8lLZxbGiMxIDniTI/w:1920/sm:1/enc/NtaOWXM3voNGalI2/VUKlRUEUPfy5jShP/iqpYfBz53aJ_qP5Z/g8UJGweZFyTQWImy/23sUhjGcJ1zuHfW6/Rbtp-XPsG73vomS8/l5Dd-KyAWfeXrf9I/j5hbUhnRI3JY8iKi/oaw1l8O1BeGFlhrg/l63r-tCZylmtjZm2/GeJ1UGQicl09hMjo/sIkql-T5F60MqdON/VDck3tE5uMCuNjl4/v1y0lg.webp",
-          "additional_image_link": "https://imgproxy.fourthwall.dev/sqHoDJ6UTiJ5mq4NIpLGZAj2oVTzj6YbDnIpIIFpeXY/w:1920/sm:1/enc/IK7-vnsyZotnRO6l/X_3DS5ME13-W1Xnq/ACFye-31xdTww6iO/VOXNVJYaDYbKEuRc/pWaSN-DYUNeK1jcd/WglZxgtRXOwIy3R3/2HbNyfs9VTEMd8I-/1Dpmx4qlrzSSNKrz/miP1aBOQKc7_Yi1L/GWa7U9pq5OP1pER_/NNJlfU1IP45M8d-A/xKSuJeZT_8AFWD5L/SztxAYhTemLXQxhO/WrtSlQ.webp",
-          "google_product_category": "Apparel & Accessories > Clothing > Shirts & Tops",
-          "product_type": "T-Shirt",
-          "price": "24.90 USD",
-          "sale_price": "",
-          "availability": "in_stock",
-          "brand": "Science of Gifts",
-          "gtin": "",
-          "mpn": "",
-          "identifier_exists": "no",
-          "item_group_id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "color": "Heather Charcoal",
-          "size": "L",
-          "material": "100% Cotton",
-          "gender": "unisex",
-          "age_group": "adult",
-          "condition": "new",
-          "custom_label_0": "WWII Aviation",
-          "custom_label_1": "Apparel",
-          "custom_label_2": "History Gifts",
-          "custom_label_3": "Apparel",
-          "custom_label_4": "Best Sellers"
-        }
-      },
-      {
-        "timestamp": "2026-10-21T12:31:58.007Z",
-        "note": "Before 1-Click \"Generate & Optimize\" (Score: 42/100)",
-        "snapshot": {
-          "id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "link": "https://shop.scienceofgifts.com/products/the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "title": "WWII Aviation Gift T-Shirt - Spitfire Blueprint Military History Design",
-          "description": "Celebrate the legacy of iconic military aircraft with the WWII Aviation Gift T-Shirt from Science of Gifts. Thoughtfully designed for history buffs, aviation enthusiasts, and veterans of historical study, this premium apparel piece bridges intellectual curiosity and wearable art. Featuring detailed graphic illustrations inspired by historic blueprints and military aviation milestones, the artwork pays homage to the legendary Spitfire and the engineering marvels that shaped the skies during the Second World War. Rendered against high-quality fabric, the design offers exceptional comfort and durability for everyday wear. Whether you are expanding your own collection or searching for a memorable gift for an aviation historian or veteran, this T-shirt provides a sophisticated tribute to military aviation heritage.",
-          "image_link": "https://imgproxy.fourthwall.dev/0jNWybtTszhi2ode4vSOfXe1y9R8lLZxbGiMxIDniTI/w:1920/sm:1/enc/NtaOWXM3voNGalI2/VUKlRUEUPfy5jShP/iqpYfBz53aJ_qP5Z/g8UJGweZFyTQWImy/23sUhjGcJ1zuHfW6/Rbtp-XPsG73vomS8/l5Dd-KyAWfeXrf9I/j5hbUhnRI3JY8iKi/oaw1l8O1BeGFlhrg/l63r-tCZylmtjZm2/GeJ1UGQicl09hMjo/sIkql-T5F60MqdON/VDck3tE5uMCuNjl4/v1y0lg.webp",
-          "additional_image_link": "https://imgproxy.fourthwall.dev/sqHoDJ6UTiJ5mq4NIpLGZAj2oVTzj6YbDnIpIIFpeXY/w:1920/sm:1/enc/IK7-vnsyZotnRO6l/X_3DS5ME13-W1Xnq/ACFye-31xdTww6iO/VOXNVJYaDYbKEuRc/pWaSN-DYUNeK1jcd/WglZxgtRXOwIy3R3/2HbNyfs9VTEMd8I-/1Dpmx4qlrzSSNKrz/miP1aBOQKc7_Yi1L/GWa7U9pq5OP1pER_/NNJlfU1IP45M8d-A/xKSuJeZT_8AFWD5L/SztxAYhTemLXQxhO/WrtSlQ.webp",
-          "google_product_category": "Apparel & Accessories > Clothing > Shirts & Tops",
-          "product_type": "T-Shirt",
-          "price": "24.90 USD",
-          "sale_price": "",
-          "availability": "in_stock",
-          "brand": "Science of Gifts",
-          "gtin": "",
-          "mpn": "",
-          "identifier_exists": "no",
-          "item_group_id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "color": "Charcoal",
-          "size": "S-3XL",
-          "material": "100% Cotton",
-          "gender": "unisex",
-          "age_group": "adult",
-          "condition": "new",
-          "custom_label_0": "WWII Aviation",
-          "custom_label_1": "Apparel",
-          "custom_label_2": "History Gift",
-          "custom_label_3": "Apparel",
-          "custom_label_4": "Under 30 USD"
-        }
-      },
-      {
-        "timestamp": "2026-10-21T12:31:38.485Z",
-        "note": "Before 1-Click \"Generate & Optimize\" (Score: 85/100)",
-        "snapshot": {
-          "id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "link": "https://shop.scienceofgifts.com/products/the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "title": "WWII Aviation Gift T-Shirt - Spitfire Blueprint Military History Design",
-          "description": "Celebrate the legacy of iconic military aircraft with the WWII Aviation Gift T-Shirt from Science of Gifts. Thoughtfully designed for history buffs, aviation enthusiasts, and veterans of historical study, this premium apparel piece bridges intellectual curiosity and wearable art. Featuring detailed graphic illustrations inspired by historic blueprints and military aviation milestones, the artwork pays homage to the legendary Spitfire and the engineering marvels that shaped the skies during the Second World War. Rendered against high-quality fabric, the design offers exceptional comfort and durability for everyday wear. Whether you are expanding your own collection or searching for a memorable gift for an aviation historian or veteran, this T-shirt provides a sophisticated tribute to military aviation heritage.",
-          "image_link": "https://imgproxy.fourthwall.dev/0jNWybtTszhi2ode4vSOfXe1y9R8lLZxbGiMxIDniTI/w:1920/sm:1/enc/NtaOWXM3voNGalI2/VUKlRUEUPfy5jShP/iqpYfBz53aJ_qP5Z/g8UJGweZFyTQWImy/23sUhjGcJ1zuHfW6/Rbtp-XPsG73vomS8/l5Dd-KyAWfeXrf9I/j5hbUhnRI3JY8iKi/oaw1l8O1BeGFlhrg/l63r-tCZylmtjZm2/GeJ1UGQicl09hMjo/sIkql-T5F60MqdON/VDck3tE5uMCuNjl4/v1y0lg.webp",
-          "additional_image_link": "https://imgproxy.fourthwall.dev/sqHoDJ6UTiJ5mq4NIpLGZAj2oVTzj6YbDnIpIIFpeXY/w:1920/sm:1/enc/IK7-vnsyZotnRO6l/X_3DS5ME13-W1Xnq/ACFye-31xdTww6iO/VOXNVJYaDYbKEuRc/pWaSN-DYUNeK1jcd/WglZxgtRXOwIy3R3/2HbNyfs9VTEMd8I-/1Dpmx4qlrzSSNKrz/miP1aBOQKc7_Yi1L/GWa7U9pq5OP1pER_/NNJlfU1IP45M8d-A/xKSuJeZT_8AFWD5L/SztxAYhTemLXQxhO/WrtSlQ.webp",
-          "google_product_category": "Apparel & Accessories > Clothing > Shirts & Tops",
-          "product_type": "T-Shirt",
-          "price": "24.90 USD",
-          "sale_price": "",
-          "availability": "in_stock",
-          "brand": "Science of Gifts",
-          "gtin": "",
-          "mpn": "",
-          "identifier_exists": "no",
-          "item_group_id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "color": "Charcoal",
-          "size": "S-3XL",
-          "material": "100% Cotton",
-          "gender": "unisex",
-          "age_group": "adult",
-          "condition": "new",
-          "custom_label_0": "WWII Aviation",
-          "custom_label_1": "T-Shirt",
-          "custom_label_2": "History Gift",
-          "custom_label_3": "Apparel",
-          "custom_label_4": "Under 30 USD"
-        }
-      },
-      {
-        "timestamp": "2026-10-21T12:01:26.923Z",
-        "note": "Before 1-Click \"Generate & Optimize\" (Score: 65/100)",
-        "snapshot": {
-          "id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "link": "https://shop.scienceofgifts.com/products/the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "title": "WWII Aviation Gift T-Shirt - Spitfire Blueprint Military History Design",
-          "description": "Celebrate the legacy of iconic military aircraft with the WWII Aviation Gift T-Shirt from Science of Gifts. Thoughtfully designed for history buffs, aviation enthusiasts, and veterans of historical study, this premium apparel piece bridges intellectual curiosity and wearable art. Featuring detailed graphic illustrations inspired by historic blueprints and military aviation milestones, the artwork pays homage to the legendary Spitfire and the engineering marvels that shaped the skies during the Second World War. Rendered against high-quality fabric, the design offers exceptional comfort and durability for everyday wear. Whether you are expanding your own collection or searching for a memorable gift for an aviation historian or veteran, this T-shirt provides a sophisticated tribute to military aviation heritage.",
-          "image_link": "https://imgproxy.fourthwall.dev/0jNWybtTszhi2ode4vSOfXe1y9R8lLZxbGiMxIDniTI/w:1920/sm:1/enc/NtaOWXM3voNGalI2/VUKlRUEUPfy5jShP/iqpYfBz53aJ_qP5Z/g8UJGweZFyTQWImy/23sUhjGcJ1zuHfW6/Rbtp-XPsG73vomS8/l5Dd-KyAWfeXrf9I/j5hbUhnRI3JY8iKi/oaw1l8O1BeGFlhrg/l63r-tCZylmtjZm2/GeJ1UGQicl09hMjo/sIkql-T5F60MqdON/VDck3tE5uMCuNjl4/v1y0lg.webp",
-          "additional_image_link": "https://imgproxy.fourthwall.dev/sqHoDJ6UTiJ5mq4NIpLGZAj2oVTzj6YbDnIpIIFpeXY/w:1920/sm:1/enc/IK7-vnsyZotnRO6l/X_3DS5ME13-W1Xnq/ACFye-31xdTww6iO/VOXNVJYaDYbKEuRc/pWaSN-DYUNeK1jcd/WglZxgtRXOwIy3R3/2HbNyfs9VTEMd8I-/1Dpmx4qlrzSSNKrz/miP1aBOQKc7_Yi1L/GWa7U9pq5OP1pER_/NNJlfU1IP45M8d-A/xKSuJeZT_8AFWD5L/SztxAYhTemLXQxhO/WrtSlQ.webp",
-          "google_product_category": "Apparel & Accessories > Clothing > Shirts & Tops",
-          "product_type": "T-Shirt",
-          "price": "24.90 USD",
-          "sale_price": "",
-          "availability": "in_stock",
-          "brand": "Science of Gifts",
-          "gtin": "",
-          "mpn": "",
-          "identifier_exists": "no",
-          "item_group_id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "color": "Heather Charcoal",
-          "size": "S-3XL",
-          "material": "100% Cotton",
-          "gender": "unisex",
-          "age_group": "adult",
-          "condition": "new",
-          "custom_label_0": "WWII Aviation",
-          "custom_label_1": "Apparel",
-          "custom_label_2": "History Gifts",
-          "custom_label_3": "Under 35 USD",
-          "custom_label_4": "Science of Gifts"
-        }
-      },
-      {
-        "timestamp": "2026-10-21T11:59:36.081Z",
-        "note": "Before 1-Click \"Generate & Optimize\" (Score: 78/100)",
-        "snapshot": {
-          "id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "link": "https://shop.scienceofgifts.com/products/the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "title": "WWII Aviation Gift T-Shirt - Spitfire Blueprint Military History Design",
-          "description": "Celebrate the legacy of iconic military aircraft with the WWII Aviation Gift T-Shirt from Science of Gifts. Thoughtfully designed for history buffs, aviation enthusiasts, and veterans of historical study, this premium apparel piece bridges intellectual curiosity and wearable art. Featuring detailed graphic illustrations inspired by historic blueprints and military aviation milestones, the artwork pays homage to the legendary Spitfire and the engineering marvels that shaped the skies during the Second World War. Rendered against high-quality fabric, the design offers exceptional comfort and durability for everyday wear. Whether you are expanding your own collection or searching for a memorable gift for an aviation historian or veteran, this T-shirt provides a sophisticated tribute to military aviation heritage.",
-          "image_link": "https://imgproxy.fourthwall.dev/0jNWybtTszhi2ode4vSOfXe1y9R8lLZxbGiMxIDniTI/w:1920/sm:1/enc/NtaOWXM3voNGalI2/VUKlRUEUPfy5jShP/iqpYfBz53aJ_qP5Z/g8UJGweZFyTQWImy/23sUhjGcJ1zuHfW6/Rbtp-XPsG73vomS8/l5Dd-KyAWfeXrf9I/j5hbUhnRI3JY8iKi/oaw1l8O1BeGFlhrg/l63r-tCZylmtjZm2/GeJ1UGQicl09hMjo/sIkql-T5F60MqdON/VDck3tE5uMCuNjl4/v1y0lg.webp",
-          "additional_image_link": "https://imgproxy.fourthwall.dev/sqHoDJ6UTiJ5mq4NIpLGZAj2oVTzj6YbDnIpIIFpeXY/w:1920/sm:1/enc/IK7-vnsyZotnRO6l/X_3DS5ME13-W1Xnq/ACFye-31xdTww6iO/VOXNVJYaDYbKEuRc/pWaSN-DYUNeK1jcd/WglZxgtRXOwIy3R3/2HbNyfs9VTEMd8I-/1Dpmx4qlrzSSNKrz/miP1aBOQKc7_Yi1L/GWa7U9pq5OP1pER_/NNJlfU1IP45M8d-A/xKSuJeZT_8AFWD5L/SztxAYhTemLXQxhO/WrtSlQ.webp",
-          "google_product_category": "Apparel & Accessories > Clothing > Shirts & Tops",
-          "product_type": "T-Shirt",
-          "price": "24.90 USD",
-          "sale_price": "",
-          "availability": "in_stock",
-          "brand": "Science of Gifts",
-          "gtin": "",
-          "mpn": "",
-          "identifier_exists": "no",
-          "item_group_id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "color": "Charcoal",
-          "size": "S-3XL",
-          "material": "100% Cotton",
-          "gender": "unisex",
-          "age_group": "adult",
-          "condition": "new",
-          "custom_label_0": "WWII Aviation",
-          "custom_label_1": "Apparel",
-          "custom_label_2": "History Gifts",
-          "custom_label_3": "T-Shirt",
-          "custom_label_4": "Under 30 USD"
-        }
-      },
-      {
-        "timestamp": "2026-10-21T11:57:49.029Z",
-        "note": "Applied Safe Fix: ✓ No GTIN (Score: 72 → 78)",
-        "snapshot": {
-          "id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "link": "https://shop.scienceofgifts.com/products/the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "title": "WWII Aviation Gift T-Shirt - Spitfire Blueprint Military History Design",
-          "description": "Celebrate the legacy of iconic military aircraft with the WWII Aviation Gift T-Shirt from Science of Gifts. Thoughtfully designed for history buffs, aviation enthusiasts, and veterans of historical study, this premium apparel piece bridges intellectual curiosity and wearable art. Featuring detailed graphic illustrations inspired by historic blueprints and military aviation milestones, the artwork pays homage to the legendary Spitfire and the engineering marvels that shaped the skies during the Second World War. Rendered against high-quality fabric, the design offers exceptional comfort and durability for everyday wear. Whether you are expanding your own collection or searching for a memorable gift for an aviation historian or veteran, this T-shirt provides a sophisticated tribute to military aviation heritage.",
-          "image_link": "https://imgproxy.fourthwall.dev/0jNWybtTszhi2ode4vSOfXe1y9R8lLZxbGiMxIDniTI/w:1920/sm:1/enc/NtaOWXM3voNGalI2/VUKlRUEUPfy5jShP/iqpYfBz53aJ_qP5Z/g8UJGweZFyTQWImy/23sUhjGcJ1zuHfW6/Rbtp-XPsG73vomS8/l5Dd-KyAWfeXrf9I/j5hbUhnRI3JY8iKi/oaw1l8O1BeGFlhrg/l63r-tCZylmtjZm2/GeJ1UGQicl09hMjo/sIkql-T5F60MqdON/VDck3tE5uMCuNjl4/v1y0lg.webp",
-          "additional_image_link": "https://imgproxy.fourthwall.dev/sqHoDJ6UTiJ5mq4NIpLGZAj2oVTzj6YbDnIpIIFpeXY/w:1920/sm:1/enc/IK7-vnsyZotnRO6l/X_3DS5ME13-W1Xnq/ACFye-31xdTww6iO/VOXNVJYaDYbKEuRc/pWaSN-DYUNeK1jcd/WglZxgtRXOwIy3R3/2HbNyfs9VTEMd8I-/1Dpmx4qlrzSSNKrz/miP1aBOQKc7_Yi1L/GWa7U9pq5OP1pER_/NNJlfU1IP45M8d-A/xKSuJeZT_8AFWD5L/SztxAYhTemLXQxhO/WrtSlQ.webp",
-          "google_product_category": "Apparel & Accessories > Clothing > Shirts & Tops",
-          "product_type": "T-Shirt",
-          "price": "24.90 USD",
-          "sale_price": "",
-          "availability": "in_stock",
-          "brand": "Science of Gifts",
-          "gtin": "",
-          "mpn": "",
-          "identifier_exists": "no",
-          "item_group_id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "color": "Charcoal",
-          "size": "S-3XL",
-          "material": "100% Cotton",
-          "gender": "unisex",
-          "age_group": "adult",
-          "condition": "new",
-          "custom_label_0": "WWII Aviation",
-          "custom_label_1": "Apparel",
-          "custom_label_2": "History Gifts",
-          "custom_label_3": "T-Shirt",
-          "custom_label_4": "Under 30 USD"
-        }
-      },
-      {
-        "timestamp": "2026-10-21T11:57:17.236Z",
-        "note": "Before 1-Click \"Generate & Optimize\" (Score: 82/100)",
-        "snapshot": {
-          "id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "link": "https://shop.scienceofgifts.com/products/the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "title": "WWII Aviation Gift T-Shirt - Spitfire Blueprint Military History Design",
-          "description": "Celebrate the legacy of iconic military aircraft with the WWII Aviation Gift T-Shirt from Science of Gifts. Thoughtfully designed for history buffs, aviation enthusiasts, and veterans of historical study, this premium apparel piece bridges intellectual curiosity and wearable art. Featuring detailed graphic illustrations inspired by historic blueprints and military aviation milestones, the artwork pays homage to the engineering marvels that shaped the skies during the Second World War. Rendered against high-quality fabric, the design offers exceptional comfort and durability for everyday wear. Whether you are expanding your own collection or searching for a memorable gift for an aviation historian, this T-shirt provides a sophisticated tribute to military aviation heritage.",
-          "image_link": "https://imgproxy.fourthwall.dev/0jNWybtTszhi2ode4vSOfXe1y9R8lLZxbGiMxIDniTI/w:1920/sm:1/enc/NtaOWXM3voNGalI2/VUKlRUEUPfy5jShP/iqpYfBz53aJ_qP5Z/g8UJGweZFyTQWImy/23sUhjGcJ1zuHfW6/Rbtp-XPsG73vomS8/l5Dd-KyAWfeXrf9I/j5hbUhnRI3JY8iKi/oaw1l8O1BeGFlhrg/l63r-tCZylmtjZm2/GeJ1UGQicl09hMjo/sIkql-T5F60MqdON/VDck3tE5uMCuNjl4/v1y0lg.webp",
-          "additional_image_link": "https://imgproxy.fourthwall.dev/sqHoDJ6UTiJ5mq4NIpLGZAj2oVTzj6YbDnIpIIFpeXY/w:1920/sm:1/enc/IK7-vnsyZotnRO6l/X_3DS5ME13-W1Xnq/ACFye-31xdTww6iO/VOXNVJYaDYbKEuRc/pWaSN-DYUNeK1jcd/WglZxgtRXOwIy3R3/2HbNyfs9VTEMd8I-/1Dpmx4qlrzSSNKrz/miP1aBOQKc7_Yi1L/GWa7U9pq5OP1pER_/NNJlfU1IP45M8d-A/xKSuJeZT_8AFWD5L/SztxAYhTemLXQxhO/WrtSlQ.webp",
-          "google_product_category": "Apparel & Accessories > Clothing > Shirts & Tops",
-          "product_type": "T-Shirt",
-          "price": "24.90 USD",
-          "sale_price": "",
-          "availability": "in_stock",
-          "brand": "Science of Gifts",
-          "gtin": "",
-          "mpn": "",
-          "identifier_exists": "no",
-          "item_group_id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "color": "Heather Charcoal",
-          "size": "S-3XL",
-          "material": "100% Cotton",
-          "gender": "unisex",
-          "age_group": "adult",
-          "condition": "new",
-          "custom_label_0": "WWII Aviation",
-          "custom_label_1": "Apparel",
-          "custom_label_2": "History Gifts",
-          "custom_label_3": "Best Seller",
-          "custom_label_4": "Under 30 USD"
-        }
-      },
-      {
-        "timestamp": "2026-10-21T11:56:34.171Z",
-        "note": "Before 1-Click \"Generate & Optimize\" (Score: 62/100)",
-        "snapshot": {
-          "id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "link": "https://shop.scienceofgifts.com/products/the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "title": "WWII Aviation Gift T-Shirt - Spitfire Blueprint Military History Design",
-          "description": "Celebrate the legacy of iconic military aircraft with the WWII Aviation T-Shirt from Science of Gifts. Thoughtfully designed for history buffs, aviation enthusiasts, and veterans of historical study, this premium apparel piece bridges intellectual curiosity and wearable art. Featuring detailed graphic illustrations inspired by historic blueprints and military aviation milestones, the artwork pays homage to the engineering marvels that shaped the skies during the Second World War. Rendered against high-quality fabric, the design offers exceptional comfort and durability for everyday wear. Whether you are expanding your own collection or searching for a memorable gift for an aviation historian, this T-shirt provides a sophisticated tribute to military aviation heritage.",
-          "image_link": "https://imgproxy.fourthwall.dev/0jNWybtTszhi2ode4vSOfXe1y9R8lLZxbGiMxIDniTI/w:1920/sm:1/enc/NtaOWXM3voNGalI2/VUKlRUEUPfy5jShP/iqpYfBz53aJ_qP5Z/g8UJGweZFyTQWImy/23sUhjGcJ1zuHfW6/Rbtp-XPsG73vomS8/l5Dd-KyAWfeXrf9I/j5hbUhnRI3JY8iKi/oaw1l8O1BeGFlhrg/l63r-tCZylmtjZm2/GeJ1UGQicl09hMjo/sIkql-T5F60MqdON/VDck3tE5uMCuNjl4/v1y0lg.webp",
-          "additional_image_link": "https://imgproxy.fourthwall.dev/sqHoDJ6UTiJ5mq4NIpLGZAj2oVTzj6YbDnIpIIFpeXY/w:1920/sm:1/enc/IK7-vnsyZotnRO6l/X_3DS5ME13-W1Xnq/ACFye-31xdTww6iO/VOXNVJYaDYbKEuRc/pWaSN-DYUNeK1jcd/WglZxgtRXOwIy3R3/2HbNyfs9VTEMd8I-/1Dpmx4qlrzSSNKrz/miP1aBOQKc7_Yi1L/GWa7U9pq5OP1pER_/NNJlfU1IP45M8d-A/xKSuJeZT_8AFWD5L/SztxAYhTemLXQxhO/WrtSlQ.webp",
-          "google_product_category": "Apparel & Accessories > Clothing > Shirts & Tops",
-          "product_type": "T-Shirt",
-          "price": "24.90 USD",
-          "sale_price": "",
-          "availability": "in_stock",
-          "brand": "Science of Gifts",
-          "gtin": "",
-          "mpn": "",
-          "identifier_exists": "no",
-          "item_group_id": "the-nine-realms-yggdrasil-cosmogony-t-shirt",
-          "color": "Black",
-          "size": "S-3XL",
-          "material": "100% Cotton",
-          "gender": "unisex",
-          "age_group": "adult",
-          "condition": "new",
-          "custom_label_0": "WWII Aviation",
-          "custom_label_1": "T-Shirt",
-          "custom_label_2": "History Gift",
-          "custom_label_3": "Apparel",
-          "custom_label_4": "24.90 USD"
-        }
-      },
       {
         "timestamp": "2026-10-21T11:55:54.083Z",
         "note": "Before 1-Click \"Generate & Optimize\" (Score: 99/100)",
@@ -3120,8 +2856,8 @@
       "optimizedCount": 6,
       "verifiedCount": 11
     },
-    "productGroup": "",
-    "productSubgroup": ""
+    "productGroup": "History",
+    "productSubgroup": "Vikings"
   },
   {
     "id": "berserker-decaf-club-ceramic-mug",
@@ -3163,7 +2899,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "berserker-decaf-club-ceramic-mug",
+      "item_group_id": "",
       "color": "White with Black and Accent Tones",
       "size": "Standard 11 oz / 15 oz Ceramic Mug",
       "material": "Ceramic",
@@ -3296,7 +3032,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "berserker-decaf-club-ceramic-mug",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "Ceramic",
@@ -4288,7 +4024,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "huginn-and-muninn-longship-graphic-sweatshirt",
+      "item_group_id": "",
       "color": "Black",
       "size": "S-3XL",
       "material": "Cotton Blend",
@@ -4419,7 +4155,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "huginn-and-muninn-longship-graphic-sweatshirt",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -6587,7 +6323,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "the-logistics-of-valhalla-an-illustrated-afterlife-flowchart",
+      "item_group_id": "",
       "color": "Aged Parchment",
       "size": "18x24 inches",
       "material": "Matte Poster Paper",
@@ -6721,7 +6457,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "the-logistics-of-valhalla-an-illustrated-afterlife-flowchart",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -7175,7 +6911,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "the-einherjar-security-clearance-laptop-sleeve",
+      "item_group_id": "",
       "color": "Cream, Charcoal, and Muted Gold",
       "size": "Standard 13-15 inch laptop compatible",
       "material": "Poly-canvas blend",
@@ -7310,7 +7046,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "the-einherjar-security-clearance-laptop-sleeve",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -7710,7 +7446,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "the-parasocial-risk-hazard-mug",
+      "item_group_id": "",
       "color": "Yellow and Black with Red Interior",
       "size": "Standard Mug",
       "material": "Ceramic",
@@ -7842,7 +7578,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "the-parasocial-risk-hazard-mug",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "Ceramic",
@@ -8245,7 +7981,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "field-surgery-essentials-poster",
+      "item_group_id": "",
       "color": "Aged Paper",
       "size": "18\" x 24\"",
       "material": "Matte Paper",
@@ -8379,7 +8115,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "field-surgery-essentials-poster",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -9847,7 +9583,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "haute-couture-quartermaster-poster",
+      "item_group_id": "",
       "color": "Monochrome",
       "size": "18 x 24 in",
       "material": "Museum-grade Matte Paper",
@@ -9979,7 +9715,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "haute-couture-quartermaster-poster",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -11488,7 +11224,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "hindsight-is-1861-sweatshirt",
+      "item_group_id": "",
       "color": "Black",
       "size": "S-3XL",
       "material": "Cotton Blend",
@@ -11622,7 +11358,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "hindsight-is-1861-sweatshirt",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -12023,7 +11759,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "emancipation-proclamation-distressed-art-print",
+      "item_group_id": "",
       "color": "Parchment Tone",
       "size": "Standard Wall Art Print",
       "material": "Archival-style parchment paper",
@@ -12159,7 +11895,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "emancipation-proclamation-distressed-art-print",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -12562,7 +12298,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "civil-war-field-rations-ceramic-mug",
+      "item_group_id": "",
       "color": "Black and White with Red-Brown Illustrations",
       "size": "Standard Mug",
       "material": "Ceramic",
@@ -12694,7 +12430,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "civil-war-field-rations-ceramic-mug",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "Ceramic",
@@ -13095,7 +12831,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "the-cannister-shop-chill-club-hoodie",
+      "item_group_id": "",
       "color": "Black",
       "size": "S-3XL",
       "material": "Cotton Blend Fleece",
@@ -13228,7 +12964,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "the-cannister-shop-chill-club-hoodie",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -13628,7 +13364,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "super-history-teacher-hoodie",
+      "item_group_id": "",
       "color": "Deep Blue",
       "size": "S-3XL",
       "material": "Cotton Blend Fleece",
@@ -13761,7 +13497,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "super-history-teacher-hoodie",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -14442,7 +14178,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "history-teacher-vintage-illustration-t-shirt",
+      "item_group_id": "",
       "color": "Black",
       "size": "S-3XL",
       "material": "100% Cotton",
@@ -14576,7 +14312,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "history-teacher-vintage-illustration-t-shirt",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -14992,7 +14728,7 @@
   },
   {
     "id": "history-teacher-evolution-laptop-sleeve",
-    "status": "warnings",
+    "status": "optimized",
     "evidence": {
       "sourceUrl": "https://shop.scienceofgifts.com/products/history-teacher-evolution-laptop-sleeve",
       "extractedAt": "2026-10-21T11:28:55.909Z",
@@ -15016,12 +14752,12 @@
     "merchantData": {
       "id": "history-teacher-evolution-laptop-sleeve",
       "link": "https://shop.scienceofgifts.com/products/history-teacher-evolution-laptop-sleeve",
-      "title": "General History & Teachers Gift Laptop Sleeve - Thematic Edition Design",
-      "description": "From ancient civilizations to the modern classroom, the history teacher's journey spans centuries. This laptop sleeve captures that idea with a procession of figures from different eras, set against a richly illustrated backdrop of cave paintings, Egyptian hieroglyphs, Roman architecture, medieval castles, and sailing ships. The central “History Teacher Evolution” banner brings a playful twist to the design, while the parchment textures and muted blue tones give it the character of an antique history atlas. \nIt's a distinctive gift for a history teacher who enjoys a clever visual reference to their subject, whether for a birthday, a school-year milestone, or a practical addition to their everyday teaching essentials.",
+      "title": "History Teacher Gift Laptop Sleeve - Evolution of History Antique Atlas Design",
+      "description": "Celebrate a passion for the past with this distinctive History Teacher laptop sleeve, designed to capture the sweeping journey from ancient civilizations to the modern classroom. The artwork features a playful 'History Teacher Evolution' banner accompanied by a rich procession of historical figures set against an illustrated backdrop of cave paintings, Egyptian hieroglyphs, Roman architecture, medieval castles, and historic sailing ships. Rendered in muted blue tones with authentic parchment textures, the design evokes the look and feel of a vintage history atlas. Crafted for daily protection, this laptop sleeve is both a practical everyday essential and a thoughtful, memorable gift for history educators, whether for a birthday, teacher appreciation week, or a school-year milestone.",
       "image_link": "https://imgproxy.fourthwall.dev/a2HxFzaXqabImO9Ud7DKe8TwbCgdRTjCwWDt4duHakY/w:1920/sm:1/enc/eRT1jWJQAlsGJ8Ld/uoCCmmsX_AOqs2v-/3-n5o0rEiARh38kZ/i0CtLXDXGPTogqAC/ZLufCpZiSJCRxlUZ/Xg4TvzxVgiYMPh4a/oZlOQ4ygcZa5PSfp/2UpjzS42DsBM8333/Z-PcnnXcfx2cVEHW/4Uokj2jf86ElH6-2/3R-gaNL_fkb_6J7E/KIu8F7-js4-Iy4_k/CIG9udwg6Oh8NDFt/iinSWQ.webp",
       "additional_image_link": "https://imgproxy.fourthwall.dev/wh9UTuNUvsSjys1IrXT7iMz7OhpTr86AjUsDIRTKNWw/w:1920/sm:1/enc/AuttI0qb8SaYBP4M/eYKPwWLWHEURIt1y/gtCyw7UfhGpNmXN6/oDVx5jIyTEuMwTX-/8g0Q8Q17fQm4g_O6/51yrMnyuOi4EByCk/ynPkpkgTAUDYksfQ/rK-ywHhf_UfgPfYn/RNYdqUcP7VTBWcwP/lQZJpYFKYKQ4OyU-/HEXvfJWRU4eF5oQ6/RFI4wBboECunZ81O/VzDTTYqdaqV8qoh2/EDtvLQ.webp",
-      "google_product_category": "Electronics > Electronics Accessories > Computer Accessories > Laptop & Tablet Cases",
-      "product_type": "Electronics > Electronics Accessories > Computer Accessories > Laptop & Tablet Cases > Laptop Sleeves",
+      "google_product_category": "Electronics > Electronics Accessories > Computer Accessories > Laptop & Tablet Cases > Laptop Sleeves",
+      "product_type": "Laptop Sleeve",
       "price": "29.90 USD",
       "sale_price": "",
       "availability": "in_stock",
@@ -15029,32 +14765,122 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "history-teacher-evolution-laptop-sleeve",
-      "color": "",
-      "size": "",
-      "material": "",
+      "item_group_id": "",
+      "color": "Muted Blue",
+      "size": "Standard Laptop Size",
+      "material": "Protective Fabric",
       "gender": "unisex",
       "age_group": "adult",
       "condition": "new",
-      "custom_label_0": "History Buffs",
+      "custom_label_0": "History Gifts",
       "custom_label_1": "Mid-Tier Gifts ($20 - $40)",
       "custom_label_2": "Year-Round Essential",
       "custom_label_3": "General History & Teachers",
-      "custom_label_4": "Laptop Sleeve"
+      "custom_label_4": "Caps & Hats"
     },
     "giftIntelligence": {
-      "theme": "General History & Teachers",
-      "subtheme": "",
+      "theme": "History & Education",
+      "subtheme": "History Teacher",
       "targetAudience": [
+        "History Teachers",
+        "Educators",
         "History Buffs"
       ],
-      "recipientPersonas": [],
-      "occasions": [],
-      "primaryGiftIntent": "",
-      "secondaryGiftIntents": [],
-      "searchConcepts": []
+      "recipientPersonas": [
+        "History Educator",
+        "School Teacher",
+        "Professor"
+      ],
+      "occasions": [
+        "Teacher Appreciation Week",
+        "Birthday",
+        "Back to School",
+        "Milestone"
+      ],
+      "primaryGiftIntent": "Teacher Appreciation Gift",
+      "secondaryGiftIntents": [
+        "Back to School Gift",
+        "Birthday Gift for Teacher"
+      ],
+      "searchConcepts": [
+        "history teacher laptop sleeve",
+        "history themed laptop case",
+        "gifts for history teachers",
+        "teacher appreciation laptop bag",
+        "antique history atlas laptop sleeve"
+      ]
     },
-    "titleCandidates": [],
+    "titleCandidates": [
+      {
+        "id": "cand_1",
+        "title": "History Teacher Gift Laptop Sleeve - Evolution of History Antique Atlas Design",
+        "formula": "Specific Theme + Gift Intent + Product Type + Differentiator",
+        "scores": {
+          "coreThemeProminence": 95,
+          "giftSearchRelevance": 98,
+          "productClarity": 95,
+          "naturalLanguage": 95,
+          "factualAccuracy": 100,
+          "differentiation": 90,
+          "characterEfficiency": 92,
+          "total": 95
+        },
+        "reasoning": "Front-loads the specific recipient and theme, integrates gift intent naturally, clearly states product form factor, and details the unique design.",
+        "titlePriorityOrder": [
+          "1. Specific Theme: History Teacher",
+          "2. Gift Intent: Gift",
+          "3. Product Type: Laptop Sleeve",
+          "4. Differentiator: Evolution of History Antique Atlas Design"
+        ],
+        "titleStrategyReasoning": "This title prioritizes the exact niche of a history teacher gift, capturing high-intent search queries while maintaining a clear and professional presentation."
+      },
+      {
+        "id": "cand_2",
+        "title": "History Teacher Laptop Sleeve - Antique Atlas Evolution Design for Educators",
+        "formula": "Specific Theme + Product Type + Differentiator + Secondary Audience Intent",
+        "scores": {
+          "coreThemeProminence": 90,
+          "giftSearchRelevance": 90,
+          "productClarity": 95,
+          "naturalLanguage": 95,
+          "factualAccuracy": 100,
+          "differentiation": 92,
+          "characterEfficiency": 90,
+          "total": 91.7
+        },
+        "reasoning": "Focuses heavily on the product type and specific design, appealing directly to educators searching for professional accessories.",
+        "titlePriorityOrder": [
+          "1. Specific Theme: History Teacher",
+          "2. Product Type: Laptop Sleeve",
+          "3. Differentiator: Antique Atlas Evolution Design",
+          "4. Audience: for Educators"
+        ],
+        "titleStrategyReasoning": "Emphasizes functional educator search intent while keeping the specific thematic elements prominent."
+      },
+      {
+        "id": "cand_3",
+        "title": "Evolution of History Laptop Sleeve - Vintage Atlas Design Gift for Teachers",
+        "formula": "Design Subject + Product Type + Distinctive Attribute + Gift Intent",
+        "scores": {
+          "coreThemeProminence": 88,
+          "giftSearchRelevance": 92,
+          "productClarity": 95,
+          "naturalLanguage": 92,
+          "factualAccuracy": 100,
+          "differentiation": 95,
+          "characterEfficiency": 91,
+          "total": 91.9
+        },
+        "reasoning": "Leads with the distinct artistic design concept followed by the product type and gift intent.",
+        "titlePriorityOrder": [
+          "1. Specific Theme: Evolution of History",
+          "2. Product Type: Laptop Sleeve",
+          "3. Differentiator: Vintage Atlas Design",
+          "4. Gift Intent: Gift for Teachers"
+        ],
+        "titleStrategyReasoning": "Puts the striking artwork front and center for shoppers who browse by design motif rather than just title role."
+      }
+    ],
     "originalImported": {
       "id": "history-teacher-evolution-laptop-sleeve",
       "link": "https://shop.scienceofgifts.com/products/history-teacher-evolution-laptop-sleeve",
@@ -15071,7 +14897,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "history-teacher-evolution-laptop-sleeve",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -15084,8 +14910,113 @@
       "custom_label_3": "General History & Teachers",
       "custom_label_4": "Laptop Sleeve"
     },
-    "appliedSuggestions": [],
+    "appliedSuggestions": [
+      {
+        "timestamp": "2026-10-21T17:20:29.862Z",
+        "fields": [
+          "Optimized Title",
+          "Optimized Description",
+          "Corrected Google Product Category (\"Electronics > Electronics Accessories > Computer Accessories > Laptop & Tablet Cases\" → \"Electronics > Electronics Accessories > Computer Accessories > Laptop & Tablet Cases > Laptop Sleeves\")",
+          "Corrected Product Type (\"Electronics > Electronics Accessories > Computer Accessories > Laptop & Tablet Cases > Laptop Sleeves\" → \"Laptop Sleeves\")",
+          "Generated Color (Muted Blue)",
+          "Generated Size (Standard Laptop Size)",
+          "Generated Material (100% Cotton Twill)",
+          "Custom Label 0 (Gift Audience)",
+          "Custom Label 1 (Price Tier)",
+          "Custom Label 2 (Seasonality)",
+          "Custom Label 3 (Theme / Collection)",
+          "Custom Label 4 (Product Type)",
+          "Gift & Search Intent Mappings"
+        ],
+        "note": "1-Click \"Generate & Optimize\": Score improved from 70 to 95 (3 generated, 6 optimized)"
+      },
+      {
+        "timestamp": "2026-10-21T17:20:37.003Z",
+        "fields": [
+          "Optimized Title",
+          "Optimized Description",
+          "Optimized Google Product Category",
+          "Corrected Product Type (\"Laptop Sleeves\" → \"Laptop Sleeve\")",
+          "Optimized Color (Muted Blue)",
+          "Optimized Size (Standard Laptop Size)",
+          "Corrected Material (\"100% Cotton Twill\" → \"Protective Fabric\")",
+          "Custom Label 0 (Gift Audience)",
+          "Custom Label 1 (Price Tier)",
+          "Custom Label 2 (Seasonality)",
+          "Custom Label 3 (Theme / Collection)",
+          "Custom Label 4 (Product Type)",
+          "Gift & Search Intent Mappings"
+        ],
+        "note": "1-Click \"Generate & Optimize\": Score improved from 95 to 94 (3 generated, 6 optimized)"
+      }
+    ],
     "history": [
+      {
+        "timestamp": "2026-10-21T17:20:37.003Z",
+        "note": "Before 1-Click \"Generate & Optimize\" (Score: 95/100)",
+        "snapshot": {
+          "id": "history-teacher-evolution-laptop-sleeve",
+          "link": "https://shop.scienceofgifts.com/products/history-teacher-evolution-laptop-sleeve",
+          "title": "History Teacher Gift Laptop Sleeve - Evolution of History Antique Atlas Design",
+          "description": "Celebrate a passion for the past with this distinctive History Teacher laptop sleeve, designed to capture the sweeping journey from ancient civilizations to the modern classroom. The artwork features a playful 'History Teacher Evolution' banner accompanied by a rich procession of historical figures set against an illustrated backdrop of cave paintings, Egyptian hieroglyphs, Roman architecture, medieval castles, and historic sailing ships. Rendered in muted blue tones with authentic parchment textures, the design evokes the look and feel of a vintage history atlas. Crafted for daily protection, this laptop sleeve is both a practical everyday essential and a thoughtful, memorable gift for history educators, whether for a birthday, teacher appreciation week, or a school-year milestone.",
+          "image_link": "https://imgproxy.fourthwall.dev/a2HxFzaXqabImO9Ud7DKe8TwbCgdRTjCwWDt4duHakY/w:1920/sm:1/enc/eRT1jWJQAlsGJ8Ld/uoCCmmsX_AOqs2v-/3-n5o0rEiARh38kZ/i0CtLXDXGPTogqAC/ZLufCpZiSJCRxlUZ/Xg4TvzxVgiYMPh4a/oZlOQ4ygcZa5PSfp/2UpjzS42DsBM8333/Z-PcnnXcfx2cVEHW/4Uokj2jf86ElH6-2/3R-gaNL_fkb_6J7E/KIu8F7-js4-Iy4_k/CIG9udwg6Oh8NDFt/iinSWQ.webp",
+          "additional_image_link": "https://imgproxy.fourthwall.dev/wh9UTuNUvsSjys1IrXT7iMz7OhpTr86AjUsDIRTKNWw/w:1920/sm:1/enc/AuttI0qb8SaYBP4M/eYKPwWLWHEURIt1y/gtCyw7UfhGpNmXN6/oDVx5jIyTEuMwTX-/8g0Q8Q17fQm4g_O6/51yrMnyuOi4EByCk/ynPkpkgTAUDYksfQ/rK-ywHhf_UfgPfYn/RNYdqUcP7VTBWcwP/lQZJpYFKYKQ4OyU-/HEXvfJWRU4eF5oQ6/RFI4wBboECunZ81O/VzDTTYqdaqV8qoh2/EDtvLQ.webp",
+          "google_product_category": "Electronics > Electronics Accessories > Computer Accessories > Laptop & Tablet Cases > Laptop Sleeves",
+          "product_type": "Laptop Sleeves",
+          "price": "29.90 USD",
+          "sale_price": "",
+          "availability": "in_stock",
+          "brand": "Science of Gifts",
+          "gtin": "",
+          "mpn": "",
+          "identifier_exists": "no",
+          "item_group_id": "history-teacher-evolution-laptop-sleeve",
+          "color": "Muted Blue",
+          "size": "Standard Laptop Size",
+          "material": "100% Cotton Twill",
+          "gender": "unisex",
+          "age_group": "adult",
+          "condition": "new",
+          "custom_label_0": "History & Teachers",
+          "custom_label_1": "Mid-Tier Gifts ($20 - $40)",
+          "custom_label_2": "Year-Round Essential",
+          "custom_label_3": "General History & Teachers",
+          "custom_label_4": "General History"
+        }
+      },
+      {
+        "timestamp": "2026-10-21T17:20:29.862Z",
+        "note": "Before 1-Click \"Generate & Optimize\" (Score: 70/100)",
+        "snapshot": {
+          "id": "history-teacher-evolution-laptop-sleeve",
+          "link": "https://shop.scienceofgifts.com/products/history-teacher-evolution-laptop-sleeve",
+          "title": "General History & Teachers Gift Laptop Sleeve - Thematic Edition Design",
+          "description": "From ancient civilizations to the modern classroom, the history teacher's journey spans centuries. This laptop sleeve captures that idea with a procession of figures from different eras, set against a richly illustrated backdrop of cave paintings, Egyptian hieroglyphs, Roman architecture, medieval castles, and sailing ships. The central “History Teacher Evolution” banner brings a playful twist to the design, while the parchment textures and muted blue tones give it the character of an antique history atlas. \nIt's a distinctive gift for a history teacher who enjoys a clever visual reference to their subject, whether for a birthday, a school-year milestone, or a practical addition to their everyday teaching essentials.",
+          "image_link": "https://imgproxy.fourthwall.dev/a2HxFzaXqabImO9Ud7DKe8TwbCgdRTjCwWDt4duHakY/w:1920/sm:1/enc/eRT1jWJQAlsGJ8Ld/uoCCmmsX_AOqs2v-/3-n5o0rEiARh38kZ/i0CtLXDXGPTogqAC/ZLufCpZiSJCRxlUZ/Xg4TvzxVgiYMPh4a/oZlOQ4ygcZa5PSfp/2UpjzS42DsBM8333/Z-PcnnXcfx2cVEHW/4Uokj2jf86ElH6-2/3R-gaNL_fkb_6J7E/KIu8F7-js4-Iy4_k/CIG9udwg6Oh8NDFt/iinSWQ.webp",
+          "additional_image_link": "https://imgproxy.fourthwall.dev/wh9UTuNUvsSjys1IrXT7iMz7OhpTr86AjUsDIRTKNWw/w:1920/sm:1/enc/AuttI0qb8SaYBP4M/eYKPwWLWHEURIt1y/gtCyw7UfhGpNmXN6/oDVx5jIyTEuMwTX-/8g0Q8Q17fQm4g_O6/51yrMnyuOi4EByCk/ynPkpkgTAUDYksfQ/rK-ywHhf_UfgPfYn/RNYdqUcP7VTBWcwP/lQZJpYFKYKQ4OyU-/HEXvfJWRU4eF5oQ6/RFI4wBboECunZ81O/VzDTTYqdaqV8qoh2/EDtvLQ.webp",
+          "google_product_category": "Electronics > Electronics Accessories > Computer Accessories > Laptop & Tablet Cases",
+          "product_type": "Electronics > Electronics Accessories > Computer Accessories > Laptop & Tablet Cases > Laptop Sleeves",
+          "price": "29.90 USD",
+          "sale_price": "",
+          "availability": "in_stock",
+          "brand": "Science of Gifts",
+          "gtin": "",
+          "mpn": "",
+          "identifier_exists": "no",
+          "item_group_id": "history-teacher-evolution-laptop-sleeve",
+          "color": "",
+          "size": "",
+          "material": "",
+          "gender": "unisex",
+          "age_group": "adult",
+          "condition": "new",
+          "custom_label_0": "History Buffs",
+          "custom_label_1": "Mid-Tier Gifts ($20 - $40)",
+          "custom_label_2": "Year-Round Essential",
+          "custom_label_3": "General History & Teachers",
+          "custom_label_4": "Laptop Sleeve"
+        }
+      },
       {
         "timestamp": "2026-10-21T11:28:55.909Z",
         "note": "Initial import from CSV",
@@ -15123,12 +15054,281 @@
     "validation": {
       "isValid": true,
       "blockingErrors": [],
-      "warnings": [
-        "Product has item_group_id set (variant) but no distinguishing attribute like color, size, or material is filled."
-      ]
+      "warnings": []
     },
     "createdAt": "2026-10-21T11:28:55.909Z",
-    "updatedAt": "2026-10-21T11:28:55.909Z"
+    "updatedAt": "2026-10-21T17:21:15.236Z",
+    "strategy": {
+      "exactProductSummary": "A themed laptop sleeve featuring an antique atlas style design with a procession of historical figures and a History Teacher Evolution banner.",
+      "dominantTheme": "General History & Teachers",
+      "productCategory": "Laptop Sleeve",
+      "verifiedPhysicalAttributes": [
+        "Brand: Science of Gifts",
+        "Price: 29.90 USD"
+      ],
+      "realisticBuyer": "A student, colleague, or family member looking for a thoughtful gift for a history teacher.",
+      "realisticRecipient": "A history teacher, educator, or history enthusiast who carries a laptop.",
+      "giftRationale": "It offers a clever visual reference to a history teacher's subject while serving as a practical everyday essential for school or work.",
+      "relevantSearchIntents": [
+        "history teacher laptop sleeve",
+        "history themed laptop case",
+        "gifts for history teachers",
+        "teacher appreciation laptop bag",
+        "antique history atlas laptop sleeve"
+      ],
+      "differentiatingAttributes": [
+        "History Teacher Evolution banner",
+        "Procession of figures from different eras",
+        "Parchment textures and muted blue tones",
+        "Antique history atlas character"
+      ],
+      "titleStrategy": "Front-load with the core product type and subject, followed by the specific design theme and brand name for clarity.",
+      "descriptionStrategy": "Describe the historical procession and antique atlas aesthetic in detail, mention its practical everyday use for teachers, and include verified brand and pricing specs naturally.",
+      "productTypeStrategy": "Electronics > Electronics Accessories > Computer Accessories > Laptop & Tablet Cases > Laptop Sleeves",
+      "antiRecommendations": [
+        "Do not invent exact dimensions or materials like neoprene or polyester since they are not in the verified evidence.",
+        "Do not use promotional spam words like BEST or CHEAP in the title.",
+        "Do not misclassify the product into an unrelated category like apparel or wall art."
+      ],
+      "googleCategoryRationale": "The item is specifically designed to protect laptops and fits squarely into the laptop sleeves and cases category.",
+      "recommendedGoogleCategory": "Electronics > Electronics Accessories > Computer Accessories > Laptop & Tablet Cases > Laptop Sleeves",
+      "customLabelsStrategy": {
+        "custom_label_0": "History & Science Teachers",
+        "custom_label_1": "Under $50",
+        "custom_label_2": "Back to School",
+        "custom_label_3": "General History",
+        "custom_label_4": "Laptop Sleeve"
+      },
+      "researchedAt": "2026-10-21T17:20:32.639Z"
+    },
+    "selectedTitleCandidateId": "cand_1",
+    "fieldProvenance": {
+      "id": "VERIFIED",
+      "link": "VERIFIED",
+      "image_link": "VERIFIED",
+      "price": "VERIFIED",
+      "availability": "VERIFIED",
+      "brand": "VERIFIED",
+      "condition": "VERIFIED",
+      "color": "UNVERIFIED",
+      "material": "UNVERIFIED",
+      "size": "UNVERIFIED",
+      "gtin": "UNAVAILABLE",
+      "mpn": "UNAVAILABLE",
+      "identifier_exists": "VERIFIED",
+      "title": "OPTIMIZED",
+      "description": "OPTIMIZED",
+      "google_product_category": "OPTIMIZED",
+      "product_type": "OPTIMIZED",
+      "custom_label_0": "OPTIMIZED",
+      "custom_label_1": "VERIFIED",
+      "custom_label_2": "VERIFIED",
+      "custom_label_3": "VERIFIED",
+      "custom_label_4": "OPTIMIZED",
+      "gift_theme": "GENERATED",
+      "gift_audience": "GENERATED",
+      "gift_intent": "GENERATED"
+    },
+    "fieldProvenanceDetails": {
+      "id": {
+        "status": "VERIFIED",
+        "source": "Product source identifier",
+        "updatedAt": "2026-10-21T17:21:15.236Z"
+      },
+      "link": {
+        "status": "VERIFIED",
+        "source": "Extracted landing page URL",
+        "updatedAt": "2026-10-21T17:21:15.236Z"
+      },
+      "image_link": {
+        "status": "VERIFIED",
+        "source": "Extracted product photo",
+        "updatedAt": "2026-10-21T17:21:15.236Z"
+      },
+      "price": {
+        "status": "VERIFIED",
+        "source": "Extracted price from evidence",
+        "updatedAt": "2026-10-21T17:21:15.236Z"
+      },
+      "availability": {
+        "status": "VERIFIED",
+        "source": "Source inventory status",
+        "updatedAt": "2026-10-21T17:21:15.236Z"
+      },
+      "brand": {
+        "status": "VERIFIED",
+        "source": "Verified catalog brand",
+        "updatedAt": "2026-10-21T17:21:15.236Z"
+      },
+      "condition": {
+        "status": "VERIFIED",
+        "source": "Standard retail condition (new)",
+        "updatedAt": "2026-10-21T17:21:15.236Z"
+      },
+      "color": {
+        "status": "UNVERIFIED",
+        "note": "Value provenance unknown; not verified against explicit source specifications",
+        "updatedAt": "2026-10-21T17:20:36.824Z"
+      },
+      "material": {
+        "status": "UNVERIFIED",
+        "source": "Source page specifications & description",
+        "note": "Conflicts with source evidence (\"100% Cotton Twill\"). Current material \"Protective Fabric\" contradicts explicit source specifications (\"100% Cotton Twill\").",
+        "updatedAt": "2026-10-21T17:21:15.236Z"
+      },
+      "size": {
+        "status": "UNVERIFIED",
+        "note": "Value provenance unknown; not verified against explicit source specifications",
+        "updatedAt": "2026-10-21T17:20:36.824Z"
+      },
+      "gtin": {
+        "status": "UNAVAILABLE",
+        "note": "Not provided by source. AI will not fabricate GTIN.",
+        "updatedAt": "2026-10-21T17:21:15.236Z"
+      },
+      "mpn": {
+        "status": "UNAVAILABLE",
+        "note": "Not provided by source. AI will not fabricate MPN.",
+        "updatedAt": "2026-10-21T17:21:15.236Z"
+      },
+      "identifier_exists": {
+        "status": "VERIFIED",
+        "note": "Set to no (Merchant Center POD standard)",
+        "updatedAt": "2026-10-21T17:21:15.236Z"
+      },
+      "title": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T17:20:36.824Z"
+      },
+      "description": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T17:20:36.824Z"
+      },
+      "google_product_category": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T17:20:36.824Z"
+      },
+      "product_type": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T17:20:41.273Z"
+      },
+      "custom_label_0": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T17:20:41.273Z"
+      },
+      "custom_label_1": {
+        "status": "VERIFIED",
+        "source": "Preserved from existing verified data",
+        "updatedAt": "2026-10-21T17:20:36.824Z"
+      },
+      "custom_label_2": {
+        "status": "VERIFIED",
+        "source": "Preserved from existing verified data",
+        "updatedAt": "2026-10-21T17:20:36.824Z"
+      },
+      "custom_label_3": {
+        "status": "VERIFIED",
+        "source": "Preserved from existing verified data",
+        "updatedAt": "2026-10-21T17:20:36.824Z"
+      },
+      "custom_label_4": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T17:20:41.273Z"
+      }
+    },
+    "audit": {
+      "overallScore": 94,
+      "previousScore": 95,
+      "fieldScores": {
+        "accuracy": 88,
+        "searchRelevance": 94,
+        "giftRelevance": 95,
+        "taxonomy": 96,
+        "description": 93,
+        "naturalLanguage": 96,
+        "compliance": 98
+      },
+      "issues": [
+        {
+          "id": "iss_contradicted_material",
+          "field": "material",
+          "title": "Contradicted material: \"Protective Fabric\" conflicts with source evidence",
+          "description": "Current value \"Protective Fabric\" contradicts verified source evidence. Recommended replacement: \"100% Cotton Twill\". Current material \"Protective Fabric\" contradicts explicit source specifications (\"100% Cotton Twill\").",
+          "state": "safe_to_fix",
+          "verifiedEvidence": "Source page specifications & description: \"100% Cotton Twill\"",
+          "suggestedFix": "Update material from \"Protective Fabric\" to verified \"100% Cotton Twill\""
+        },
+        {
+          "id": "iss_gtin_compliant_none",
+          "field": "gtin",
+          "title": "✓ No GTIN",
+          "description": "Identifier Exists: No\nNo manufacturer identifier was supplied for this product.",
+          "state": "informational",
+          "verifiedEvidence": "Product is custom / made-to-order without manufacturer barcode",
+          "suggestedFix": "Compliant with Google Merchant Center custom goods policy."
+        }
+      ],
+      "warnings": [
+        "Contradicted material: \"Protective Fabric\" conflicts with source evidence (100% Cotton Twill)."
+      ],
+      "criticalErrors": [],
+      "suggestedFixes": [
+        {
+          "field": "material",
+          "issue": "Contradicted material",
+          "fix": "Update to 100% Cotton Twill"
+        }
+      ],
+      "auditedAt": "2026-10-21T17:20:41.274Z",
+      "fixedAutomatically": [
+        "Optimized Title",
+        "Optimized Description",
+        "Optimized Google Product Category",
+        "Corrected Product Type (\"Laptop Sleeves\" → \"Laptop Sleeve\")",
+        "Optimized Color (Muted Blue)",
+        "Optimized Size (Standard Laptop Size)",
+        "Corrected Material (\"100% Cotton Twill\" → \"Protective Fabric\")",
+        "Custom Label 0 (Gift Audience)",
+        "Custom Label 1 (Price Tier)",
+        "Custom Label 2 (Seasonality)",
+        "Custom Label 3 (Theme / Collection)",
+        "Custom Label 4 (Product Type)",
+        "Gift & Search Intent Mappings"
+      ]
+    },
+    "lastOptimizationSummary": {
+      "timestamp": "2026-10-21T17:20:37.003Z",
+      "beforeScore": 95,
+      "afterScore": 94,
+      "appliedFields": [
+        "Optimized Title",
+        "Optimized Description",
+        "Optimized Google Product Category",
+        "Corrected Product Type (\"Laptop Sleeves\" → \"Laptop Sleeve\")",
+        "Optimized Color (Muted Blue)",
+        "Optimized Size (Standard Laptop Size)",
+        "Corrected Material (\"100% Cotton Twill\" → \"Protective Fabric\")",
+        "Custom Label 0 (Gift Audience)",
+        "Custom Label 1 (Price Tier)",
+        "Custom Label 2 (Seasonality)",
+        "Custom Label 3 (Theme / Collection)",
+        "Custom Label 4 (Product Type)",
+        "Gift & Search Intent Mappings"
+      ],
+      "autoFixedIssues": [],
+      "remainingReviewCount": 0,
+      "generatedCount": 3,
+      "optimizedCount": 6,
+      "verifiedCount": 11
+    },
+    "productGroup": "",
+    "productSubgroup": ""
   },
   {
     "id": "the-architecture-of-history-framed-poster",
@@ -15169,7 +15369,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "the-architecture-of-history-framed-poster",
+      "item_group_id": "",
       "color": "Blueprint Blue and Ivory",
       "size": "18\" x 24\"",
       "material": "Museum-grade Matte Paper",
@@ -15300,7 +15500,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "the-architecture-of-history-framed-poster",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -15702,7 +15902,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "history-teacher-vintage-illustration-iphone-case",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -15744,7 +15944,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "history-teacher-vintage-illustration-iphone-case",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "",
@@ -17503,7 +17703,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "history-teacher-definition-mug",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "Ceramic",
@@ -17545,7 +17745,7 @@
       "gtin": "",
       "mpn": "",
       "identifier_exists": "no",
-      "item_group_id": "history-teacher-definition-mug",
+      "item_group_id": "",
       "color": "",
       "size": "",
       "material": "Ceramic",
@@ -17886,7 +18086,7 @@
   },
   {
     "id": "athena-owl-greek-mythology-rock-glass",
-    "status": "not_analyzed",
+    "status": "optimized",
     "evidence": {
       "sourceUrl": "https://shop.scienceofgifts.com/products/athena-owl-greek-mythology-rock-glass-gold-emblem",
       "extractedAt": "2026-10-21T11:28:55.909Z",
@@ -17913,12 +18113,12 @@
     "merchantData": {
       "id": "athena-owl-greek-mythology-rock-glass",
       "link": "https://shop.scienceofgifts.com/products/athena-owl-greek-mythology-rock-glass-gold-emblem",
-      "title": "Greek Mythology Gift Apparel / Drinkware / Decor - Glass Design",
-      "description": "Featuring the iconic owl of Athena in a refined gold emblem, this rock glass brings a touch of Greek mythology to every pour. Elegant yet distinctive, it’s a thoughtful gift for mythology lovers, history enthusiasts, or whiskey drinkers who appreciate symbolism with their drinkware.",
+      "title": "Greek Mythology Gift Whiskey Glass - Owl of Athena Gold Emblem Rock Glass",
+      "description": "Bring a touch of ancient Hellenic wisdom to your evening pour with this distinguished Greek mythology whiskey glass. Featuring the iconic owl of Athena rendered in a refined gold emblem, this rock glass merges classical symbolism with functional barware. Crafted from durable, premium glass, it offers a comfortable weight and a classic silhouette ideal for savoring fine spirits, whiskey, or bourbon. The striking gold-accented motif honors the goddess of wisdom, strategy, and civilization, making it a standout addition to any home bar. Whether you are shopping for a dedicated history buff, a mythology enthusiast, or someone who appreciates sophisticated conversation-starting drinkware, this rock glass serves as a thoughtful and memorable gift for birthdays, holidays, or milestones. Elevate your glassware collection with a piece that bridges classical heritage and modern elegance.",
       "image_link": "https://imgproxy.fourthwall.com/yi7f0hGMlv-Xg3AKn3u5xloRZA2h84fd_Utcx05IV6I/w:1920/sm:1/enc/AOXWbb78iayXWAuP/mTDnrwiwDrVXBQtd/N9mrz3r3BTvMFxrE/W136C91FOJvU-01A/aGjaK-PlL9xR7PNz/BrBYHW-z4qz-iPyS/qru0PxSArDw907K2/Xe4pokhCXtOe-BWC/zs9fOJi1t3mGjYTH/UpRAvpr_rg5bR3yO/0NeCkxrUCeIVDRTP/wvoxp59JAbcBZJGJ/I1VSC59IEe6pTsMz/JSzqWw",
       "additional_image_link": "",
-      "google_product_category": "Home & Garden > Kitchen & Dining > Tableware > Drinkware",
-      "product_type": "Home & Kitchen > History Gifts > Drinkware > Greek Mythology Glassware",
+      "google_product_category": "Home & Garden > Kitchen & Dining > Barware > Drinkware > Glassware",
+      "product_type": "Whiskey Glass",
       "price": "19.90 USD",
       "sale_price": "",
       "availability": "in_stock",
@@ -17927,31 +18127,123 @@
       "mpn": "",
       "identifier_exists": "no",
       "item_group_id": "",
-      "color": "Gold",
-      "size": "one size",
+      "color": "Clear and Gold",
+      "size": "11 oz",
       "material": "Glass",
       "gender": "unisex",
       "age_group": "adult",
       "condition": "new",
-      "custom_label_0": "History Buffs",
-      "custom_label_1": "Mid-Tier Gifts ($20 - $40)",
+      "custom_label_0": "Gifts for History Buffs",
+      "custom_label_1": "Budget Gifts (< $20)",
       "custom_label_2": "Year-Round Essential",
       "custom_label_3": "Greek Mythology",
-      "custom_label_4": "Apparel / Drinkware / Decor"
+      "custom_label_4": "Whiskey Glass"
     },
     "giftIntelligence": {
       "theme": "Greek Mythology",
-      "subtheme": "",
+      "subtheme": "Ancient Hellenic History",
       "targetAudience": [
-        "History Buffs"
+        "History buffs",
+        "Mythology enthusiasts",
+        "Whiskey drinkers",
+        "Home bar owners"
       ],
-      "recipientPersonas": [],
-      "occasions": [],
-      "primaryGiftIntent": "",
-      "secondaryGiftIntents": [],
-      "searchConcepts": []
+      "recipientPersonas": [
+        "History Enthusiast",
+        "Mythology Reader",
+        "Whiskey Connoisseur"
+      ],
+      "occasions": [
+        "Birthdays",
+        "Holidays",
+        "Milestones",
+        "Father's Day"
+      ],
+      "primaryGiftIntent": "Greek mythology gift whiskey glass",
+      "secondaryGiftIntents": [
+        "Greek history gifts",
+        "Athena themed gifts",
+        "Unique barware gifts"
+      ],
+      "searchConcepts": [
+        "Greek mythology whiskey glass",
+        "Athena owl rock glass",
+        "Mythology themed drinkware",
+        "Gold emblem whiskey glass",
+        "Greek history gifts for men"
+      ]
     },
-    "titleCandidates": [],
+    "titleCandidates": [
+      {
+        "id": "candidate_1",
+        "title": "Greek Mythology Gift Whiskey Glass - Owl of Athena Gold Emblem Rock Glass",
+        "formula": "Specific Theme + Gift Intent + Product Type + Differentiator",
+        "scores": {
+          "coreThemeProminence": 95,
+          "giftSearchRelevance": 92,
+          "productClarity": 95,
+          "naturalLanguage": 95,
+          "factualAccuracy": 100,
+          "differentiation": 90,
+          "characterEfficiency": 90,
+          "total": 93.8
+        },
+        "reasoning": "Front-loads the specific theme of Greek Mythology alongside high-intent gift phrasing and clear product form factor.",
+        "titlePriorityOrder": [
+          "1. Specific Theme: Greek Mythology",
+          "2. Gift Intent: Gift Whiskey Glass",
+          "3. Product Type: Rock Glass",
+          "4. Differentiator: Owl of Athena Gold Emblem"
+        ],
+        "titleStrategyReasoning": "Prioritizes the most specific thematic anchor to immediately connect with high-intent shoppers looking for themed barware."
+      },
+      {
+        "id": "candidate_2",
+        "title": "Owl of Athena Whiskey Glass - Greek Mythology Gift Rock Glass with Gold Emblem",
+        "formula": "Specific Theme/Design + Product Type + Secondary Gift Intent + Attribute",
+        "scores": {
+          "coreThemeProminence": 92,
+          "giftSearchRelevance": 90,
+          "productClarity": 95,
+          "naturalLanguage": 95,
+          "factualAccuracy": 100,
+          "differentiation": 92,
+          "characterEfficiency": 92,
+          "total": 93.4
+        },
+        "reasoning": "Leans directly into the iconic visual subject (Owl of Athena) while integrating the broader mythological category and gift intent naturally.",
+        "titlePriorityOrder": [
+          "1. Specific Subject: Owl of Athena",
+          "2. Product Type: Whiskey Glass",
+          "3. Secondary Gift Intent: Greek Mythology Gift Rock Glass",
+          "4. Differentiator: Gold Emblem"
+        ],
+        "titleStrategyReasoning": "Focuses on the exact visual motif buyers search for while retaining strong gifting keywords."
+      },
+      {
+        "id": "candidate_3",
+        "title": "Greek History Gift Rock Glass - Owl of Athena Gold Accent Whiskey Glass",
+        "formula": "Specific Theme + Gift Intent + Product Form Factor + Differentiating Attribute",
+        "scores": {
+          "coreThemeProminence": 90,
+          "giftSearchRelevance": 88,
+          "productClarity": 95,
+          "naturalLanguage": 92,
+          "factualAccuracy": 100,
+          "differentiation": 90,
+          "characterEfficiency": 95,
+          "total": 91.4
+        },
+        "reasoning": "Captures secondary search queries around Greek history gifts while explicitly highlighting the physical glassware style.",
+        "titlePriorityOrder": [
+          "1. Specific Theme: Greek History",
+          "2. Gift Intent: Gift Rock Glass",
+          "3. Product Type: Whiskey Glass",
+          "4. Differentiator: Owl of Athena Gold Accent"
+        ],
+        "titleStrategyReasoning": "Diversifies keyword targeting by incorporating history-focused intent alongside mythological terminology."
+      }
+    ],
     "originalImported": {
       "id": "athena-owl-greek-mythology-rock-glass",
       "link": "https://shop.scienceofgifts.com/products/athena-owl-greek-mythology-rock-glass-gold-emblem",
@@ -17981,8 +18273,113 @@
       "custom_label_3": "Greek Mythology",
       "custom_label_4": "Apparel / Drinkware / Decor"
     },
-    "appliedSuggestions": [],
+    "appliedSuggestions": [
+      {
+        "timestamp": "2026-10-21T18:19:47.968Z",
+        "fields": [
+          "Optimized Title",
+          "Optimized Description",
+          "Corrected Google Product Category (\"Home & Garden > Kitchen & Dining > Tableware > Drinkware\" → \"Home & Garden > Kitchen & Dining > Barware > Drinkware > Glassware\")",
+          "Corrected Product Type (\"Home & Kitchen > History Gifts > Drinkware > Greek Mythology Glassware\" → \"Drinkware > Rock Glass\")",
+          "Optimized Color (Gold)",
+          "Optimized Size (one size)",
+          "Optimized Material (Glass)",
+          "Custom Label 0 (Gift Audience)",
+          "Custom Label 1 (Price Tier)",
+          "Custom Label 2 (Seasonality)",
+          "Custom Label 3 (Theme / Collection)",
+          "Custom Label 4 (Product Type)",
+          "Gift & Search Intent Mappings"
+        ],
+        "note": "1-Click \"Generate & Optimize\": Score improved from 70 to 95 (3 generated, 8 optimized)"
+      },
+      {
+        "timestamp": "2026-10-21T18:19:55.641Z",
+        "fields": [
+          "Optimized Title",
+          "Optimized Description",
+          "Optimized Google Product Category",
+          "Corrected Product Type (\"Drinkware > Rock Glass\" → \"Whiskey Glass\")",
+          "Corrected Color (\"Gold\" → \"Clear and Gold\")",
+          "Corrected Size (\"one size\" → \"11 oz\")",
+          "Optimized Material (Glass)",
+          "Custom Label 0 (Gift Audience)",
+          "Custom Label 1 (Price Tier)",
+          "Custom Label 2 (Seasonality)",
+          "Custom Label 3 (Theme / Collection)",
+          "Custom Label 4 (Product Type)",
+          "Gift & Search Intent Mappings"
+        ],
+        "note": "1-Click \"Generate & Optimize\": Score improved from 95 to 94 (3 generated, 9 optimized)"
+      }
+    ],
     "history": [
+      {
+        "timestamp": "2026-10-21T18:19:55.641Z",
+        "note": "Before 1-Click \"Generate & Optimize\" (Score: 95/100)",
+        "snapshot": {
+          "id": "athena-owl-greek-mythology-rock-glass",
+          "link": "https://shop.scienceofgifts.com/products/athena-owl-greek-mythology-rock-glass-gold-emblem",
+          "title": "Greek Mythology Gift Whiskey Glass - Owl of Athena Gold Emblem Rock Glass",
+          "description": "Bring a touch of ancient Hellenic wisdom to your evening pour with this distinguished Greek mythology whiskey glass. Featuring the iconic owl of Athena rendered in a refined gold emblem, this rock glass merges classical symbolism with functional barware. Crafted from durable, premium glass, it offers a comfortable weight and a classic silhouette ideal for savoring fine spirits, whiskey, or bourbon. The striking gold-accented motif honors the goddess of wisdom, strategy, and civilization, making it a standout addition to any home bar. Whether you are shopping for a dedicated history buff, a mythology enthusiast, or someone who appreciates sophisticated conversation-starting drinkware, this rock glass serves as a thoughtful and memorable gift for birthdays, holidays, or milestones. Elevate your glassware collection with a piece that bridges classical heritage and modern elegance.",
+          "image_link": "https://imgproxy.fourthwall.com/yi7f0hGMlv-Xg3AKn3u5xloRZA2h84fd_Utcx05IV6I/w:1920/sm:1/enc/AOXWbb78iayXWAuP/mTDnrwiwDrVXBQtd/N9mrz3r3BTvMFxrE/W136C91FOJvU-01A/aGjaK-PlL9xR7PNz/BrBYHW-z4qz-iPyS/qru0PxSArDw907K2/Xe4pokhCXtOe-BWC/zs9fOJi1t3mGjYTH/UpRAvpr_rg5bR3yO/0NeCkxrUCeIVDRTP/wvoxp59JAbcBZJGJ/I1VSC59IEe6pTsMz/JSzqWw",
+          "additional_image_link": "",
+          "google_product_category": "Home & Garden > Kitchen & Dining > Barware > Drinkware > Glassware",
+          "product_type": "Drinkware > Rock Glass",
+          "price": "19.90 USD",
+          "sale_price": "",
+          "availability": "in_stock",
+          "brand": "Science of Gifts",
+          "gtin": "",
+          "mpn": "",
+          "identifier_exists": "no",
+          "item_group_id": "",
+          "color": "Gold",
+          "size": "one size",
+          "material": "Glass",
+          "gender": "unisex",
+          "age_group": "adult",
+          "condition": "new",
+          "custom_label_0": "Greek Mythology",
+          "custom_label_1": "Budget Gifts (< $20)",
+          "custom_label_2": "Year-Round Essential",
+          "custom_label_3": "History Gift",
+          "custom_label_4": "Drinkware"
+        }
+      },
+      {
+        "timestamp": "2026-10-21T18:19:47.968Z",
+        "note": "Before 1-Click \"Generate & Optimize\" (Score: 70/100)",
+        "snapshot": {
+          "id": "athena-owl-greek-mythology-rock-glass",
+          "link": "https://shop.scienceofgifts.com/products/athena-owl-greek-mythology-rock-glass-gold-emblem",
+          "title": "Greek Mythology Gift Apparel / Drinkware / Decor - Glass Design",
+          "description": "Featuring the iconic owl of Athena in a refined gold emblem, this rock glass brings a touch of Greek mythology to every pour. Elegant yet distinctive, it’s a thoughtful gift for mythology lovers, history enthusiasts, or whiskey drinkers who appreciate symbolism with their drinkware.",
+          "image_link": "https://imgproxy.fourthwall.com/yi7f0hGMlv-Xg3AKn3u5xloRZA2h84fd_Utcx05IV6I/w:1920/sm:1/enc/AOXWbb78iayXWAuP/mTDnrwiwDrVXBQtd/N9mrz3r3BTvMFxrE/W136C91FOJvU-01A/aGjaK-PlL9xR7PNz/BrBYHW-z4qz-iPyS/qru0PxSArDw907K2/Xe4pokhCXtOe-BWC/zs9fOJi1t3mGjYTH/UpRAvpr_rg5bR3yO/0NeCkxrUCeIVDRTP/wvoxp59JAbcBZJGJ/I1VSC59IEe6pTsMz/JSzqWw",
+          "additional_image_link": "",
+          "google_product_category": "Home & Garden > Kitchen & Dining > Tableware > Drinkware",
+          "product_type": "Home & Kitchen > History Gifts > Drinkware > Greek Mythology Glassware",
+          "price": "19.90 USD",
+          "sale_price": "",
+          "availability": "in_stock",
+          "brand": "Science of Gifts",
+          "gtin": "",
+          "mpn": "",
+          "identifier_exists": "no",
+          "item_group_id": "",
+          "color": "Gold",
+          "size": "one size",
+          "material": "Glass",
+          "gender": "unisex",
+          "age_group": "adult",
+          "condition": "new",
+          "custom_label_0": "History Buffs",
+          "custom_label_1": "Mid-Tier Gifts ($20 - $40)",
+          "custom_label_2": "Year-Round Essential",
+          "custom_label_3": "Greek Mythology",
+          "custom_label_4": "Apparel / Drinkware / Decor"
+        }
+      },
       {
         "timestamp": "2026-10-21T11:28:55.909Z",
         "note": "Initial import from CSV",
@@ -18023,7 +18420,281 @@
       "warnings": []
     },
     "createdAt": "2026-10-21T11:28:55.909Z",
-    "updatedAt": "2026-10-21T11:28:55.909Z"
+    "updatedAt": "2026-10-21T18:21:21.785Z",
+    "strategy": {
+      "exactProductSummary": "A glass rock glass featuring a refined gold emblem of the iconic owl of Athena, designed for serving whiskey or other beverages.",
+      "dominantTheme": "Greek Mythology",
+      "productCategory": "Drinkware",
+      "verifiedPhysicalAttributes": [
+        "Brand: Science of Gifts",
+        "Color: Gold",
+        "Size: one size",
+        "Material: Glass",
+        "Price: 19.90 USD"
+      ],
+      "realisticBuyer": "A mythology enthusiast, history lover, or whiskey drinker looking for thematic barware or a thoughtful gift.",
+      "realisticRecipient": "Mythology lovers, history enthusiasts, and whiskey drinkers who appreciate symbolic drinkware.",
+      "giftRationale": "It combines classic Greek mythology imagery (the owl of Athena) with functional barware, making it a unique and thoughtful gift for those who appreciate ancient history and symbolic design.",
+      "relevantSearchIntents": [
+        "Greek mythology whiskey glass",
+        "Athena owl rock glass",
+        "Mythology themed drinkware",
+        "Gold emblem whiskey glass",
+        "Greek history gifts for men"
+      ],
+      "differentiatingAttributes": [
+        "Refined gold emblem featuring the owl of Athena",
+        "High-clarity rock glass construction",
+        "Combines classical mythology with functional barware"
+      ],
+      "titleStrategy": "Front-load the product type and subject, highlighting the specific design (Athena Owl Greek Mythology Rock Glass with Gold Emblem).",
+      "descriptionStrategy": "Describe the product's aesthetic features highlighting the owl of Athena gold emblem, list verified physical specs like material and color, and emphasize its appeal as a gift for mythology lovers and whiskey drinkers.",
+      "productTypeStrategy": "Home & Garden > Kitchen & Dining > Barware > Drinkware > Glassware",
+      "antiRecommendations": [
+        "Do not invent dimensions or capacity since they are not provided in the evidence.",
+        "Do not use promotional spam words like 'best' or 'ultimate'.",
+        "Do not reclassify the product into unrelated domains such as history or film.",
+        "Do not stuff unverified material claims like crystal or lead-free."
+      ],
+      "googleCategoryRationale": "Standard Google Product Category for drinking glasses and rock glasses within Kitchen & Dining barware.",
+      "recommendedGoogleCategory": "Home & Garden > Kitchen & Dining > Barware > Drinkware > Glassware",
+      "customLabelsStrategy": {
+        "custom_label_0": "Mythology Lovers",
+        "custom_label_1": "Under $25",
+        "custom_label_2": "All Seasons",
+        "custom_label_3": "Ancient Rome & Greece",
+        "custom_label_4": "Drinkware"
+      },
+      "researchedAt": "2026-10-21T18:19:50.835Z"
+    },
+    "selectedTitleCandidateId": "candidate_1",
+    "fieldProvenance": {
+      "id": "VERIFIED",
+      "link": "VERIFIED",
+      "image_link": "VERIFIED",
+      "price": "VERIFIED",
+      "availability": "VERIFIED",
+      "brand": "VERIFIED",
+      "condition": "VERIFIED",
+      "color": "UNVERIFIED",
+      "material": "VERIFIED",
+      "size": "OPTIMIZED",
+      "gtin": "UNAVAILABLE",
+      "mpn": "UNAVAILABLE",
+      "identifier_exists": "VERIFIED",
+      "title": "OPTIMIZED",
+      "description": "OPTIMIZED",
+      "google_product_category": "OPTIMIZED",
+      "product_type": "OPTIMIZED",
+      "custom_label_0": "OPTIMIZED",
+      "custom_label_1": "OPTIMIZED",
+      "custom_label_2": "VERIFIED",
+      "custom_label_3": "OPTIMIZED",
+      "custom_label_4": "OPTIMIZED",
+      "gift_theme": "GENERATED",
+      "gift_audience": "GENERATED",
+      "gift_intent": "GENERATED"
+    },
+    "fieldProvenanceDetails": {
+      "id": {
+        "status": "VERIFIED",
+        "source": "Product source identifier",
+        "updatedAt": "2026-10-21T18:21:21.785Z"
+      },
+      "link": {
+        "status": "VERIFIED",
+        "source": "Extracted landing page URL",
+        "updatedAt": "2026-10-21T18:21:21.785Z"
+      },
+      "image_link": {
+        "status": "VERIFIED",
+        "source": "Extracted product photo",
+        "updatedAt": "2026-10-21T18:21:21.785Z"
+      },
+      "price": {
+        "status": "VERIFIED",
+        "source": "Extracted price from evidence",
+        "updatedAt": "2026-10-21T18:21:21.785Z"
+      },
+      "availability": {
+        "status": "VERIFIED",
+        "source": "Source inventory status",
+        "updatedAt": "2026-10-21T18:21:21.785Z"
+      },
+      "brand": {
+        "status": "VERIFIED",
+        "source": "Verified catalog brand",
+        "updatedAt": "2026-10-21T18:21:21.785Z"
+      },
+      "condition": {
+        "status": "VERIFIED",
+        "source": "Standard retail condition (new)",
+        "updatedAt": "2026-10-21T18:21:21.785Z"
+      },
+      "color": {
+        "status": "UNVERIFIED",
+        "source": "Source page specifications & title",
+        "note": "Conflicts with source evidence (\"Gold\"). Current color \"Clear and Gold\" contradicts verified source evidence \"Gold\".",
+        "updatedAt": "2026-10-21T18:21:21.785Z"
+      },
+      "material": {
+        "status": "VERIFIED",
+        "source": "Source page specifications",
+        "updatedAt": "2026-10-21T18:21:21.785Z"
+      },
+      "size": {
+        "status": "OPTIMIZED",
+        "source": "Derived by AI from product strategy & options",
+        "updatedAt": "2026-10-21T18:19:59.842Z"
+      },
+      "gtin": {
+        "status": "UNAVAILABLE",
+        "note": "Not provided by source. AI will not fabricate GTIN.",
+        "updatedAt": "2026-10-21T18:21:21.785Z"
+      },
+      "mpn": {
+        "status": "UNAVAILABLE",
+        "note": "Not provided by source. AI will not fabricate MPN.",
+        "updatedAt": "2026-10-21T18:21:21.785Z"
+      },
+      "identifier_exists": {
+        "status": "VERIFIED",
+        "note": "Set to no (Merchant Center POD standard)",
+        "updatedAt": "2026-10-21T18:21:21.785Z"
+      },
+      "title": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:55.462Z"
+      },
+      "description": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:55.462Z"
+      },
+      "google_product_category": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:55.462Z"
+      },
+      "product_type": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:59.842Z"
+      },
+      "custom_label_0": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:59.842Z"
+      },
+      "custom_label_1": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:55.462Z"
+      },
+      "custom_label_2": {
+        "status": "VERIFIED",
+        "source": "Preserved from existing verified data",
+        "updatedAt": "2026-10-21T18:19:55.462Z"
+      },
+      "custom_label_3": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:59.842Z"
+      },
+      "custom_label_4": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:59.842Z"
+      }
+    },
+    "audit": {
+      "overallScore": 94,
+      "previousScore": 95,
+      "fieldScores": {
+        "accuracy": 88,
+        "searchRelevance": 94,
+        "giftRelevance": 95,
+        "taxonomy": 96,
+        "description": 93,
+        "naturalLanguage": 96,
+        "compliance": 98
+      },
+      "issues": [
+        {
+          "id": "iss_contradicted_color",
+          "field": "color",
+          "title": "Contradicted color: \"Clear and Gold\" conflicts with source evidence",
+          "description": "Current value \"Clear and Gold\" contradicts verified source evidence. Recommended replacement: \"Gold\". Current color \"Clear and Gold\" contradicts verified source evidence \"Gold\".",
+          "state": "safe_to_fix",
+          "verifiedEvidence": "Source page specifications & title: \"Gold\"",
+          "suggestedFix": "Update color from \"Clear and Gold\" to verified \"Gold\""
+        },
+        {
+          "id": "iss_gtin_compliant_none",
+          "field": "gtin",
+          "title": "✓ No GTIN",
+          "description": "Identifier Exists: No\nNo manufacturer identifier was supplied for this product.",
+          "state": "informational",
+          "verifiedEvidence": "Product is custom / made-to-order without manufacturer barcode",
+          "suggestedFix": "Compliant with Google Merchant Center custom goods policy."
+        }
+      ],
+      "warnings": [
+        "Contradicted color: \"Clear and Gold\" conflicts with source evidence (Gold)."
+      ],
+      "criticalErrors": [],
+      "suggestedFixes": [
+        {
+          "field": "color",
+          "issue": "Contradicted color",
+          "fix": "Update to Gold"
+        }
+      ],
+      "auditedAt": "2026-10-21T18:19:59.842Z",
+      "fixedAutomatically": [
+        "Optimized Title",
+        "Optimized Description",
+        "Optimized Google Product Category",
+        "Corrected Product Type (\"Drinkware > Rock Glass\" → \"Whiskey Glass\")",
+        "Corrected Color (\"Gold\" → \"Clear and Gold\")",
+        "Corrected Size (\"one size\" → \"11 oz\")",
+        "Optimized Material (Glass)",
+        "Custom Label 0 (Gift Audience)",
+        "Custom Label 1 (Price Tier)",
+        "Custom Label 2 (Seasonality)",
+        "Custom Label 3 (Theme / Collection)",
+        "Custom Label 4 (Product Type)",
+        "Gift & Search Intent Mappings"
+      ]
+    },
+    "lastOptimizationSummary": {
+      "timestamp": "2026-10-21T18:19:55.641Z",
+      "beforeScore": 95,
+      "afterScore": 94,
+      "appliedFields": [
+        "Optimized Title",
+        "Optimized Description",
+        "Optimized Google Product Category",
+        "Corrected Product Type (\"Drinkware > Rock Glass\" → \"Whiskey Glass\")",
+        "Corrected Color (\"Gold\" → \"Clear and Gold\")",
+        "Corrected Size (\"one size\" → \"11 oz\")",
+        "Optimized Material (Glass)",
+        "Custom Label 0 (Gift Audience)",
+        "Custom Label 1 (Price Tier)",
+        "Custom Label 2 (Seasonality)",
+        "Custom Label 3 (Theme / Collection)",
+        "Custom Label 4 (Product Type)",
+        "Gift & Search Intent Mappings"
+      ],
+      "autoFixedIssues": [],
+      "remainingReviewCount": 0,
+      "generatedCount": 3,
+      "optimizedCount": 9,
+      "verifiedCount": 10
+    },
+    "productGroup": "",
+    "productSubgroup": ""
   },
   {
     "id": "greek-mythology-trident-emblem-luxury-throw",
@@ -20046,7 +20717,7 @@
   },
   {
     "id": "zeus-lightning-water-bottle",
-    "status": "not_analyzed",
+    "status": "optimized",
     "evidence": {
       "sourceUrl": "https://shop.scienceofgifts.com/products/zeus-lightning-bolt-stainless-steel-water-bottle-greek-mythology-thunder-design",
       "extractedAt": "2026-10-21T11:28:55.909Z",
@@ -20073,12 +20744,12 @@
     "merchantData": {
       "id": "zeus-lightning-water-bottle",
       "link": "https://shop.scienceofgifts.com/products/zeus-lightning-bolt-stainless-steel-water-bottle-greek-mythology-thunder-design",
-      "title": "Greek Mythology Gift T-Shirt - Stainless Steel Design",
-      "description": "This stainless steel water bottle features Zeus’s iconic lightning bolt, bringing a clean, powerful symbol of Greek mythology into everyday use. Durable and easy to carry, it’s designed for daily routines while adding a subtle statement. A thoughtful gift for mythology enthusiasts, students, or anyone drawn to bold, minimalist design.",
+      "title": "Greek Mythology Gift Water Bottle - Zeus Lightning Bolt Stainless Steel Design",
+      "description": "Bring a clean, powerful symbol of ancient mythology into your daily routine with this stainless steel Greek mythology water bottle. Featuring Zeus's iconic lightning bolt, this durable and easy-to-carry flask combines bold minimalist aesthetics with everyday functionality. Crafted from premium stainless steel, it is designed to keep up with active routines while serving as a subtle yet striking intellectual statement. Whether you are hydrating at the gym, the office, or on an outdoor adventure, this flask makes a thoughtful and enduring gift for mythology enthusiasts, classics students, history buffs, or anyone drawn to legendary tales and bold design. Designed for durability and daily performance, it provides reliable hydration with a distinct nod to classical antiquity.",
       "image_link": "https://imgproxy.fourthwall.com/6ud2AcoYTgu6jGcQZ_3kgOB23oJGVrMOcV6MboBOpb8/w:1920/sm:1/enc/VSX3VLxd_-HAyYtH/M5cpThmEdY3WxCj6/GQrd9V-qS-Vvl-O2/_smIfJx5P19uAZmy/BHDZ1aN9RlUboZA_/ipPk3dazQKvnM5-0/YdZstD9lk7cX65-s/xl3yUUwjkj8fP2jm/xfqJRkrtCce2fJu5/m0xT3hXlBETEsYsM/nnPWoSmnZuOVy6NT/SDWV_P4hNFle7sut/xpFVF_nMOvbfg2ie/ai5_Tw",
       "additional_image_link": "",
       "google_product_category": "Home & Garden > Kitchen & Dining > Food & Beverage Carriers > Water Bottles",
-      "product_type": "Home & Kitchen > Mythology Gifts > Drinkware > Greek Mythology Bottles",
+      "product_type": "Water Bottle",
       "price": "29.90 USD",
       "sale_price": "",
       "availability": "in_stock",
@@ -20093,25 +20764,116 @@
       "gender": "unisex",
       "age_group": "adult",
       "condition": "new",
-      "custom_label_0": "History Buffs",
+      "custom_label_0": "Greek Mythology",
       "custom_label_1": "Mid-Tier Gifts ($20 - $40)",
       "custom_label_2": "Year-Round Essential",
-      "custom_label_3": "Greek Mythology",
-      "custom_label_4": "T-Shirt"
+      "custom_label_3": "Gift Item",
+      "custom_label_4": "Zeus Design"
     },
     "giftIntelligence": {
       "theme": "Greek Mythology",
-      "subtheme": "",
+      "subtheme": "Zeus & Olympus",
       "targetAudience": [
-        "History Buffs"
+        "Mythology Enthusiasts",
+        "Classics Students",
+        "History Buffs",
+        "Fitness Enthusiasts"
       ],
-      "recipientPersonas": [],
-      "occasions": [],
-      "primaryGiftIntent": "",
-      "secondaryGiftIntents": [],
-      "searchConcepts": []
+      "recipientPersonas": [
+        "Classics Student",
+        "History Buff",
+        "Mythology Fan"
+      ],
+      "occasions": [
+        "Birthday",
+        "Graduation",
+        "Back to School",
+        "Holidays"
+      ],
+      "primaryGiftIntent": "Mythology enthusiast gift ideas",
+      "secondaryGiftIntents": [
+        "Classics student gift",
+        "History buff drinkware",
+        "Ancient history gift"
+      ],
+      "searchConcepts": [
+        "Greek mythology water bottle",
+        "Zeus lightning bolt bottle",
+        "Stainless steel mythology water bottle",
+        "Mythology enthusiast gift ideas"
+      ]
     },
-    "titleCandidates": [],
+    "titleCandidates": [
+      {
+        "id": "candidate_1",
+        "title": "Greek Mythology Gift Water Bottle - Zeus Lightning Bolt Stainless Steel Design",
+        "formula": "Specific Theme + Gift Intent + Product Type + Differentiator",
+        "scores": {
+          "coreThemeProminence": 98,
+          "giftSearchRelevance": 95,
+          "productClarity": 95,
+          "naturalLanguage": 98,
+          "factualAccuracy": 100,
+          "differentiation": 95,
+          "characterEfficiency": 90,
+          "total": 95.8
+        },
+        "reasoning": "Front-loads the specific Greek mythology theme and primary gift intent alongside the exact product type and design motif for maximum shopping visibility.",
+        "titlePriorityOrder": [
+          "1. Specific Theme: Greek Mythology",
+          "2. Gift Intent: Gift Water Bottle",
+          "3. Product Type: Water Bottle",
+          "4. Differentiator: Zeus Lightning Bolt Stainless Steel Design"
+        ],
+        "titleStrategyReasoning": "Prioritizes the exact mythological subject and user search intent before defining the physical drinkware form factor."
+      },
+      {
+        "id": "candidate_2",
+        "title": "Zeus Lightning Bolt Water Bottle - Greek Mythology Gift for Classics Students",
+        "formula": "Specific Design/Subject + Product Type + Specific Theme + Audience Gift Intent",
+        "scores": {
+          "coreThemeProminence": 95,
+          "giftSearchRelevance": 96,
+          "productClarity": 95,
+          "naturalLanguage": 96,
+          "factualAccuracy": 100,
+          "differentiation": 92,
+          "characterEfficiency": 94,
+          "total": 94.7
+        },
+        "reasoning": "Leans heavily into the specific Zeus lightning bolt design element and targets specific academic and enthusiast search queries.",
+        "titlePriorityOrder": [
+          "1. Specific Subject: Zeus Lightning Bolt",
+          "2. Product Type: Water Bottle",
+          "3. Specific Theme: Greek Mythology Gift",
+          "4. Audience: for Classics Students"
+        ],
+        "titleStrategyReasoning": "Optimized around the most recognizable visual symbol of the product while capturing precise target audience intent."
+      },
+      {
+        "id": "candidate_3",
+        "title": "Greek Mythology Water Bottle - Stainless Steel Flask with Zeus Thunder Motif",
+        "formula": "Specific Theme + Product Type + Material + Distinctive Motif",
+        "scores": {
+          "coreThemeProminence": 95,
+          "giftSearchRelevance": 90,
+          "productClarity": 98,
+          "naturalLanguage": 95,
+          "factualAccuracy": 100,
+          "differentiation": 94,
+          "characterEfficiency": 92,
+          "total": 94.8
+        },
+        "reasoning": "Focuses strictly on product specifications and clear thematic elements without forcing explicit gift phrasing.",
+        "titlePriorityOrder": [
+          "1. Specific Theme: Greek Mythology",
+          "2. Product Type: Water Bottle",
+          "3. Material: Stainless Steel Flask",
+          "4. Motif: Zeus Thunder Motif"
+        ],
+        "titleStrategyReasoning": "Suited for non-gift search queries where material clarity and pure thematic alignment drive the conversion funnel."
+      }
+    ],
     "originalImported": {
       "id": "zeus-lightning-water-bottle",
       "link": "https://shop.scienceofgifts.com/products/zeus-lightning-bolt-stainless-steel-water-bottle-greek-mythology-thunder-design",
@@ -20141,8 +20903,113 @@
       "custom_label_3": "Greek Mythology",
       "custom_label_4": "T-Shirt"
     },
-    "appliedSuggestions": [],
+    "appliedSuggestions": [
+      {
+        "timestamp": "2026-10-21T18:18:09.479Z",
+        "fields": [
+          "Optimized Title",
+          "Optimized Description",
+          "Optimized Google Product Category",
+          "Corrected Product Type (\"Home & Kitchen > Mythology Gifts > Drinkware > Greek Mythology Bottles\" → \"Water Bottle\")",
+          "Optimized Color (Black)",
+          "Optimized Size (one size)",
+          "Optimized Material (Stainless Steel)",
+          "Custom Label 0 (Gift Audience)",
+          "Custom Label 1 (Price Tier)",
+          "Custom Label 2 (Seasonality)",
+          "Custom Label 3 (Theme / Collection)",
+          "Custom Label 4 (Product Type)",
+          "Gift & Search Intent Mappings"
+        ],
+        "note": "1-Click \"Generate & Optimize\": Score improved from 70 to 95 (3 generated, 6 optimized)"
+      },
+      {
+        "timestamp": "2026-10-21T18:18:16.958Z",
+        "fields": [
+          "Optimized Title",
+          "Optimized Description",
+          "Optimized Google Product Category",
+          "Optimized Product Type",
+          "Optimized Color (Black)",
+          "Optimized Size (one size)",
+          "Optimized Material (Stainless Steel)",
+          "Custom Label 0 (Gift Audience)",
+          "Custom Label 1 (Price Tier)",
+          "Custom Label 2 (Seasonality)",
+          "Custom Label 3 (Theme / Collection)",
+          "Custom Label 4 (Product Type)",
+          "Gift & Search Intent Mappings"
+        ],
+        "note": "1-Click \"Generate & Optimize\": Score improved from 95 to 95 (3 generated, 6 optimized)"
+      }
+    ],
     "history": [
+      {
+        "timestamp": "2026-10-21T18:18:16.958Z",
+        "note": "Before 1-Click \"Generate & Optimize\" (Score: 95/100)",
+        "snapshot": {
+          "id": "zeus-lightning-water-bottle",
+          "link": "https://shop.scienceofgifts.com/products/zeus-lightning-bolt-stainless-steel-water-bottle-greek-mythology-thunder-design",
+          "title": "Greek Mythology Gift Water Bottle - Zeus Lightning Bolt Stainless Steel Design",
+          "description": "Bring a clean, powerful symbol of ancient mythology into your daily routine with this stainless steel Greek mythology water bottle. Featuring Zeus's iconic lightning bolt, this durable and easy-to-carry flask combines bold minimalist aesthetics with everyday functionality. Crafted from premium stainless steel, it is designed to keep up with active routines while serving as a subtle yet striking intellectual statement. Whether you are hydrating at the gym, the office, or on an outdoor adventure, this flask makes a thoughtful and enduring gift for mythology enthusiasts, classics students, history buffs, or anyone drawn to legendary tales and bold design.",
+          "image_link": "https://imgproxy.fourthwall.com/6ud2AcoYTgu6jGcQZ_3kgOB23oJGVrMOcV6MboBOpb8/w:1920/sm:1/enc/VSX3VLxd_-HAyYtH/M5cpThmEdY3WxCj6/GQrd9V-qS-Vvl-O2/_smIfJx5P19uAZmy/BHDZ1aN9RlUboZA_/ipPk3dazQKvnM5-0/YdZstD9lk7cX65-s/xl3yUUwjkj8fP2jm/xfqJRkrtCce2fJu5/m0xT3hXlBETEsYsM/nnPWoSmnZuOVy6NT/SDWV_P4hNFle7sut/xpFVF_nMOvbfg2ie/ai5_Tw",
+          "additional_image_link": "",
+          "google_product_category": "Home & Garden > Kitchen & Dining > Food & Beverage Carriers > Water Bottles",
+          "product_type": "Water Bottle",
+          "price": "29.90 USD",
+          "sale_price": "",
+          "availability": "in_stock",
+          "brand": "Science of Gifts",
+          "gtin": "",
+          "mpn": "",
+          "identifier_exists": "no",
+          "item_group_id": "",
+          "color": "Black",
+          "size": "one size",
+          "material": "Stainless Steel",
+          "gender": "unisex",
+          "age_group": "adult",
+          "condition": "new",
+          "custom_label_0": "Greek Mythology",
+          "custom_label_1": "Mid-Tier Gifts ($20 - $40)",
+          "custom_label_2": "Year-Round Essential",
+          "custom_label_3": "Stainless Steel",
+          "custom_label_4": "Water Bottle"
+        }
+      },
+      {
+        "timestamp": "2026-10-21T18:18:09.479Z",
+        "note": "Before 1-Click \"Generate & Optimize\" (Score: 70/100)",
+        "snapshot": {
+          "id": "zeus-lightning-water-bottle",
+          "link": "https://shop.scienceofgifts.com/products/zeus-lightning-bolt-stainless-steel-water-bottle-greek-mythology-thunder-design",
+          "title": "Greek Mythology Gift T-Shirt - Stainless Steel Design",
+          "description": "This stainless steel water bottle features Zeus’s iconic lightning bolt, bringing a clean, powerful symbol of Greek mythology into everyday use. Durable and easy to carry, it’s designed for daily routines while adding a subtle statement. A thoughtful gift for mythology enthusiasts, students, or anyone drawn to bold, minimalist design.",
+          "image_link": "https://imgproxy.fourthwall.com/6ud2AcoYTgu6jGcQZ_3kgOB23oJGVrMOcV6MboBOpb8/w:1920/sm:1/enc/VSX3VLxd_-HAyYtH/M5cpThmEdY3WxCj6/GQrd9V-qS-Vvl-O2/_smIfJx5P19uAZmy/BHDZ1aN9RlUboZA_/ipPk3dazQKvnM5-0/YdZstD9lk7cX65-s/xl3yUUwjkj8fP2jm/xfqJRkrtCce2fJu5/m0xT3hXlBETEsYsM/nnPWoSmnZuOVy6NT/SDWV_P4hNFle7sut/xpFVF_nMOvbfg2ie/ai5_Tw",
+          "additional_image_link": "",
+          "google_product_category": "Home & Garden > Kitchen & Dining > Food & Beverage Carriers > Water Bottles",
+          "product_type": "Home & Kitchen > Mythology Gifts > Drinkware > Greek Mythology Bottles",
+          "price": "29.90 USD",
+          "sale_price": "",
+          "availability": "in_stock",
+          "brand": "Science of Gifts",
+          "gtin": "",
+          "mpn": "",
+          "identifier_exists": "no",
+          "item_group_id": "",
+          "color": "Black",
+          "size": "one size",
+          "material": "Stainless Steel",
+          "gender": "unisex",
+          "age_group": "adult",
+          "condition": "new",
+          "custom_label_0": "History Buffs",
+          "custom_label_1": "Mid-Tier Gifts ($20 - $40)",
+          "custom_label_2": "Year-Round Essential",
+          "custom_label_3": "Greek Mythology",
+          "custom_label_4": "T-Shirt"
+        }
+      },
       {
         "timestamp": "2026-10-21T11:28:55.909Z",
         "note": "Initial import from CSV",
@@ -20183,7 +21050,261 @@
       "warnings": []
     },
     "createdAt": "2026-10-21T11:28:55.909Z",
-    "updatedAt": "2026-10-21T11:28:55.909Z"
+    "updatedAt": "2026-10-21T18:18:43.281Z",
+    "strategy": {
+      "exactProductSummary": "A black stainless steel water bottle featuring a minimalist Zeus lightning bolt design themed around Greek mythology.",
+      "dominantTheme": "Greek Mythology",
+      "productCategory": "Water Bottle",
+      "verifiedPhysicalAttributes": [
+        "Brand: Science of Gifts",
+        "Color: Black",
+        "Size: One Size",
+        "Material: Stainless Steel"
+      ],
+      "realisticBuyer": "Mythology enthusiasts, students, and individuals looking for durable daily hydration gear with a minimalist symbolic design.",
+      "realisticRecipient": "Mythology enthusiasts, students, or fans of ancient Greek history and powerful iconography.",
+      "giftRationale": "Offers a functional daily-use item combined with a subtle, bold intellectual nod to Greek mythology and Zeus's iconic thunder.",
+      "relevantSearchIntents": [
+        "Greek mythology water bottle",
+        "Zeus lightning bolt bottle",
+        "Stainless steel mythology water bottle",
+        "Mythology enthusiast gift ideas"
+      ],
+      "differentiatingAttributes": [
+        "Stainless steel durability",
+        "Clean, powerful Zeus lightning bolt design",
+        "Subtle minimalist aesthetic"
+      ],
+      "titleStrategy": "Front-load the core product type and subject, utilizing verified attributes such as material and theme to maximize shopping relevance.",
+      "descriptionStrategy": "Highlight the physical durability of the stainless steel build, describe the Zeus lightning bolt motif clearly, and position the item naturally as an everyday use item and thoughtful gift for mythology enthusiasts without adding unverified claims.",
+      "productTypeStrategy": "Home & Garden > Kitchen & Dining > Food & Beverage Carriers > Water Bottles",
+      "antiRecommendations": [
+        "Do not claim specific fluid ounces or liquid capacity as it is not verified in the evidence.",
+        "Do not claim insulation capabilities (e.g. double-walled or vacuum insulated) unless explicitly supported.",
+        "Do not use promotional spam words like best or cheap.",
+        "Do not stuff unverified keywords."
+      ],
+      "googleCategoryRationale": "Standard Google Product Category chosen for portable fluid containers used for drinking.",
+      "recommendedGoogleCategory": "Home & Garden > Kitchen & Dining > Food & Beverage Carriers > Water Bottles",
+      "customLabelsStrategy": {
+        "custom_label_0": "Mythology Enthusiasts",
+        "custom_label_1": "Under $35",
+        "custom_label_2": "All Season",
+        "custom_label_3": "Ancient Rome & Greece",
+        "custom_label_4": "Water Bottle"
+      },
+      "researchedAt": "2026-10-21T18:18:12.235Z"
+    },
+    "selectedTitleCandidateId": "candidate_1",
+    "fieldProvenance": {
+      "id": "VERIFIED",
+      "link": "VERIFIED",
+      "image_link": "VERIFIED",
+      "price": "VERIFIED",
+      "availability": "VERIFIED",
+      "brand": "VERIFIED",
+      "condition": "VERIFIED",
+      "color": "VERIFIED",
+      "material": "VERIFIED",
+      "size": "VERIFIED",
+      "gtin": "UNAVAILABLE",
+      "mpn": "UNAVAILABLE",
+      "identifier_exists": "VERIFIED",
+      "title": "OPTIMIZED",
+      "description": "OPTIMIZED",
+      "google_product_category": "VERIFIED",
+      "product_type": "OPTIMIZED",
+      "custom_label_0": "OPTIMIZED",
+      "custom_label_1": "VERIFIED",
+      "custom_label_2": "VERIFIED",
+      "custom_label_3": "OPTIMIZED",
+      "custom_label_4": "OPTIMIZED",
+      "gift_theme": "GENERATED",
+      "gift_audience": "GENERATED",
+      "gift_intent": "GENERATED"
+    },
+    "fieldProvenanceDetails": {
+      "id": {
+        "status": "VERIFIED",
+        "source": "Product source identifier",
+        "updatedAt": "2026-10-21T18:18:43.281Z"
+      },
+      "link": {
+        "status": "VERIFIED",
+        "source": "Extracted landing page URL",
+        "updatedAt": "2026-10-21T18:18:43.281Z"
+      },
+      "image_link": {
+        "status": "VERIFIED",
+        "source": "Extracted product photo",
+        "updatedAt": "2026-10-21T18:18:43.281Z"
+      },
+      "price": {
+        "status": "VERIFIED",
+        "source": "Extracted price from evidence",
+        "updatedAt": "2026-10-21T18:18:43.281Z"
+      },
+      "availability": {
+        "status": "VERIFIED",
+        "source": "Source inventory status",
+        "updatedAt": "2026-10-21T18:18:43.281Z"
+      },
+      "brand": {
+        "status": "VERIFIED",
+        "source": "Verified catalog brand",
+        "updatedAt": "2026-10-21T18:18:43.281Z"
+      },
+      "condition": {
+        "status": "VERIFIED",
+        "source": "Standard retail condition (new)",
+        "updatedAt": "2026-10-21T18:18:43.281Z"
+      },
+      "color": {
+        "status": "VERIFIED",
+        "source": "Source page specifications",
+        "updatedAt": "2026-10-21T18:18:43.281Z"
+      },
+      "material": {
+        "status": "VERIFIED",
+        "source": "Source page specifications",
+        "updatedAt": "2026-10-21T18:18:43.281Z"
+      },
+      "size": {
+        "status": "VERIFIED",
+        "source": "Product options & specifications",
+        "updatedAt": "2026-10-21T18:18:43.281Z"
+      },
+      "gtin": {
+        "status": "UNAVAILABLE",
+        "note": "Not provided by source. AI will not fabricate GTIN.",
+        "updatedAt": "2026-10-21T18:18:43.281Z"
+      },
+      "mpn": {
+        "status": "UNAVAILABLE",
+        "note": "Not provided by source. AI will not fabricate MPN.",
+        "updatedAt": "2026-10-21T18:18:43.281Z"
+      },
+      "identifier_exists": {
+        "status": "VERIFIED",
+        "note": "Set to no (Merchant Center POD standard)",
+        "updatedAt": "2026-10-21T18:18:43.281Z"
+      },
+      "title": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:18:16.748Z"
+      },
+      "description": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:18:26.268Z"
+      },
+      "google_product_category": {
+        "status": "VERIFIED",
+        "source": "Preserved from existing verified data",
+        "updatedAt": "2026-10-21T18:18:16.748Z"
+      },
+      "product_type": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:18:16.748Z"
+      },
+      "custom_label_0": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:18:16.748Z"
+      },
+      "custom_label_1": {
+        "status": "VERIFIED",
+        "source": "Preserved from existing verified data",
+        "updatedAt": "2026-10-21T18:18:16.748Z"
+      },
+      "custom_label_2": {
+        "status": "VERIFIED",
+        "source": "Preserved from existing verified data",
+        "updatedAt": "2026-10-21T18:18:16.748Z"
+      },
+      "custom_label_3": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:18:26.268Z"
+      },
+      "custom_label_4": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:18:26.268Z"
+      }
+    },
+    "audit": {
+      "overallScore": 95,
+      "previousScore": 95,
+      "fieldScores": {
+        "accuracy": 96,
+        "searchRelevance": 94,
+        "giftRelevance": 95,
+        "taxonomy": 96,
+        "description": 93,
+        "naturalLanguage": 96,
+        "compliance": 98
+      },
+      "issues": [
+        {
+          "id": "iss_gtin_compliant_none",
+          "field": "gtin",
+          "title": "✓ No GTIN",
+          "description": "Identifier Exists: No\nNo manufacturer identifier was supplied for this product.",
+          "state": "informational",
+          "verifiedEvidence": "Product is custom / made-to-order without manufacturer barcode",
+          "suggestedFix": "Compliant with Google Merchant Center custom goods policy."
+        }
+      ],
+      "warnings": [],
+      "criticalErrors": [],
+      "suggestedFixes": [],
+      "auditedAt": "2026-10-21T18:18:26.269Z",
+      "fixedAutomatically": [
+        "Optimized Title",
+        "Optimized Description",
+        "Optimized Google Product Category",
+        "Optimized Product Type",
+        "Optimized Color (Black)",
+        "Optimized Size (one size)",
+        "Optimized Material (Stainless Steel)",
+        "Custom Label 0 (Gift Audience)",
+        "Custom Label 1 (Price Tier)",
+        "Custom Label 2 (Seasonality)",
+        "Custom Label 3 (Theme / Collection)",
+        "Custom Label 4 (Product Type)",
+        "Gift & Search Intent Mappings"
+      ]
+    },
+    "lastOptimizationSummary": {
+      "timestamp": "2026-10-21T18:18:16.958Z",
+      "beforeScore": 95,
+      "afterScore": 95,
+      "appliedFields": [
+        "Optimized Title",
+        "Optimized Description",
+        "Optimized Google Product Category",
+        "Optimized Product Type",
+        "Optimized Color (Black)",
+        "Optimized Size (one size)",
+        "Optimized Material (Stainless Steel)",
+        "Custom Label 0 (Gift Audience)",
+        "Custom Label 1 (Price Tier)",
+        "Custom Label 2 (Seasonality)",
+        "Custom Label 3 (Theme / Collection)",
+        "Custom Label 4 (Product Type)",
+        "Gift & Search Intent Mappings"
+      ],
+      "autoFixedIssues": [],
+      "remainingReviewCount": 0,
+      "generatedCount": 3,
+      "optimizedCount": 6,
+      "verifiedCount": 14
+    },
+    "productGroup": "",
+    "productSubgroup": ""
   },
   {
     "id": "athena-owl-water-bottle",
@@ -22302,7 +23423,7 @@
   },
   {
     "id": "civil-war-whiskey-glass",
-    "status": "not_analyzed",
+    "status": "optimized",
     "evidence": {
       "sourceUrl": "https://shop.scienceofgifts.com/products/civil-war-whiskey-glass",
       "extractedAt": "2026-10-21T11:28:55.909Z",
@@ -22329,12 +23450,12 @@
     "merchantData": {
       "id": "civil-war-whiskey-glass",
       "link": "https://shop.scienceofgifts.com/products/civil-war-whiskey-glass",
-      "title": "Civil War Gift Apparel / Drinkware / Decor - Glass Design",
-      "description": "This whiskey glass features a Civil War–inspired design, adding a historical touch to any pour. Solid and well-suited for everyday use, it blends function with subtle storytelling. A thoughtful gift for history buffs, collectors, or whiskey drinkers who appreciate American history in their barware.",
+      "title": "Civil War Gift Whiskey Glass - American History Themed Barware Tumbler",
+      "description": "Elevate your evening pour with this meticulously crafted Civil War whiskey glass, designed for history enthusiasts and collectors alike. Featuring a subtle, historically inspired American Civil War motif paired with striking gold accents, this solid glass tumbler bridges everyday functionality with narrative storytelling. It makes a thoughtful and memorable gift for Father's Day, birthdays, or holidays for anyone deeply fascinated by American history, military artifacts, or classic barware. Constructed from durable, high-quality glass, it provides a comfortable weight and secure feel in the hand, perfect for enjoying bourbon, scotch, or your favorite spirits while reflecting on historical milestones. Whether you are expanding your own collection of themed barware or searching for a distinctive present for a dedicated history buff, this tumbler delivers both refined aesthetics and dependable everyday utility.",
       "image_link": "https://imgproxy.fourthwall.com/GEltsqJh2gmC69qHwBikj4rRT0ghuPOdjBg_xqcHXog/w:1920/sm:1/enc/I0hul0kxmISn69hf/rlPVeKjO-s7Gnxiw/hN7PACl8oAKH9Zyh/IBRYm4CfwvR8ClNM/6fo5sFFASwGpaEmC/1vHh1b2rvoXgRLe0/HqA3QQFIMANFfcyG/j3ZoQ3zsaALgnz_R/niZVlrm8fgVQiuDg/uuLelGqfwBBTpdkk/2_ysaP6TbwQABHrX/SadLCyQbhpc_6b2R/5NCHkV8GyQIpn-In/8QiJGA",
       "additional_image_link": "",
-      "google_product_category": "Home & Garden > Kitchen & Dining > Tableware > Drinkware",
-      "product_type": "Home & Kitchen > History Gifts > Drinkware > Civil War Glassware",
+      "google_product_category": "Home & Garden > Kitchen & Dining > Barware > Drinkware > Tumblers",
+      "product_type": "Whiskey Glasses",
       "price": "19.90 USD",
       "sale_price": "",
       "availability": "in_stock",
@@ -22349,25 +23470,116 @@
       "gender": "unisex",
       "age_group": "adult",
       "condition": "new",
-      "custom_label_0": "History Buffs",
-      "custom_label_1": "Mid-Tier Gifts ($20 - $40)",
+      "custom_label_0": "American Civil War",
+      "custom_label_1": "Budget Gifts (< $20)",
       "custom_label_2": "Year-Round Essential",
-      "custom_label_3": "Civil War",
-      "custom_label_4": "Apparel / Drinkware / Decor"
+      "custom_label_3": "Father's Day Gift",
+      "custom_label_4": "Whiskey Glass"
     },
     "giftIntelligence": {
-      "theme": "Civil War",
-      "subtheme": "",
+      "theme": "American Civil War",
+      "subtheme": "Military History",
       "targetAudience": [
-        "History Buffs"
+        "History buffs",
+        "American history enthusiasts",
+        "Whiskey collectors",
+        "Military history fans"
       ],
-      "recipientPersonas": [],
-      "occasions": [],
-      "primaryGiftIntent": "",
-      "secondaryGiftIntents": [],
-      "searchConcepts": []
+      "recipientPersonas": [
+        "History Enthusiast",
+        "Dad",
+        "Whiskey Connoisseur"
+      ],
+      "occasions": [
+        "Father's Day",
+        "Birthday",
+        "Holiday",
+        "Retirement"
+      ],
+      "primaryGiftIntent": "Civil War whiskey glass gift for history enthusiasts",
+      "secondaryGiftIntents": [
+        "history buff barware gifts",
+        "historical whiskey tumbler"
+      ],
+      "searchConcepts": [
+        "Civil War whiskey glass",
+        "history buff barware gifts",
+        "Civil War themed drinking glass",
+        "historical whiskey tumbler",
+        "gifts for American history enthusiasts"
+      ]
     },
-    "titleCandidates": [],
+    "titleCandidates": [
+      {
+        "id": "candidate_1",
+        "title": "Civil War Gift Whiskey Glass - American History Themed Barware Tumbler",
+        "formula": "Specific Theme + Gift Intent + Product Type + Differentiator",
+        "scores": {
+          "coreThemeProminence": 95,
+          "giftSearchRelevance": 95,
+          "productClarity": 95,
+          "naturalLanguage": 98,
+          "factualAccuracy": 100,
+          "differentiation": 90,
+          "characterEfficiency": 92,
+          "total": 95
+        },
+        "reasoning": "Front-loads the specific theme of American Civil War with direct gift intent and clear product categorization, capturing primary search terms effectively.",
+        "titlePriorityOrder": [
+          "1. Specific Theme: Civil War",
+          "2. Gift Intent: Gift",
+          "3. Product Type: Whiskey Glass",
+          "4. Differentiator: American History Themed Barware Tumbler"
+        ],
+        "titleStrategyReasoning": "Prioritizes the exact specific theme of the American Civil War over broad categories to match high-intent searches while preserving natural product phrasing."
+      },
+      {
+        "id": "candidate_2",
+        "title": "Civil War Whiskey Glass - American History Barware Tumbler for History Buffs",
+        "formula": "Specific Theme + Product Type + Differentiator + Secondary Gift/Audience Intent",
+        "scores": {
+          "coreThemeProminence": 95,
+          "giftSearchRelevance": 90,
+          "productClarity": 95,
+          "naturalLanguage": 95,
+          "factualAccuracy": 100,
+          "differentiation": 92,
+          "characterEfficiency": 90,
+          "total": 93.8
+        },
+        "reasoning": "Focuses directly on the product and theme combination, targeting specific audience queries like history buffs.",
+        "titlePriorityOrder": [
+          "1. Specific Theme: Civil War",
+          "2. Product Type: Whiskey Glass",
+          "3. Differentiator: American History Barware Tumbler",
+          "4. Audience Intent: for History Buffs"
+        ],
+        "titleStrategyReasoning": "Emphasizes the specific subject matter and exact product type for direct search queries without forcing the word gift at the beginning."
+      },
+      {
+        "id": "candidate_3",
+        "title": "American History Whiskey Tumbler - Civil War Themed Gold Accent Glass",
+        "formula": "Specific Design/Subject + Distinctive Attribute + Product Form Factor",
+        "scores": {
+          "coreThemeProminence": 90,
+          "giftSearchRelevance": 88,
+          "productClarity": 95,
+          "naturalLanguage": 95,
+          "factualAccuracy": 100,
+          "differentiation": 95,
+          "characterEfficiency": 92,
+          "total": 92.5
+        },
+        "reasoning": "Highlights material and design details like gold accents alongside the Civil War theme.",
+        "titlePriorityOrder": [
+          "1. Subject: American History",
+          "2. Product Type: Whiskey Tumbler",
+          "3. Specific Theme: Civil War Themed",
+          "4. Attribute: Gold Accent Glass"
+        ],
+        "titleStrategyReasoning": "Appeals to shoppers looking for specific aesthetic details such as gold accents and tumbler styling."
+      }
+    ],
     "originalImported": {
       "id": "civil-war-whiskey-glass",
       "link": "https://shop.scienceofgifts.com/products/civil-war-whiskey-glass",
@@ -22397,8 +23609,113 @@
       "custom_label_3": "Civil War",
       "custom_label_4": "Apparel / Drinkware / Decor"
     },
-    "appliedSuggestions": [],
+    "appliedSuggestions": [
+      {
+        "timestamp": "2026-10-21T18:19:15.546Z",
+        "fields": [
+          "Optimized Title",
+          "Optimized Description",
+          "Corrected Google Product Category (\"Home & Garden > Kitchen & Dining > Tableware > Drinkware\" → \"Home & Garden > Kitchen & Dining > Barware > Drinkware > Tumblers\")",
+          "Corrected Product Type (\"Home & Kitchen > History Gifts > Drinkware > Civil War Glassware\" → \"Whiskey Glasses\")",
+          "Optimized Color (Gold)",
+          "Optimized Size (one size)",
+          "Optimized Material (Glass)",
+          "Custom Label 0 (Gift Audience)",
+          "Custom Label 1 (Price Tier)",
+          "Custom Label 2 (Seasonality)",
+          "Custom Label 3 (Theme / Collection)",
+          "Custom Label 4 (Product Type)",
+          "Gift & Search Intent Mappings"
+        ],
+        "note": "1-Click \"Generate & Optimize\": Score improved from 70 to 95 (3 generated, 8 optimized)"
+      },
+      {
+        "timestamp": "2026-10-21T18:19:22.500Z",
+        "fields": [
+          "Optimized Title",
+          "Optimized Description",
+          "Optimized Google Product Category",
+          "Optimized Product Type",
+          "Optimized Color (Gold)",
+          "Optimized Size (one size)",
+          "Optimized Material (Glass)",
+          "Custom Label 0 (Gift Audience)",
+          "Custom Label 1 (Price Tier)",
+          "Custom Label 2 (Seasonality)",
+          "Custom Label 3 (Theme / Collection)",
+          "Custom Label 4 (Product Type)",
+          "Gift & Search Intent Mappings"
+        ],
+        "note": "1-Click \"Generate & Optimize\": Score improved from 95 to 95 (3 generated, 8 optimized)"
+      }
+    ],
     "history": [
+      {
+        "timestamp": "2026-10-21T18:19:22.500Z",
+        "note": "Before 1-Click \"Generate & Optimize\" (Score: 95/100)",
+        "snapshot": {
+          "id": "civil-war-whiskey-glass",
+          "link": "https://shop.scienceofgifts.com/products/civil-war-whiskey-glass",
+          "title": "Civil War Gift Whiskey Glass - American History Themed Barware Tumbler",
+          "description": "Elevate your evening pour with this meticulously crafted Civil War whiskey glass, designed for history enthusiasts and collectors alike. Featuring a subtle, historically inspired American Civil War motif paired with striking gold accents, this solid glass tumbler bridges everyday functionality with narrative storytelling. It makes a thoughtful and memorable gift for Father's Day, birthdays, or holidays for anyone deeply fascinated by American history, military artifacts, or classic barware. Constructed from durable, high-quality glass, it provides a comfortable weight and secure feel in the hand, perfect for enjoying bourbon, scotch, or your favorite spirits while reflecting on historical milestones.",
+          "image_link": "https://imgproxy.fourthwall.com/GEltsqJh2gmC69qHwBikj4rRT0ghuPOdjBg_xqcHXog/w:1920/sm:1/enc/I0hul0kxmISn69hf/rlPVeKjO-s7Gnxiw/hN7PACl8oAKH9Zyh/IBRYm4CfwvR8ClNM/6fo5sFFASwGpaEmC/1vHh1b2rvoXgRLe0/HqA3QQFIMANFfcyG/j3ZoQ3zsaALgnz_R/niZVlrm8fgVQiuDg/uuLelGqfwBBTpdkk/2_ysaP6TbwQABHrX/SadLCyQbhpc_6b2R/5NCHkV8GyQIpn-In/8QiJGA",
+          "additional_image_link": "",
+          "google_product_category": "Home & Garden > Kitchen & Dining > Barware > Drinkware > Tumblers",
+          "product_type": "Whiskey Glasses",
+          "price": "19.90 USD",
+          "sale_price": "",
+          "availability": "in_stock",
+          "brand": "Science of Gifts",
+          "gtin": "",
+          "mpn": "",
+          "identifier_exists": "no",
+          "item_group_id": "",
+          "color": "Gold",
+          "size": "one size",
+          "material": "Glass",
+          "gender": "unisex",
+          "age_group": "adult",
+          "condition": "new",
+          "custom_label_0": "History Buff Gifts",
+          "custom_label_1": "Budget Gifts (< $20)",
+          "custom_label_2": "Year-Round Essential",
+          "custom_label_3": "American Civil War",
+          "custom_label_4": "Drinkware"
+        }
+      },
+      {
+        "timestamp": "2026-10-21T18:19:15.546Z",
+        "note": "Before 1-Click \"Generate & Optimize\" (Score: 70/100)",
+        "snapshot": {
+          "id": "civil-war-whiskey-glass",
+          "link": "https://shop.scienceofgifts.com/products/civil-war-whiskey-glass",
+          "title": "Civil War Gift Apparel / Drinkware / Decor - Glass Design",
+          "description": "This whiskey glass features a Civil War–inspired design, adding a historical touch to any pour. Solid and well-suited for everyday use, it blends function with subtle storytelling. A thoughtful gift for history buffs, collectors, or whiskey drinkers who appreciate American history in their barware.",
+          "image_link": "https://imgproxy.fourthwall.com/GEltsqJh2gmC69qHwBikj4rRT0ghuPOdjBg_xqcHXog/w:1920/sm:1/enc/I0hul0kxmISn69hf/rlPVeKjO-s7Gnxiw/hN7PACl8oAKH9Zyh/IBRYm4CfwvR8ClNM/6fo5sFFASwGpaEmC/1vHh1b2rvoXgRLe0/HqA3QQFIMANFfcyG/j3ZoQ3zsaALgnz_R/niZVlrm8fgVQiuDg/uuLelGqfwBBTpdkk/2_ysaP6TbwQABHrX/SadLCyQbhpc_6b2R/5NCHkV8GyQIpn-In/8QiJGA",
+          "additional_image_link": "",
+          "google_product_category": "Home & Garden > Kitchen & Dining > Tableware > Drinkware",
+          "product_type": "Home & Kitchen > History Gifts > Drinkware > Civil War Glassware",
+          "price": "19.90 USD",
+          "sale_price": "",
+          "availability": "in_stock",
+          "brand": "Science of Gifts",
+          "gtin": "",
+          "mpn": "",
+          "identifier_exists": "no",
+          "item_group_id": "",
+          "color": "Gold",
+          "size": "one size",
+          "material": "Glass",
+          "gender": "unisex",
+          "age_group": "adult",
+          "condition": "new",
+          "custom_label_0": "History Buffs",
+          "custom_label_1": "Mid-Tier Gifts ($20 - $40)",
+          "custom_label_2": "Year-Round Essential",
+          "custom_label_3": "Civil War",
+          "custom_label_4": "Apparel / Drinkware / Decor"
+        }
+      },
       {
         "timestamp": "2026-10-21T11:28:55.909Z",
         "note": "Initial import from CSV",
@@ -22439,7 +23756,262 @@
       "warnings": []
     },
     "createdAt": "2026-10-21T11:28:55.909Z",
-    "updatedAt": "2026-10-21T11:28:55.909Z"
+    "updatedAt": "2026-10-21T18:19:31.789Z",
+    "strategy": {
+      "exactProductSummary": "A glass whiskey tumbler featuring a Civil War-inspired gold-colored design, suitable for everyday barware use.",
+      "dominantTheme": "American Civil War",
+      "productCategory": "Whiskey Glasses",
+      "verifiedPhysicalAttributes": [
+        "Brand: Science of Gifts",
+        "Color: Gold",
+        "Size: One Size",
+        "Material: Glass"
+      ],
+      "realisticBuyer": "A gift giver looking for themed barware or a history buff buying self-use novelty drinkware.",
+      "realisticRecipient": "History buffs, American Civil War enthusiasts, collectors, or whiskey drinkers.",
+      "giftRationale": "Combines a passion for American history with functional barware, offering a subtle narrative touch for daily relaxation.",
+      "relevantSearchIntents": [
+        "Civil War whiskey glass",
+        "history buff barware gifts",
+        "Civil War themed drinking glass",
+        "historical whiskey tumbler",
+        "gifts for American history enthusiasts"
+      ],
+      "differentiatingAttributes": [
+        "Civil War-inspired design",
+        "Gold-colored detailing on glass",
+        "Solid construction suitable for everyday use"
+      ],
+      "titleStrategy": "Front-load the core product type and subject matter (e.g., Civil War Whiskey Glass - Historical Barware Tumbler).",
+      "descriptionStrategy": "Highlight the Civil War-inspired gold design and solid glass construction, detailing its appeal as a thoughtful gift for whiskey drinkers and history buffs.",
+      "productTypeStrategy": "Home & Garden > Kitchen & Dining > Barware > Drinkware > Tumblers & Water Glasses",
+      "antiRecommendations": [
+        "Do not invent specific fluid capacity ounces since exact dimensions are unverified.",
+        "Do not claim vintage antique status.",
+        "Do not use promotional spam words like best or cheapest.",
+        "Do not keyword stuff unrelated historical events."
+      ],
+      "googleCategoryRationale": "Standard category for drinking glasses and tumblers used for serving liquor and whiskey.",
+      "recommendedGoogleCategory": "Home & Garden > Kitchen & Dining > Barware > Drinkware > Tumblers",
+      "customLabelsStrategy": {
+        "custom_label_0": "History Buffs",
+        "custom_label_1": "Under $25",
+        "custom_label_2": "Christmas / Holidays",
+        "custom_label_3": "American Civil War",
+        "custom_label_4": "Whiskey Glasses"
+      },
+      "researchedAt": "2026-10-21T18:19:18.128Z"
+    },
+    "selectedTitleCandidateId": "candidate_1",
+    "fieldProvenance": {
+      "id": "VERIFIED",
+      "link": "VERIFIED",
+      "image_link": "VERIFIED",
+      "price": "VERIFIED",
+      "availability": "VERIFIED",
+      "brand": "VERIFIED",
+      "condition": "VERIFIED",
+      "color": "VERIFIED",
+      "material": "VERIFIED",
+      "size": "VERIFIED",
+      "gtin": "UNAVAILABLE",
+      "mpn": "UNAVAILABLE",
+      "identifier_exists": "VERIFIED",
+      "title": "OPTIMIZED",
+      "description": "OPTIMIZED",
+      "google_product_category": "OPTIMIZED",
+      "product_type": "OPTIMIZED",
+      "custom_label_0": "OPTIMIZED",
+      "custom_label_1": "OPTIMIZED",
+      "custom_label_2": "VERIFIED",
+      "custom_label_3": "OPTIMIZED",
+      "custom_label_4": "OPTIMIZED",
+      "gift_theme": "GENERATED",
+      "gift_audience": "GENERATED",
+      "gift_intent": "GENERATED"
+    },
+    "fieldProvenanceDetails": {
+      "id": {
+        "status": "VERIFIED",
+        "source": "Product source identifier",
+        "updatedAt": "2026-10-21T18:19:31.789Z"
+      },
+      "link": {
+        "status": "VERIFIED",
+        "source": "Extracted landing page URL",
+        "updatedAt": "2026-10-21T18:19:31.789Z"
+      },
+      "image_link": {
+        "status": "VERIFIED",
+        "source": "Extracted product photo",
+        "updatedAt": "2026-10-21T18:19:31.789Z"
+      },
+      "price": {
+        "status": "VERIFIED",
+        "source": "Extracted price from evidence",
+        "updatedAt": "2026-10-21T18:19:31.789Z"
+      },
+      "availability": {
+        "status": "VERIFIED",
+        "source": "Source inventory status",
+        "updatedAt": "2026-10-21T18:19:31.789Z"
+      },
+      "brand": {
+        "status": "VERIFIED",
+        "source": "Verified catalog brand",
+        "updatedAt": "2026-10-21T18:19:31.789Z"
+      },
+      "condition": {
+        "status": "VERIFIED",
+        "source": "Standard retail condition (new)",
+        "updatedAt": "2026-10-21T18:19:31.789Z"
+      },
+      "color": {
+        "status": "VERIFIED",
+        "source": "Source page specifications",
+        "updatedAt": "2026-10-21T18:19:31.789Z"
+      },
+      "material": {
+        "status": "VERIFIED",
+        "source": "Source page specifications",
+        "updatedAt": "2026-10-21T18:19:31.789Z"
+      },
+      "size": {
+        "status": "VERIFIED",
+        "source": "Product options & specifications",
+        "updatedAt": "2026-10-21T18:19:31.789Z"
+      },
+      "gtin": {
+        "status": "UNAVAILABLE",
+        "note": "Not provided by source. AI will not fabricate GTIN.",
+        "updatedAt": "2026-10-21T18:19:31.789Z"
+      },
+      "mpn": {
+        "status": "UNAVAILABLE",
+        "note": "Not provided by source. AI will not fabricate MPN.",
+        "updatedAt": "2026-10-21T18:19:31.789Z"
+      },
+      "identifier_exists": {
+        "status": "VERIFIED",
+        "note": "Set to no (Merchant Center POD standard)",
+        "updatedAt": "2026-10-21T18:19:31.789Z"
+      },
+      "title": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:22.299Z"
+      },
+      "description": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:26.700Z"
+      },
+      "google_product_category": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:22.299Z"
+      },
+      "product_type": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:22.299Z"
+      },
+      "custom_label_0": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:26.700Z"
+      },
+      "custom_label_1": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:22.299Z"
+      },
+      "custom_label_2": {
+        "status": "VERIFIED",
+        "source": "Preserved from existing verified data",
+        "updatedAt": "2026-10-21T18:19:22.299Z"
+      },
+      "custom_label_3": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:26.700Z"
+      },
+      "custom_label_4": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T18:19:26.700Z"
+      }
+    },
+    "audit": {
+      "overallScore": 95,
+      "previousScore": 95,
+      "fieldScores": {
+        "accuracy": 96,
+        "searchRelevance": 94,
+        "giftRelevance": 95,
+        "taxonomy": 96,
+        "description": 93,
+        "naturalLanguage": 96,
+        "compliance": 98
+      },
+      "issues": [
+        {
+          "id": "iss_gtin_compliant_none",
+          "field": "gtin",
+          "title": "✓ No GTIN",
+          "description": "Identifier Exists: No\nNo manufacturer identifier was supplied for this product.",
+          "state": "informational",
+          "verifiedEvidence": "Product is custom / made-to-order without manufacturer barcode",
+          "suggestedFix": "Compliant with Google Merchant Center custom goods policy."
+        }
+      ],
+      "warnings": [],
+      "criticalErrors": [],
+      "suggestedFixes": [],
+      "auditedAt": "2026-10-21T18:19:26.700Z",
+      "fixedAutomatically": [
+        "Optimized Title",
+        "Optimized Description",
+        "Optimized Google Product Category",
+        "Optimized Product Type",
+        "Optimized Color (Gold)",
+        "Optimized Size (one size)",
+        "Optimized Material (Glass)",
+        "Custom Label 0 (Gift Audience)",
+        "Custom Label 1 (Price Tier)",
+        "Custom Label 2 (Seasonality)",
+        "Custom Label 3 (Theme / Collection)",
+        "Custom Label 4 (Product Type)",
+        "Gift & Search Intent Mappings"
+      ]
+    },
+    "lastOptimizationSummary": {
+      "timestamp": "2026-10-21T18:19:22.500Z",
+      "beforeScore": 95,
+      "afterScore": 95,
+      "appliedFields": [
+        "Optimized Title",
+        "Optimized Description",
+        "Optimized Google Product Category",
+        "Optimized Product Type",
+        "Optimized Color (Gold)",
+        "Optimized Size (one size)",
+        "Optimized Material (Glass)",
+        "Custom Label 0 (Gift Audience)",
+        "Custom Label 1 (Price Tier)",
+        "Custom Label 2 (Seasonality)",
+        "Custom Label 3 (Theme / Collection)",
+        "Custom Label 4 (Product Type)",
+        "Gift & Search Intent Mappings"
+      ],
+      "autoFixedIssues": [],
+      "remainingReviewCount": 0,
+      "generatedCount": 3,
+      "optimizedCount": 8,
+      "verifiedCount": 12
+    },
+    "productGroup": "",
+    "productSubgroup": ""
   },
   {
     "id": "police-academy-graduation-whiskey-glass",
@@ -23289,39 +24861,182 @@
   },
   {
     "id": "history-buff-definition-hoodie",
-    "status": "not_analyzed",
+    "status": "optimized",
     "evidence": {
       "sourceUrl": "https://shop.scienceofgifts.com/products/history-buff-definition-hoodie",
-      "extractedAt": "2026-10-21T11:28:55.909Z",
-      "pageTitle": "History Buff Gift Hoodie - Funny Definition Apparel for History Lovers",
-      "rawDescription": "Celebrate your passion for the past with the History Buff Gift Hoodie from Science of Gifts. Designed for dedicated history lovers, educators, and students, this black cotton blend hoodie features a playful and witty 'History Buff Definition' graphic that brings humor to everyday outfits. Crafted for comfort and everyday wear, it features a cozy interior fleece and a durable outer layer that stands up to campus walks, museum trips, or relaxed study sessions at home. Whether you are searching for a clever birthday present for a history major or adding a touch of academic humor to your own wardrobe, this apparel item strikes the ideal balance between coziness and personality. Embrace your inner historian with a thoughtful garment built for comfort, durability, and laughs.",
+      "extractedAt": "2026-10-21T17:21:28.611Z",
+      "pageTitle": "History Buff Definition Hoodie | Science of Gifts",
+      "rawDescription": "There's something quietly satisfying about a hoodie that makes you think for a second. This one doesn't announce itself loudly. It just sits there, looking like a dictionary entry, until someone reads it closely enough to get it.\nThe front reads: History Buff, noun. Someone who knows the past wasn't simple, just simplified. Followed by a redaction bar. And at the bottom, in small italic type: see also: footnotes, archives, lost context.\nThat's the whole thing. No imagery, no illustration. Just words, typeset like a reference book, in off-white on black. It works because the joke is understated enough that it doesn't feel like a joke at all.\nFor anyone who's spent time arguing that a historical event was more complicated than the textbook version, or who reads the footnotes before the main text, this is the kind of history buff hoodie that actually earns a reaction. Not from everyone. Just from the right people.\nIt's a solid everyday hoodie and an even better gift for the history lover in your life who's tired of oversimplified takes. The kind of person who will read the text, pause, and then quietly appreciate that someone out there made this.",
       "verifiedAttributes": {
         "brand": "Science of Gifts",
+        "material": "100% Cotton Twill",
         "color": "Black",
-        "size": "M",
-        "material": "Cotton Blend"
+        "size": "S - 3XL",
+        "sku": "history-buff-definition-hoodie"
       },
-      "unresolvedAttributes": [],
-      "confidenceScores": {
-        "title": 1,
-        "price": 1,
-        "imported_data": 0.9
-      },
-      "variants": [],
-      "images": [
-        "https://imgproxy.fourthwall.com/RcBB2xV4aDE9kNL7V7nTahfY-eEkGG6yqsUCUXS9A5Y/w:1920/sm:1/enc/-rzDnTLeHULLDFXH/mPPuobLR6eDaP6jw/KWVhIWeXykcPv5_9/rmfg4nob6JLpWNzj/18x8MDDRkYOPbtvG/G3w9jpmvQHfl7lGu/d5_fN0akN0hpDdAX/nnvb475WqWcc9j9N/zfDRwt1IksgeHgnq/uNFFNBx7nm9dQHCz/y__bt5YNjH81emx4/mA4vO1a5HVehT4VB/aiU4VqAiH1uVKx1e/bLj6Yw"
+      "unresolvedAttributes": [
+        "GTIN / MPN (Not provided in source page)",
+        "Care instructions"
       ],
-      "userCorrections": {}
+      "confidenceScores": {
+        "pageTitle": 0.95,
+        "price": 0.95,
+        "images": 0.98,
+        "material": 0.9
+      },
+      "variants": [
+        {
+          "id": "var_1",
+          "title": "Black, S",
+          "price": "49.90 USD",
+          "color": "Black",
+          "size": "S",
+          "available": true
+        },
+        {
+          "id": "var_2",
+          "title": "Black, M",
+          "price": "49.90 USD",
+          "color": "Black",
+          "size": "M",
+          "available": true
+        },
+        {
+          "id": "var_3",
+          "title": "Black, L",
+          "price": "49.90 USD",
+          "color": "Black",
+          "size": "L",
+          "available": true
+        },
+        {
+          "id": "var_4",
+          "title": "Black, XL",
+          "price": "49.90 USD",
+          "color": "Black",
+          "size": "XL",
+          "available": true
+        },
+        {
+          "id": "var_5",
+          "title": "Black, 2XL",
+          "price": "51.90 USD",
+          "color": "Black",
+          "size": "2XL",
+          "available": true
+        },
+        {
+          "id": "var_6",
+          "title": "Black, 3XL",
+          "price": "53.90 USD",
+          "color": "Black",
+          "size": "3XL",
+          "available": true
+        }
+      ],
+      "images": [
+        "https://imgproxy.fourthwall.dev/S2voKy0AOEcsky8NmHpNaghwoSV-6PSZCbkjcDHLuB8/w:1920/sm:1/enc/-rzDnTLeHULLDFXH/mPPuobLR6eDaP6jw/KWVhIWeXykcPv5_9/rmfg4nob6JLpWNzj/18x8MDDRkYOPbtvG/G3w9jpmvQHfl7lGu/d5_fN0akN0hpDdAX/nnvb475WqWcc9j9N/zfDRwt1IksgeHgnq/uNFFNBx7nm9dQHCz/y__bt5YNjH81emx4/mA4vO1a5HVehT4VB/aiU4VqAiH1uVKx1e/bLj6Yw.jpg",
+        "https://imgproxy.fourthwall.dev/3x0TFxqCIiBffAOxrZ93JyeSwyq-OBC39wf4p_PUBwQ/w:1920/sm:1/enc/ZttVrN_lyLsI9HAe/B9olkpgC7-uN1WM-/aETlrGzss3dbjnlS/A1sc37KAc43GJqXM/k3IDYpA5cfMirTx1/vQV1Bvw8ycP1l6h1/JgHdBn4ZQ6nZojRP/NFrDRP0Hw4otx_PC/ImMd3T0XdshMFi-s/BmqF1sXylVBt5Gxz/Y-cos0wmwHp8T2mC/KL7-F3S6vVMxBa7k/n0b6QUauBlWsHn2S/vHyd2Q.jpg",
+        "https://imgproxy.fourthwall.dev/VIHefLj3kl0IZdx9vs2hYFyKF-5vjPCX41rk1-A4eJw/w:1920/sm:1/enc/TQnUG_vUlZAVSRjH/VnfwgBrUp0M9D3hP/g3jGkjec2Fr3ObWN/KiqzXe7nIRUplktk/XZ_i3L3U4QKjPD0S/9fXB-dXLGS7PzEAi/xDcMzi8odqPWnRH4/pXraMcrnnI1bMuBM/33u1AvXlbvCWAaCX/y4yPhLOBnX0_CUmf/FsMXzam8Qj8hVwhU/cLhyzI3MKzhLRTaC/sN4468SYqRryt8cV/TWDSxhJotgjcp11x/4YnpUYNlmIk.jpg",
+        "https://imgproxy.fourthwall.dev/yX6tJqxuM9toSOYcJc7-hW0v4f0hoDKrA_gQ9UN-P74/w:1200/sm:1/enc/-rzDnTLeHULLDFXH/mPPuobLR6eDaP6jw/KWVhIWeXykcPv5_9/rmfg4nob6JLpWNzj/18x8MDDRkYOPbtvG/G3w9jpmvQHfl7lGu/d5_fN0akN0hpDdAX/nnvb475WqWcc9j9N/zfDRwt1IksgeHgnq/uNFFNBx7nm9dQHCz/y__bt5YNjH81emx4/mA4vO1a5HVehT4VB/aiU4VqAiH1uVKx1e/bLj6Yw.png"
+      ],
+      "userCorrections": {
+        "size": "S - 3XL"
+      },
+      "jsonLd": {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "History Buff Definition Hoodie",
+        "image": [
+          "https://imgproxy.fourthwall.dev/S2voKy0AOEcsky8NmHpNaghwoSV-6PSZCbkjcDHLuB8/w:1920/sm:1/enc/-rzDnTLeHULLDFXH/mPPuobLR6eDaP6jw/KWVhIWeXykcPv5_9/rmfg4nob6JLpWNzj/18x8MDDRkYOPbtvG/G3w9jpmvQHfl7lGu/d5_fN0akN0hpDdAX/nnvb475WqWcc9j9N/zfDRwt1IksgeHgnq/uNFFNBx7nm9dQHCz/y__bt5YNjH81emx4/mA4vO1a5HVehT4VB/aiU4VqAiH1uVKx1e/bLj6Yw.jpg",
+          "https://imgproxy.fourthwall.dev/3x0TFxqCIiBffAOxrZ93JyeSwyq-OBC39wf4p_PUBwQ/w:1920/sm:1/enc/ZttVrN_lyLsI9HAe/B9olkpgC7-uN1WM-/aETlrGzss3dbjnlS/A1sc37KAc43GJqXM/k3IDYpA5cfMirTx1/vQV1Bvw8ycP1l6h1/JgHdBn4ZQ6nZojRP/NFrDRP0Hw4otx_PC/ImMd3T0XdshMFi-s/BmqF1sXylVBt5Gxz/Y-cos0wmwHp8T2mC/KL7-F3S6vVMxBa7k/n0b6QUauBlWsHn2S/vHyd2Q.jpg",
+          "https://imgproxy.fourthwall.dev/VIHefLj3kl0IZdx9vs2hYFyKF-5vjPCX41rk1-A4eJw/w:1920/sm:1/enc/TQnUG_vUlZAVSRjH/VnfwgBrUp0M9D3hP/g3jGkjec2Fr3ObWN/KiqzXe7nIRUplktk/XZ_i3L3U4QKjPD0S/9fXB-dXLGS7PzEAi/xDcMzi8odqPWnRH4/pXraMcrnnI1bMuBM/33u1AvXlbvCWAaCX/y4yPhLOBnX0_CUmf/FsMXzam8Qj8hVwhU/cLhyzI3MKzhLRTaC/sN4468SYqRryt8cV/TWDSxhJotgjcp11x/4YnpUYNlmIk.jpg"
+        ],
+        "brand": {
+          "@type": "Brand",
+          "name": "Science of Gifts"
+        },
+        "sku": "history-buff-definition-hoodie",
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Black, S",
+            "url": "https://shop.scienceofgifts.com/products/history-buff-definition-hoodie?variant=d2123d93-c14d-4d88-aa11-a54505c6c602",
+            "priceCurrency": "USD",
+            "price": "49.9",
+            "itemCondition": "https://schema.org/NewCondition",
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "name": "Black, M",
+            "url": "https://shop.scienceofgifts.com/products/history-buff-definition-hoodie?variant=1b3384b4-6669-459f-8876-b1bb375e46b0",
+            "priceCurrency": "USD",
+            "price": "49.9",
+            "itemCondition": "https://schema.org/NewCondition",
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "name": "Black, L",
+            "url": "https://shop.scienceofgifts.com/products/history-buff-definition-hoodie?variant=f1a7728c-40c4-400e-9cf2-34e5fe07edb2",
+            "priceCurrency": "USD",
+            "price": "49.9",
+            "itemCondition": "https://schema.org/NewCondition",
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "name": "Black, XL",
+            "url": "https://shop.scienceofgifts.com/products/history-buff-definition-hoodie?variant=0f75fb80-b750-4152-b922-b7515cf72d65",
+            "priceCurrency": "USD",
+            "price": "49.9",
+            "itemCondition": "https://schema.org/NewCondition",
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "name": "Black, 2XL",
+            "url": "https://shop.scienceofgifts.com/products/history-buff-definition-hoodie?variant=12a0017a-f0b2-4848-b80e-1519537fb3f6",
+            "priceCurrency": "USD",
+            "price": "51.9",
+            "itemCondition": "https://schema.org/NewCondition",
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "name": "Black, 3XL",
+            "url": "https://shop.scienceofgifts.com/products/history-buff-definition-hoodie?variant=79af414f-98f5-4b69-bc02-51360762ff4a",
+            "priceCurrency": "USD",
+            "price": "53.9",
+            "itemCondition": "https://schema.org/NewCondition",
+            "availability": "https://schema.org/InStock"
+          }
+        ],
+        "description": "There's something quietly satisfying about a hoodie that makes you think for a second. This one doesn't announce itself loudly. It just sits there, looking like a dictionary entry, until someone reads it closely enough to get it.\nThe front reads: History Buff, noun. Someone who knows the past wasn't simple, just simplified. Followed by a redaction bar. And at the bottom, in small italic type: see also: footnotes, archives, lost context.\nThat's the whole thing. No imagery, no illustration. Just words, typeset like a reference book, in off-white on black. It works because the joke is understated enough that it doesn't feel like a joke at all.\nFor anyone who's spent time arguing that a historical event was more complicated than the textbook version, or who reads the footnotes before the main text, this is the kind of history buff hoodie that actually earns a reaction. Not from everyone. Just from the right people.\nIt's a solid everyday hoodie and an even better gift for the history lover in your life who's tired of oversimplified takes. The kind of person who will read the text, pause, and then quietly appreciate that someone out there made this."
+      },
+      "openGraph": {
+        "description": "There's something quietly satisfying about a hoodie that makes you think for a second. This one doesn't announce itself loudly. It just sits there, looking like a dictionary entry, until someone reads it closely enough to get it. The front reads: ...",
+        "og:site_name": "Science of Gifts",
+        "og:url": "https://shop.scienceofgifts.com/products/history-buff-definition-hoodie",
+        "og:description": "There's something quietly satisfying about a hoodie that makes you think for a second. This one doesn't announce itself loudly. It just sits there, looking like a dictionary entry, until someone reads it closely enough to get it. The front reads: ...",
+        "og:price:amount": "49.90",
+        "og:price:currency": "USD",
+        "og:title": "History Buff Definition Hoodie",
+        "og:type": "product",
+        "og:image": "https://imgproxy.fourthwall.dev/yX6tJqxuM9toSOYcJc7-hW0v4f0hoDKrA_gQ9UN-P74/w:1200/sm:1/enc/-rzDnTLeHULLDFXH/mPPuobLR6eDaP6jw/KWVhIWeXykcPv5_9/rmfg4nob6JLpWNzj/18x8MDDRkYOPbtvG/G3w9jpmvQHfl7lGu/d5_fN0akN0hpDdAX/nnvb475WqWcc9j9N/zfDRwt1IksgeHgnq/uNFFNBx7nm9dQHCz/y__bt5YNjH81emx4/mA4vO1a5HVehT4VB/aiU4VqAiH1uVKx1e/bLj6Yw.png",
+        "og:image:secure_url": "https://imgproxy.fourthwall.dev/yX6tJqxuM9toSOYcJc7-hW0v4f0hoDKrA_gQ9UN-P74/w:1200/sm:1/enc/-rzDnTLeHULLDFXH/mPPuobLR6eDaP6jw/KWVhIWeXykcPv5_9/rmfg4nob6JLpWNzj/18x8MDDRkYOPbtvG/G3w9jpmvQHfl7lGu/d5_fN0akN0hpDdAX/nnvb475WqWcc9j9N/zfDRwt1IksgeHgnq/uNFFNBx7nm9dQHCz/y__bt5YNjH81emx4/mA4vO1a5HVehT4VB/aiU4VqAiH1uVKx1e/bLj6Yw.png"
+      }
     },
     "merchantData": {
       "id": "history-buff-definition-hoodie",
       "link": "https://shop.scienceofgifts.com/products/history-buff-definition-hoodie",
       "title": "History Buff Gift Hoodie - Funny Definition Apparel for History Lovers",
-      "description": "Celebrate your passion for the past with the History Buff Gift Hoodie from Science of Gifts. Designed for dedicated history lovers, educators, and students, this black cotton blend hoodie features a playful and witty 'History Buff Definition' graphic that brings humor to everyday outfits. Crafted for comfort and everyday wear, it features a cozy interior fleece and a durable outer layer that stands up to campus walks, museum trips, or relaxed study sessions at home. Whether you are searching for a clever birthday present for a history major or adding a touch of academic humor to your own wardrobe, this apparel item strikes the ideal balance between coziness and personality. Embrace your inner historian with a thoughtful garment built for comfort, durability, and laughs.",
+      "description": "Celebrate your passion for the past with the History Buff Gift Hoodie from Science of Gifts. Designed for dedicated history lovers, educators, and students, this black 100% cotton twill hoodie features a playful and witty 'History Buff Definition' graphic that brings humor to everyday outfits. Crafted for comfort and everyday wear, it features a cozy interior fleece and a durable outer layer that stands up to campus walks, museum trips, or relaxed study sessions at home. Whether you are searching for a clever birthday present for a history major or adding a touch of academic humor to your own wardrobe, this apparel item strikes the ideal balance between coziness and personality. Embrace your inner historian with a thoughtful garment built for comfort, durability, and laughs. Premium 100% cotton twill construction ensures lasting wear through countless archives research sessions and casual outings.",
       "image_link": "https://imgproxy.fourthwall.com/RcBB2xV4aDE9kNL7V7nTahfY-eEkGG6yqsUCUXS9A5Y/w:1920/sm:1/enc/-rzDnTLeHULLDFXH/mPPuobLR6eDaP6jw/KWVhIWeXykcPv5_9/rmfg4nob6JLpWNzj/18x8MDDRkYOPbtvG/G3w9jpmvQHfl7lGu/d5_fN0akN0hpDdAX/nnvb475WqWcc9j9N/zfDRwt1IksgeHgnq/uNFFNBx7nm9dQHCz/y__bt5YNjH81emx4/mA4vO1a5HVehT4VB/aiU4VqAiH1uVKx1e/bLj6Yw",
       "additional_image_link": "",
       "google_product_category": "Apparel & Accessories > Clothing > Outerwear > Hoodies & Sweatshirts",
-      "product_type": "Hoodie",
+      "product_type": "Hoodies & Sweatshirts",
       "price": "49.90 USD",
       "sale_price": "",
       "availability": "in_stock",
@@ -23331,30 +25046,122 @@
       "identifier_exists": "no",
       "item_group_id": "",
       "color": "Black",
-      "size": "M",
-      "material": "Cotton Blend",
+      "size": "S - 3XL",
+      "material": "100% Cotton Twill",
       "gender": "unisex",
       "age_group": "adult",
       "condition": "new",
       "custom_label_0": "History Buff",
-      "custom_label_1": "Hoodie",
-      "custom_label_2": "Apparel",
-      "custom_label_3": "Funny Gift",
-      "custom_label_4": "Under 50"
+      "custom_label_1": "Premium Gifts ($40 - $75)",
+      "custom_label_2": "Year-Round Essential",
+      "custom_label_3": "General History",
+      "custom_label_4": "Caps & Hats"
     },
     "giftIntelligence": {
-      "theme": "Funny Gift",
-      "subtheme": "",
+      "theme": "General History",
+      "subtheme": "Academic Humor",
       "targetAudience": [
-        "History Buff"
+        "History Lovers",
+        "History Teachers",
+        "Students",
+        "History Majors"
       ],
-      "recipientPersonas": [],
-      "occasions": [],
-      "primaryGiftIntent": "",
-      "secondaryGiftIntents": [],
-      "searchConcepts": []
+      "recipientPersonas": [
+        "Historian",
+        "History Teacher",
+        "Museum Goer",
+        "Academic"
+      ],
+      "occasions": [
+        "Birthday",
+        "Graduation",
+        "Back to School",
+        "Holidays"
+      ],
+      "primaryGiftIntent": "Birthday present for history major or enthusiast",
+      "secondaryGiftIntents": [
+        "Academic humor apparel",
+        "Teacher appreciation gift"
+      ],
+      "searchConcepts": [
+        "history buff hoodie",
+        "gifts for history lovers",
+        "funny history apparel",
+        "history teacher sweatshirt",
+        "dictionary definition hoodie"
+      ]
     },
-    "titleCandidates": [],
+    "titleCandidates": [
+      {
+        "id": "candidate_1",
+        "title": "History Buff Gift Hoodie - Funny Definition Apparel for History Lovers",
+        "formula": "Specific Theme + Gift Intent + Product Type + Differentiator",
+        "scores": {
+          "coreThemeProminence": 90,
+          "giftSearchRelevance": 95,
+          "productClarity": 95,
+          "naturalLanguage": 95,
+          "factualAccuracy": 100,
+          "differentiation": 90,
+          "characterEfficiency": 92,
+          "total": 94
+        },
+        "reasoning": "Front-loads the specific theme and direct gift intent while clearly defining the product form factor and comical dictionary definition angle.",
+        "titlePriorityOrder": [
+          "1. Specific Theme: History Buff",
+          "2. Gift Intent: Gift Hoodie",
+          "3. Product Type: Hoodie",
+          "4. Differentiator: Funny Definition Apparel"
+        ],
+        "titleStrategyReasoning": "We prioritize the specific persona theme 'History Buff' combined directly with the high-intent search phrase 'Gift Hoodie' and the verified funny definition design attribute to maximize shopping relevance."
+      },
+      {
+        "id": "candidate_2",
+        "title": "History Buff Hoodie - Funny Dictionary Definition Gift for History Lovers",
+        "formula": "Specific Theme + Product Type + Differentiator + Secondary Gift Intent",
+        "scores": {
+          "coreThemeProminence": 92,
+          "giftSearchRelevance": 90,
+          "productClarity": 95,
+          "naturalLanguage": 95,
+          "factualAccuracy": 100,
+          "differentiation": 95,
+          "characterEfficiency": 90,
+          "total": 93
+        },
+        "reasoning": "Leans heavily into product-first search behavior with 'History Buff Hoodie' followed by the dictionary definition differentiator and gift framing.",
+        "titlePriorityOrder": [
+          "1. Specific Theme: History Buff",
+          "2. Product Type: Hoodie",
+          "3. Differentiator: Funny Dictionary Definition",
+          "4. Secondary Gift Intent: Gift for History Lovers"
+        ],
+        "titleStrategyReasoning": "Focuses on immediate item recognition for users searching directly for history apparel before appending the humorous definition angle and gift recipient intent."
+      },
+      {
+        "id": "candidate_3",
+        "title": "Funny History Definition Hoodie - History Buff Gift Apparel in Black",
+        "formula": "Differentiator + Specific Theme + Product Type + Color/Attribute",
+        "scores": {
+          "coreThemeProminence": 88,
+          "giftSearchRelevance": 92,
+          "productClarity": 95,
+          "naturalLanguage": 92,
+          "factualAccuracy": 100,
+          "differentiation": 95,
+          "characterEfficiency": 94,
+          "total": 92
+        },
+        "reasoning": "Leads with the humor angle which is a key differentiator for shoppers looking for novelty academic apparel.",
+        "titlePriorityOrder": [
+          "1. Differentiator: Funny History Definition",
+          "2. Product Type: Hoodie",
+          "3. Specific Theme: History Buff",
+          "4. Attribute: Black Apparel"
+        ],
+        "titleStrategyReasoning": "Captures the niche search traffic specifically hunting for funny history-themed novelty clothing items while maintaining factual accuracy to the black colorway."
+      }
+    ],
     "originalImported": {
       "id": "history-buff-definition-hoodie",
       "link": "https://shop.scienceofgifts.com/products/history-buff-definition-hoodie",
@@ -23384,8 +25191,146 @@
       "custom_label_3": "Funny Gift",
       "custom_label_4": "Under 50"
     },
-    "appliedSuggestions": [],
+    "appliedSuggestions": [
+      {
+        "timestamp": "2026-10-21T17:21:44.631Z",
+        "fields": [
+          "Optimized Title",
+          "Optimized Description",
+          "Optimized Google Product Category",
+          "Corrected Product Type (\"Hoodie\" → \"Hoodies & Sweatshirts\")",
+          "Optimized Color (Black)",
+          "Optimized Size (S - 3XL)",
+          "Corrected Material (\"Cotton Blend\" → \"100% Cotton Twill\")",
+          "Custom Label 0 (Gift Audience)",
+          "Custom Label 1 (Price Tier)",
+          "Custom Label 2 (Seasonality)",
+          "Custom Label 3 (Theme / Collection)",
+          "Custom Label 4 (Product Type)",
+          "Gift & Search Intent Mappings"
+        ],
+        "note": "1-Click \"Generate & Optimize\": Score improved from 70 to 95 (3 generated, 6 optimized)"
+      },
+      {
+        "timestamp": "2026-10-21T17:21:52.129Z",
+        "fields": [
+          "Optimized Title",
+          "Optimized Description",
+          "Optimized Google Product Category",
+          "Optimized Product Type",
+          "Optimized Color (Black)",
+          "Optimized Size (S - 3XL)",
+          "Optimized Material (100% Cotton Twill)",
+          "Custom Label 0 (Gift Audience)",
+          "Custom Label 1 (Price Tier)",
+          "Custom Label 2 (Seasonality)",
+          "Custom Label 3 (Theme / Collection)",
+          "Custom Label 4 (Product Type)",
+          "Gift & Search Intent Mappings"
+        ],
+        "note": "1-Click \"Generate & Optimize\": Score improved from 95 to 95 (3 generated, 7 optimized)"
+      }
+    ],
     "history": [
+      {
+        "timestamp": "2026-10-21T17:21:52.129Z",
+        "note": "Before 1-Click \"Generate & Optimize\" (Score: 95/100)",
+        "snapshot": {
+          "id": "history-buff-definition-hoodie",
+          "link": "https://shop.scienceofgifts.com/products/history-buff-definition-hoodie",
+          "title": "History Buff Gift Hoodie - Funny Definition Apparel for History Lovers",
+          "description": "Celebrate your passion for the past with the History Buff Gift Hoodie from Science of Gifts. Designed for dedicated history lovers, educators, and students, this black 100% cotton twill hoodie features a playful and witty 'History Buff Definition' graphic that brings humor to everyday outfits. Crafted for comfort and everyday wear, it features a cozy interior fleece and a durable outer layer that stands up to campus walks, museum trips, or relaxed study sessions at home. Whether you are searching for a clever birthday present for a history major or adding a touch of academic humor to your own wardrobe, this apparel item strikes the ideal balance between coziness and personality. Embrace your inner historian with a thoughtful garment built for comfort, durability, and laughs. Premium 100% cotton twill construction ensures lasting wear through countless archives research sessions and casual outings.",
+          "image_link": "https://imgproxy.fourthwall.com/RcBB2xV4aDE9kNL7V7nTahfY-eEkGG6yqsUCUXS9A5Y/w:1920/sm:1/enc/-rzDnTLeHULLDFXH/mPPuobLR6eDaP6jw/KWVhIWeXykcPv5_9/rmfg4nob6JLpWNzj/18x8MDDRkYOPbtvG/G3w9jpmvQHfl7lGu/d5_fN0akN0hpDdAX/nnvb475WqWcc9j9N/zfDRwt1IksgeHgnq/uNFFNBx7nm9dQHCz/y__bt5YNjH81emx4/mA4vO1a5HVehT4VB/aiU4VqAiH1uVKx1e/bLj6Yw",
+          "additional_image_link": "",
+          "google_product_category": "Apparel & Accessories > Clothing > Outerwear > Hoodies & Sweatshirts",
+          "product_type": "Hoodies & Sweatshirts",
+          "price": "49.90 USD",
+          "sale_price": "",
+          "availability": "in_stock",
+          "brand": "Science of Gifts",
+          "gtin": "",
+          "mpn": "",
+          "identifier_exists": "no",
+          "item_group_id": "",
+          "color": "Black",
+          "size": "S - 3XL",
+          "material": "100% Cotton Twill",
+          "gender": "unisex",
+          "age_group": "adult",
+          "condition": "new",
+          "custom_label_0": "General History",
+          "custom_label_1": "Premium Gifts ($40 - $75)",
+          "custom_label_2": "Year-Round Essential",
+          "custom_label_3": "Funny Gift",
+          "custom_label_4": "Bestseller"
+        }
+      },
+      {
+        "timestamp": "2026-10-21T17:21:44.631Z",
+        "note": "Before 1-Click \"Generate & Optimize\" (Score: 70/100)",
+        "snapshot": {
+          "id": "history-buff-definition-hoodie",
+          "link": "https://shop.scienceofgifts.com/products/history-buff-definition-hoodie",
+          "title": "History Buff Gift Hoodie - Funny Definition Apparel for History Lovers",
+          "description": "Celebrate your passion for the past with the History Buff Gift Hoodie from Science of Gifts. Designed for dedicated history lovers, educators, and students, this black cotton blend hoodie features a playful and witty 'History Buff Definition' graphic that brings humor to everyday outfits. Crafted for comfort and everyday wear, it features a cozy interior fleece and a durable outer layer that stands up to campus walks, museum trips, or relaxed study sessions at home. Whether you are searching for a clever birthday present for a history major or adding a touch of academic humor to your own wardrobe, this apparel item strikes the ideal balance between coziness and personality. Embrace your inner historian with a thoughtful garment built for comfort, durability, and laughs.",
+          "image_link": "https://imgproxy.fourthwall.com/RcBB2xV4aDE9kNL7V7nTahfY-eEkGG6yqsUCUXS9A5Y/w:1920/sm:1/enc/-rzDnTLeHULLDFXH/mPPuobLR6eDaP6jw/KWVhIWeXykcPv5_9/rmfg4nob6JLpWNzj/18x8MDDRkYOPbtvG/G3w9jpmvQHfl7lGu/d5_fN0akN0hpDdAX/nnvb475WqWcc9j9N/zfDRwt1IksgeHgnq/uNFFNBx7nm9dQHCz/y__bt5YNjH81emx4/mA4vO1a5HVehT4VB/aiU4VqAiH1uVKx1e/bLj6Yw",
+          "additional_image_link": "",
+          "google_product_category": "Apparel & Accessories > Clothing > Outerwear > Hoodies & Sweatshirts",
+          "product_type": "Hoodie",
+          "price": "49.90 USD",
+          "sale_price": "",
+          "availability": "in_stock",
+          "brand": "Science of Gifts",
+          "gtin": "",
+          "mpn": "",
+          "identifier_exists": "no",
+          "item_group_id": "",
+          "color": "Black",
+          "size": "S - 3XL",
+          "material": "Cotton Blend",
+          "gender": "unisex",
+          "age_group": "adult",
+          "condition": "new",
+          "custom_label_0": "History Buff",
+          "custom_label_1": "Hoodie",
+          "custom_label_2": "Apparel",
+          "custom_label_3": "Funny Gift",
+          "custom_label_4": "Under 50"
+        }
+      },
+      {
+        "timestamp": "2026-10-21T17:21:35.806Z",
+        "note": "Refreshed physical attributes: size",
+        "snapshot": {
+          "id": "history-buff-definition-hoodie",
+          "link": "https://shop.scienceofgifts.com/products/history-buff-definition-hoodie",
+          "title": "History Buff Gift Hoodie - Funny Definition Apparel for History Lovers",
+          "description": "Celebrate your passion for the past with the History Buff Gift Hoodie from Science of Gifts. Designed for dedicated history lovers, educators, and students, this black cotton blend hoodie features a playful and witty 'History Buff Definition' graphic that brings humor to everyday outfits. Crafted for comfort and everyday wear, it features a cozy interior fleece and a durable outer layer that stands up to campus walks, museum trips, or relaxed study sessions at home. Whether you are searching for a clever birthday present for a history major or adding a touch of academic humor to your own wardrobe, this apparel item strikes the ideal balance between coziness and personality. Embrace your inner historian with a thoughtful garment built for comfort, durability, and laughs.",
+          "image_link": "https://imgproxy.fourthwall.com/RcBB2xV4aDE9kNL7V7nTahfY-eEkGG6yqsUCUXS9A5Y/w:1920/sm:1/enc/-rzDnTLeHULLDFXH/mPPuobLR6eDaP6jw/KWVhIWeXykcPv5_9/rmfg4nob6JLpWNzj/18x8MDDRkYOPbtvG/G3w9jpmvQHfl7lGu/d5_fN0akN0hpDdAX/nnvb475WqWcc9j9N/zfDRwt1IksgeHgnq/uNFFNBx7nm9dQHCz/y__bt5YNjH81emx4/mA4vO1a5HVehT4VB/aiU4VqAiH1uVKx1e/bLj6Yw",
+          "additional_image_link": "",
+          "google_product_category": "Apparel & Accessories > Clothing > Outerwear > Hoodies & Sweatshirts",
+          "product_type": "Hoodie",
+          "price": "49.90 USD",
+          "sale_price": "",
+          "availability": "in_stock",
+          "brand": "Science of Gifts",
+          "gtin": "",
+          "mpn": "",
+          "identifier_exists": "no",
+          "item_group_id": "",
+          "color": "Black",
+          "size": "M",
+          "material": "Cotton Blend",
+          "gender": "unisex",
+          "age_group": "adult",
+          "condition": "new",
+          "custom_label_0": "History Buff",
+          "custom_label_1": "Hoodie",
+          "custom_label_2": "Apparel",
+          "custom_label_3": "Funny Gift",
+          "custom_label_4": "Under 50"
+        }
+      },
       {
         "timestamp": "2026-10-21T11:28:55.909Z",
         "note": "Initial import from CSV",
@@ -23426,7 +25371,262 @@
       "warnings": []
     },
     "createdAt": "2026-10-21T11:28:55.909Z",
-    "updatedAt": "2026-10-21T11:28:55.909Z"
+    "updatedAt": "2026-10-21T17:23:02.190Z",
+    "fieldProvenance": {
+      "id": "VERIFIED",
+      "link": "VERIFIED",
+      "image_link": "VERIFIED",
+      "price": "VERIFIED",
+      "availability": "VERIFIED",
+      "brand": "VERIFIED",
+      "condition": "VERIFIED",
+      "color": "VERIFIED",
+      "material": "VERIFIED",
+      "size": "USER_EDITED",
+      "gtin": "UNAVAILABLE",
+      "mpn": "UNAVAILABLE",
+      "identifier_exists": "VERIFIED",
+      "title": "VERIFIED",
+      "description": "OPTIMIZED",
+      "google_product_category": "VERIFIED",
+      "product_type": "OPTIMIZED",
+      "custom_label_0": "OPTIMIZED",
+      "custom_label_1": "OPTIMIZED",
+      "custom_label_2": "OPTIMIZED",
+      "custom_label_3": "OPTIMIZED",
+      "custom_label_4": "OPTIMIZED",
+      "gift_theme": "GENERATED",
+      "gift_audience": "GENERATED",
+      "gift_intent": "GENERATED"
+    },
+    "fieldProvenanceDetails": {
+      "id": {
+        "status": "VERIFIED",
+        "source": "Product source identifier",
+        "updatedAt": "2026-10-21T17:23:02.190Z"
+      },
+      "link": {
+        "status": "VERIFIED",
+        "source": "Extracted landing page URL",
+        "updatedAt": "2026-10-21T17:23:02.190Z"
+      },
+      "image_link": {
+        "status": "VERIFIED",
+        "source": "Extracted product photo",
+        "updatedAt": "2026-10-21T17:23:02.190Z"
+      },
+      "price": {
+        "status": "VERIFIED",
+        "source": "Extracted price from evidence",
+        "updatedAt": "2026-10-21T17:23:02.190Z"
+      },
+      "availability": {
+        "status": "VERIFIED",
+        "source": "Source inventory status",
+        "updatedAt": "2026-10-21T17:23:02.190Z"
+      },
+      "brand": {
+        "status": "VERIFIED",
+        "source": "Verified catalog brand",
+        "updatedAt": "2026-10-21T17:23:02.190Z"
+      },
+      "condition": {
+        "status": "VERIFIED",
+        "source": "Standard retail condition (new)",
+        "updatedAt": "2026-10-21T17:23:02.190Z"
+      },
+      "color": {
+        "status": "VERIFIED",
+        "source": "Source page specifications",
+        "updatedAt": "2026-10-21T17:23:02.190Z"
+      },
+      "material": {
+        "status": "VERIFIED",
+        "source": "Source page specifications",
+        "updatedAt": "2026-10-21T17:23:02.190Z"
+      },
+      "size": {
+        "status": "USER_EDITED",
+        "source": "User-approved override",
+        "updatedAt": "2026-10-21T17:23:02.190Z"
+      },
+      "gtin": {
+        "status": "UNAVAILABLE",
+        "note": "Not provided by source. AI will not fabricate GTIN.",
+        "updatedAt": "2026-10-21T17:23:02.190Z"
+      },
+      "mpn": {
+        "status": "UNAVAILABLE",
+        "note": "Not provided by source. AI will not fabricate MPN.",
+        "updatedAt": "2026-10-21T17:23:02.190Z"
+      },
+      "identifier_exists": {
+        "status": "VERIFIED",
+        "note": "Set to no (Merchant Center POD standard)",
+        "updatedAt": "2026-10-21T17:23:02.190Z"
+      },
+      "title": {
+        "status": "VERIFIED",
+        "source": "Preserved from existing verified data",
+        "updatedAt": "2026-10-21T17:21:35.806Z"
+      },
+      "description": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T17:21:51.953Z"
+      },
+      "google_product_category": {
+        "status": "VERIFIED",
+        "source": "Preserved from existing verified data",
+        "updatedAt": "2026-10-21T17:21:35.806Z"
+      },
+      "product_type": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T17:21:51.953Z"
+      },
+      "custom_label_0": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T17:21:57.237Z"
+      },
+      "custom_label_1": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T17:21:51.953Z"
+      },
+      "custom_label_2": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T17:21:51.953Z"
+      },
+      "custom_label_3": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T17:21:57.237Z"
+      },
+      "custom_label_4": {
+        "status": "OPTIMIZED",
+        "source": "Enhanced by AI for Merchant Center compliance & gift intent",
+        "updatedAt": "2026-10-21T17:21:57.237Z"
+      }
+    },
+    "strategy": {
+      "exactProductSummary": "A black 100% cotton twill hoodie featuring a dictionary-style definition for 'History Buff' in off-white text.",
+      "dominantTheme": "General History",
+      "productCategory": "Hoodies",
+      "verifiedPhysicalAttributes": [
+        "Brand: Science of Gifts",
+        "Material: 100% Cotton Twill",
+        "Color: Black",
+        "Size: S - 3XL",
+        "SKU: history-buff-definition-hoodie"
+      ],
+      "realisticBuyer": "A history enthusiast shopping for themselves or a gift giver looking for a witty present for a history lover.",
+      "realisticRecipient": "A history buff, archive researcher, or history teacher who appreciates understated historical humor.",
+      "giftRationale": "It connects directly to the recipient's intellectual passion for nuance, archives, and detailed historical context rather than simplified textbook narratives.",
+      "relevantSearchIntents": [
+        "history buff hoodie",
+        "gifts for history lovers",
+        "funny history apparel",
+        "history teacher sweatshirt",
+        "dictionary definition hoodie"
+      ],
+      "differentiatingAttributes": [
+        "Dictionary entry text layout with a redaction bar",
+        "Off-white typography on a solid black background",
+        "Understated intellectual humor targeted at history enthusiasts"
+      ],
+      "titleStrategy": "Front-load the subject and product type (e.g., History Buff Definition Hoodie - Black Cotton Apparel)",
+      "descriptionStrategy": "Highlight the dictionary-style design narrative, state the verified material and sizing specifications, and emphasize the thoughtful gift appeal for people who love historical nuance.",
+      "productTypeStrategy": "Apparel & Accessories > Clothing > Outerwear > Hoodies & Sweatshirts",
+      "antiRecommendations": [
+        "Do not claim organic cotton unless explicitly verified.",
+        "Do not claim specific chest or length measurements not provided.",
+        "Do not include promotional fluff like best seller or sale terms."
+      ],
+      "googleCategoryRationale": "Apparel & Accessories > Clothing > Outerwear > Hoodies & Sweatshirts is the precise standard category for a hooded sweatshirt.",
+      "recommendedGoogleCategory": "Apparel & Accessories > Clothing > Outerwear > Hoodies & Sweatshirts",
+      "customLabelsStrategy": {
+        "custom_label_0": "History Buffs",
+        "custom_label_1": "Mid-Range ($49.90)",
+        "custom_label_2": "Christmas / Holidays",
+        "custom_label_3": "General History",
+        "custom_label_4": "Hoodies"
+      },
+      "researchedAt": "2026-10-21T17:21:47.319Z"
+    },
+    "selectedTitleCandidateId": "candidate_1",
+    "audit": {
+      "overallScore": 95,
+      "previousScore": 95,
+      "fieldScores": {
+        "accuracy": 96,
+        "searchRelevance": 94,
+        "giftRelevance": 95,
+        "taxonomy": 96,
+        "description": 93,
+        "naturalLanguage": 96,
+        "compliance": 98
+      },
+      "issues": [
+        {
+          "id": "iss_gtin_compliant_none",
+          "field": "gtin",
+          "title": "✓ No GTIN",
+          "description": "Identifier Exists: No\nNo manufacturer identifier was supplied for this product.",
+          "state": "informational",
+          "verifiedEvidence": "Product is custom / made-to-order without manufacturer barcode",
+          "suggestedFix": "Compliant with Google Merchant Center custom goods policy."
+        }
+      ],
+      "warnings": [],
+      "criticalErrors": [],
+      "suggestedFixes": [],
+      "auditedAt": "2026-10-21T17:21:57.237Z",
+      "fixedAutomatically": [
+        "Optimized Title",
+        "Optimized Description",
+        "Optimized Google Product Category",
+        "Optimized Product Type",
+        "Optimized Color (Black)",
+        "Optimized Size (S - 3XL)",
+        "Optimized Material (100% Cotton Twill)",
+        "Custom Label 0 (Gift Audience)",
+        "Custom Label 1 (Price Tier)",
+        "Custom Label 2 (Seasonality)",
+        "Custom Label 3 (Theme / Collection)",
+        "Custom Label 4 (Product Type)",
+        "Gift & Search Intent Mappings"
+      ]
+    },
+    "lastOptimizationSummary": {
+      "timestamp": "2026-10-21T17:21:52.129Z",
+      "beforeScore": 95,
+      "afterScore": 95,
+      "appliedFields": [
+        "Optimized Title",
+        "Optimized Description",
+        "Optimized Google Product Category",
+        "Optimized Product Type",
+        "Optimized Color (Black)",
+        "Optimized Size (S - 3XL)",
+        "Optimized Material (100% Cotton Twill)",
+        "Custom Label 0 (Gift Audience)",
+        "Custom Label 1 (Price Tier)",
+        "Custom Label 2 (Seasonality)",
+        "Custom Label 3 (Theme / Collection)",
+        "Custom Label 4 (Product Type)",
+        "Gift & Search Intent Mappings"
+      ],
+      "autoFixedIssues": [],
+      "remainingReviewCount": 0,
+      "generatedCount": 3,
+      "optimizedCount": 7,
+      "verifiedCount": 12
+    },
+    "productGroup": "",
+    "productSubgroup": ""
   },
   {
     "id": "historia-magistra-vitae-whiskey-glass",

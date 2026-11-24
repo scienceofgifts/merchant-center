@@ -46,6 +46,18 @@ export function formatSizeRange(sizes: string[]): string {
 }
 
 /**
+ * Normalizes size strings for comparison across whitespace, capitalization, and common unit formats (e.g. '20 oz' vs '20oz')
+ */
+export function normalizeSize(size: string): string {
+  if (!size || typeof size !== 'string') return '';
+  return size
+    .toLowerCase()
+    .replace(/\s+/g, '')
+    .replace(/ounces?/g, 'oz')
+    .replace(/(?:inches?|")/g, 'in');
+}
+
+/**
  * Determines whether a ProductItem represents a specific variant rather than a parent product
  */
 export function isSpecificVariantItem(item: ProductItem): { isVariant: boolean; matchedVariant?: ProductVariant } {
@@ -115,6 +127,16 @@ export function detectDimensionFromEvidence(item: ProductItem): string | undefin
 export function detectCapacityFromEvidence(item: ProductItem): string | undefined {
   const verified = item.evidence?.verifiedAttributes || {};
   if (verified.capacity) return verified.capacity;
+  if (verified.size && /\b\d+(\.\d+)?\s*(?:oz|ounce|ounces)\b/i.test(verified.size)) {
+    return verified.size;
+  }
+
+  const variants = item.evidence?.variants || [];
+  for (const v of variants) {
+    if (v.size && /\b\d+(\.\d+)?\s*(?:oz|ounce|ounces)\b/i.test(v.size)) {
+      return v.size;
+    }
+  }
 
   const combinedText = [
     item.evidence?.pageTitle,
@@ -128,7 +150,7 @@ export function detectCapacityFromEvidence(item: ProductItem): string | undefine
     return multiMatch[0].replace(/\s+/g, ' ');
   }
 
-  const capMatch = combinedText.match(/\b(11|12|15|16|20|32)\s*oz\b/i);
+  const capMatch = combinedText.match(/\b(\d+(?:\.\d+)?)\s*oz\b/i);
   if (capMatch) {
     return capMatch[0];
   }
@@ -139,11 +161,65 @@ export function detectCapacityFromEvidence(item: ProductItem): string | undefine
 /**
  * Detects material from evidence
  */
+export function isProductMaterialCompatible(material: string, item: ProductItem): boolean {
+  const matLower = material.toLowerCase();
+  const titleText = [
+    item.evidence?.pageTitle,
+    item.merchantData?.title,
+  ].filter(Boolean).join(' ').toLowerCase();
+
+  const isDrinkwareTitle =
+    titleText.includes('mug') ||
+    titleText.includes('cup') ||
+    titleText.includes('drinkware') ||
+    titleText.includes('glass') ||
+    titleText.includes('tumbler') ||
+    titleText.includes('whiskey') ||
+    titleText.includes('shot glass') ||
+    titleText.includes('stemless') ||
+    titleText.includes('water bottle') ||
+    titleText.includes('travel mug');
+
+  const isPosterTitle =
+    !isDrinkwareTitle &&
+    (titleText.includes('poster') || titleText.includes('wall art') || titleText.includes('art print'));
+
+  const isApparelTitle =
+    !isDrinkwareTitle && !isPosterTitle &&
+    (titleText.includes('hoodie') || titleText.includes('sweatshirt') || titleText.includes('t-shirt') || titleText.includes('shirt') || titleText.includes('tee') || titleText.includes('hat') || titleText.includes('cap') || titleText.includes('beanie') || titleText.includes('socks'));
+
+  const isDrinkware = isDrinkwareTitle || (!isApparelTitle && !isPosterTitle && item.merchantData?.google_product_category?.toLowerCase().includes('drinkware'));
+  const isPoster = isPosterTitle || (!isApparelTitle && !isDrinkware && item.merchantData?.google_product_category?.toLowerCase().includes('posters'));
+  const isApparel = isApparelTitle || (!isDrinkware && !isPoster && item.merchantData?.google_product_category?.toLowerCase().includes('clothing'));
+
+  if (isDrinkware && (matLower.includes('cotton') || matLower.includes('paper') || matLower.includes('twill') || matLower.includes('canvas') || matLower.includes('polyester') || matLower.includes('fleece'))) {
+    return false;
+  }
+  if (isPoster && (matLower.includes('cotton') || (matLower.includes('glass') && !matLower.includes('framed')) || matLower.includes('twill') || matLower.includes('polyester'))) {
+    return false;
+  }
+  if (isApparel && (matLower.includes('glass') || (matLower.includes('paper') && !matLower.includes('hardcover')) || matLower.includes('museum-grade') || matLower.includes('ceramic') || matLower.includes('crystal') || matLower.includes('porcelain'))) {
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Detects material from evidence in a product-type-aware manner
+ */
 export function detectMaterialFromEvidence(item: ProductItem): string | undefined {
   const verified = item.evidence?.verifiedAttributes || {};
   if (verified.material && verified.material.trim()) {
-    return verified.material.trim();
+    const mat = verified.material.trim();
+    if (isProductMaterialCompatible(mat, item)) {
+      return mat;
+    }
   }
+
+  const titleText = [
+    item.evidence?.pageTitle,
+    item.merchantData?.title,
+  ].filter(Boolean).join(' ').toLowerCase();
 
   const combined = [
     item.evidence?.pageTitle,
@@ -152,36 +228,159 @@ export function detectMaterialFromEvidence(item: ProductItem): string | undefine
     item.merchantData?.description,
   ].filter(Boolean).join(' ').toLowerCase();
 
-  if (combined.includes('100% cotton') || combined.includes('ring-spun cotton') || combined.includes('combed cotton')) {
-    return '100% Cotton';
+  const isDrinkwareTitle =
+    titleText.includes('mug') ||
+    titleText.includes('cup') ||
+    titleText.includes('drinkware') ||
+    titleText.includes('glass') ||
+    titleText.includes('tumbler') ||
+    titleText.includes('whiskey') ||
+    titleText.includes('shot glass') ||
+    titleText.includes('stemless') ||
+    titleText.includes('water bottle') ||
+    titleText.includes('travel mug');
+
+  const isPosterTitle =
+    !isDrinkwareTitle &&
+    (titleText.includes('poster') || titleText.includes('wall art') || titleText.includes('art print'));
+
+  const isApparelTitle =
+    !isDrinkwareTitle && !isPosterTitle &&
+    (titleText.includes('hoodie') || titleText.includes('sweatshirt') || titleText.includes('t-shirt') || titleText.includes('shirt') || titleText.includes('tee') || titleText.includes('hat') || titleText.includes('cap') || titleText.includes('beanie') || titleText.includes('socks') || titleText.includes('sweater') || titleText.includes('jacket'));
+
+  const isDrinkware = isDrinkwareTitle || (!isApparelTitle && !isPosterTitle && (item.merchantData?.google_product_category?.toLowerCase().includes('drinkware') || item.merchantData?.google_product_category?.toLowerCase().includes('mugs')));
+  const isPoster = isPosterTitle || (!isApparelTitle && !isDrinkware && item.merchantData?.google_product_category?.toLowerCase().includes('posters'));
+  const isApparel = isApparelTitle || (!isDrinkware && !isPoster && (combined.includes('hoodie') || combined.includes('t-shirt') || combined.includes('shirt') || combined.includes('sweater') || item.merchantData?.google_product_category?.toLowerCase().includes('clothing') || item.merchantData?.google_product_category?.toLowerCase().includes('apparel')));
+
+  const isFramed = combined.includes('framed') || combined.includes('frame');
+
+  if (isDrinkware) {
+    if (/\b(stainless\s*steel|stainless|18\/8|insulated\s*steel|metal\s*tumbler|steel)\b/i.test(combined)) {
+      return 'Stainless Steel';
+    }
+    if (/\b(ceramic|porcelain|stoneware|clay)\b/i.test(combined)) {
+      return 'Ceramic';
+    }
+    if (/\b(crystal)\b/i.test(combined)) {
+      return 'Crystal';
+    }
+    if (/\b(glass|stemless\s*glass|pint\s*glass)\b/i.test(combined)) {
+      return 'Glass';
+    }
+    if (combined.includes('tumbler') || combined.includes('travel mug') || combined.includes('water bottle')) {
+      return 'Stainless Steel';
+    }
+    if (combined.includes('mug') || combined.includes('coffee cup')) {
+      return 'Ceramic';
+    }
+    return undefined;
   }
-  if (combined.includes('cotton blend') || combined.includes('cotton / polyester blend') || combined.includes('poly/cotton') || combined.includes('fleece')) {
-    return 'Cotton / Polyester Blend';
-  }
-  if (combined.includes('ceramic') || combined.includes('porcelain')) {
-    return 'Ceramic';
-  }
-  if (
-    combined.includes('museum-grade') ||
-    combined.includes('archival paper') ||
-    combined.includes('matte paper') ||
-    combined.includes('poster paper') ||
-    combined.includes('heavyweight paper') ||
-    combined.includes('fine art paper')
-  ) {
+
+  if (isPoster) {
+    if (isFramed) {
+      if (combined.includes('wood') || combined.includes('wooden')) return 'Museum-grade Matte Paper with Wood Frame';
+      if (combined.includes('metal')) return 'Museum-grade Matte Paper with Metal Frame';
+      return 'Museum-grade Matte Paper with Frame';
+    }
+    if (combined.includes('canvas')) return 'Canvas';
     return 'Museum-grade Matte Paper';
   }
-  if (combined.includes('canvas')) {
-    return 'Canvas';
-  }
-  if (combined.includes('hardcover') || combined.includes('journal') || combined.includes('notebook')) {
-    return 'Matte Hardcover with Archival Paper';
-  }
-  if (combined.includes('twill') || combined.includes('cap') || combined.includes('hat')) {
-    return '100% Cotton Twill';
+
+  if (isApparel) {
+    // 1. Explicit polyester
+    if (/\b(100%\s*polyester|high-quality polyester|durable polyester|polyester fabric|100%\s*poly)\b/i.test(combined)) {
+      return 'Polyester';
+    }
+    // 2. Cotton / poly blend or fleece
+    if (/\b(cotton\s*\/\s*polyester blend|cotton blend|poly\/cotton|cotton-poly|polyester blend|fleece)\b/i.test(combined)) {
+      return 'Cotton / Polyester Blend';
+    }
+    // 3. Standalone polyester if not a blend
+    if (/\bpolyester\b/i.test(combined) && !/\bcotton\b/i.test(combined)) {
+      return 'Polyester';
+    }
+    // 4. 100% cotton / ring-spun / combed
+    if (/\b(100%\s*cotton|ring-spun cotton|combed cotton|pure cotton|heavy cotton)\b/i.test(combined)) {
+      return '100% Cotton';
+    }
+    // 5. Cotton twill (require explicit twill or explicit headwear with word boundaries)
+    if (/\b(cotton twill|twill)\b/i.test(combined) || (/\b(baseball cap|dad cap|trucker cap|bucket hat)\b/i.test(combined) && /\b(twill|cotton)\b/i.test(combined))) {
+      return '100% Cotton Twill';
+    }
+    // 6. General cotton mention
+    if (/\bcotton\b/i.test(combined)) {
+      return '100% Cotton';
+    }
+    // If current material is already a valid compatible apparel material, preserve it
+    const currentMat = item.merchantData?.material?.trim();
+    if (currentMat && isProductMaterialCompatible(currentMat, item)) {
+      return currentMat;
+    }
+    return undefined;
   }
 
   return undefined;
+}
+
+export function isValidColorName(color: string): boolean {
+  if (!color || typeof color !== 'string') return false;
+  const c = color.trim().toLowerCase();
+  if (c.length < 2 || c.length > 30) return false;
+
+  const blacklistedValues = new Set([
+    'all',
+    'default',
+    'default title',
+    'none',
+    'n/a',
+    'na',
+    'one size',
+    'os',
+    'select',
+    'standard',
+    'various',
+    'multi',
+    'multicolor',
+    'multi-color',
+    'knitted',
+    'unknown',
+    'null',
+    'undefined',
+    'other',
+  ]);
+
+  if (blacklistedValues.has(c)) {
+    return false;
+  }
+
+  if (c === 'one size' || c.includes('science of gifts') || c.includes('out of stock') || c.includes('in stock') || c.includes('generic brand')) {
+    return false;
+  }
+
+  if (/^\d+(\.\d+)?\s*(x|\"|in|oz|ml)/i.test(c)) return false;
+  if (/\b\d+\s*x\s*\d+\b/i.test(c)) return false;
+
+  const invalidTokens = new Set([
+    'all', 'default', 'none', 'na', 'select', 'standard', 'various', 'multi', 'multicolor',
+    'size', 'os', 'small', 'medium', 'large', 'xl', '2xl', '3xl', '4xl', '5xl',
+    'brand', 'generic', 'unisex', 'adult', 'youth', 'kids', 'men', 'women', 'new',
+    'hoodie', 'sweatshirt', 't-shirt', 'shirt', 'tee', 'hat', 'cap', 'beanie', 'socks',
+    'mug', 'cup', 'glass', 'tumbler', 'poster', 'print', 'canvas', 'tote', 'bag',
+    'sweater', 'jacket', 'knitted', 'knit', 'woven', 'crochet', 'ribbed', 'braided',
+    'embroidered', 'embroidery', 'unstructured', 'structured', 'distressed', 'vintage',
+    'classic', 'fitted', 'relaxed', 'stretch', 'seamless', 'stitch', 'fleece', 'twill',
+    'denim', 'linen', 'wool', 'polyester', 'spandex', 'nylon', 'leather', 'suede',
+    'acrylic', 'silk', 'satin', 'velvet', 'cotton', 'paper', 'ceramic', 'porcelain',
+    'wood', 'metal', 'crystal', 'crewneck', 'pullover', 'zipper', 'button', 'pocket',
+    'inch', 'inches', 'cm', 'mm', 'oz', 'ml', 'ounce', 'ounces'
+  ]);
+
+  const tokens = c.split(/[\s,/_+()-]+/).filter(Boolean);
+  for (const t of tokens) {
+    if (invalidTokens.has(t)) return false;
+  }
+
+  return /[a-z]/i.test(c);
 }
 
 /**
@@ -190,14 +389,18 @@ export function detectMaterialFromEvidence(item: ProductItem): string | undefine
 export function detectColorFromEvidence(item: ProductItem): string | undefined {
   const verified = item.evidence?.verifiedAttributes || {};
   if (verified.color && verified.color.trim()) {
-    return verified.color.trim();
+    const col = verified.color.trim();
+    if (isValidColorName(col)) {
+      return col;
+    }
   }
 
   // Check variants
   const variants = item.evidence?.variants || [];
-  const variantColors = variants.map((v: ProductVariant) => v.color).filter(Boolean) as string[];
-  if (variantColors.length > 0) {
-    return variantColors[0];
+  for (const v of variants) {
+    if (v.color && v.color.trim() && isValidColorName(v.color)) {
+      return v.color.trim();
+    }
   }
 
   const text = [
@@ -208,7 +411,7 @@ export function detectColorFromEvidence(item: ProductItem): string | undefined {
 
   const knownColors = [
     { name: 'Heather Charcoal', regex: /\bheather charcoal\b/i },
-    { name: 'Black', regex: /\b(black|monochrome)\b/i },
+    { name: 'Black', regex: /\b(black|monochrome|black-and-white|black & white)\b/i },
     { name: 'White', regex: /\b(white|glossy white)\b/i },
     { name: 'Navy', regex: /\b(navy|navy blue)\b/i },
     { name: 'Charcoal', regex: /\bcharcoal\b/i },
@@ -245,25 +448,47 @@ export function reconcileProductAttributes(item: ProductItem): AttributeDiscrepa
     md.description,
   ].filter(Boolean).join(' ').toLowerCase();
 
-  const isApparel =
+  const hasApparelKeywords =
     combinedText.includes('hoodie') ||
     combinedText.includes('sweatshirt') ||
     combinedText.includes('t-shirt') ||
     combinedText.includes('shirt') ||
     combinedText.includes('tee') ||
     combinedText.includes('apparel') ||
-    md.google_product_category?.toLowerCase().includes('clothing');
+    combinedText.includes('hat') ||
+    combinedText.includes('cap') ||
+    combinedText.includes('beanie');
 
-  const isPoster =
-    !isApparel &&
-    (/\b(posters?|prints?|wall art)\b/i.test(combinedText) ||
-      md.google_product_category?.toLowerCase().includes('posters, prints & visual artwork'));
-
-  const isMug =
+  const hasNonApparelKeywords =
+    combinedText.includes('poster') ||
+    combinedText.includes('wall art') ||
+    combinedText.includes('art print') ||
     combinedText.includes('mug') ||
     combinedText.includes('cup') ||
     combinedText.includes('drinkware') ||
-    md.google_product_category?.toLowerCase().includes('mugs');
+    combinedText.includes('glass') ||
+    combinedText.includes('whiskey') ||
+    combinedText.includes('tumbler');
+
+  const isApparel = hasApparelKeywords || (md.google_product_category?.toLowerCase().includes('clothing') && !hasNonApparelKeywords);
+
+  const isPoster =
+    !isApparel &&
+    (combinedText.includes('poster') ||
+     combinedText.includes('wall art') ||
+     combinedText.includes('art print') ||
+     md.google_product_category?.toLowerCase().includes('posters, prints & visual artwork'));
+
+  const isMug =
+    !isApparel &&
+    (combinedText.includes('mug') ||
+     combinedText.includes('cup') ||
+     combinedText.includes('drinkware') ||
+     combinedText.includes('glass') ||
+     combinedText.includes('whiskey') ||
+     combinedText.includes('tumbler') ||
+     md.google_product_category?.toLowerCase().includes('mugs') ||
+     md.google_product_category?.toLowerCase().includes('drinkware'));
 
   // ==========================================
   // 1. SIZE RECONCILIATION
@@ -289,7 +514,7 @@ export function reconcileProductAttributes(item: ProductItem): AttributeDiscrepa
         currentSize.toUpperCase() === 'M' ||
         currentSize.toLowerCase() === 'one size' ||
         currentSize.toLowerCase() === 'os' ||
-        (currentSize !== dim && !currentSize.includes(dim.replace(/"/g, '')));
+        (normalizeSize(currentSize) !== normalizeSize(dim) && !currentSize.includes(dim.replace(/"/g, '')));
 
       if (isContradicted) {
         discrepancies.push({
@@ -340,7 +565,7 @@ export function reconcileProductAttributes(item: ProductItem): AttributeDiscrepa
         !currentSize ||
         currentSize.toUpperCase() === 'M' ||
         currentSize.toLowerCase() === 'one size' ||
-        currentSize !== cap;
+        normalizeSize(currentSize) !== normalizeSize(cap);
 
       if (isContradicted) {
         discrepancies.push({
@@ -389,7 +614,7 @@ export function reconcileProductAttributes(item: ProductItem): AttributeDiscrepa
 
     if (variantCheck.isVariant && variantCheck.matchedVariant?.size) {
       const variantSize = variantCheck.matchedVariant.size;
-      if (currentSize !== variantSize) {
+      if (normalizeSize(currentSize) !== normalizeSize(variantSize)) {
         discrepancies.push({
           field: 'size',
           currentValue: currentSize,
@@ -422,10 +647,12 @@ export function reconcileProductAttributes(item: ProductItem): AttributeDiscrepa
 
       if (expectedApparelSize) {
         const isMultipleSizesExposed = variantSizes.length > 1;
-        const isCurrentSizeAMember = variantSizes.includes(currentSize);
+        const isCurrentSizeAMember = variantSizes.some(
+          (s) => normalizeSize(s) === normalizeSize(currentSize)
+        );
         const hasUserOverride = Boolean(userCorrections.size && userCorrections.size === currentSize);
 
-        if (isMultipleSizesExposed && hasUserOverride && currentSize !== expectedApparelSize) {
+        if (isMultipleSizesExposed && hasUserOverride && normalizeSize(currentSize) !== normalizeSize(expectedApparelSize)) {
           discrepancies.push({
             field: 'size',
             currentValue: currentSize,
@@ -435,16 +662,34 @@ export function reconcileProductAttributes(item: ProductItem): AttributeDiscrepa
             reason: `Source exposes multiple sizes (${expectedApparelSize}) but has user-approved override "${currentSize}". Flagging ambiguity/preserving override.`,
             isSafeToFix: false,
           });
+        } else if (isCurrentSizeAMember) {
+          // Current size is a verified variant size offered by the source
+          discrepancies.push({
+            field: 'size',
+            currentValue: currentSize,
+            proposedValue: currentSize,
+            status: 'supported',
+            evidenceSource: 'Product options & variant availability',
+            reason: `Size "${currentSize}" correctly matches a verified available variant offering.`,
+            isSafeToFix: false,
+          });
+        } else if (normalizeSize(currentSize) === normalizeSize(expectedApparelSize)) {
+          discrepancies.push({
+            field: 'size',
+            currentValue: currentSize,
+            proposedValue: currentSize,
+            status: 'supported',
+            evidenceSource: 'Product options & specifications',
+            reason: 'Size correctly matches verified apparel size options.',
+            isSafeToFix: false,
+          });
         } else {
-          const isSingleMWhenMultipleExist =
-            currentSize.toUpperCase() === 'M' &&
-            expectedApparelSize !== 'M' &&
-            (variantSizes.length > 1 || expectedApparelSize.includes('-') || expectedApparelSize.includes(','));
-
+          // Current size is missing or does not match any offered variant
           const isContradicted =
             !currentSize ||
-            isSingleMWhenMultipleExist ||
-            (currentSize !== expectedApparelSize && variantSizes.length > 1);
+            currentSize.toLowerCase() === 'one size' ||
+            currentSize.toLowerCase() === 'os' ||
+            variantSizes.length > 0;
 
           if (isContradicted) {
             discrepancies.push({
@@ -453,17 +698,19 @@ export function reconcileProductAttributes(item: ProductItem): AttributeDiscrepa
               proposedValue: expectedApparelSize,
               status: 'contradicted',
               evidenceSource: 'Product options & variant availability',
-              reason: `Parent apparel offering provides size range (${expectedApparelSize}); replacing manually entered single size "${currentSize || 'empty'}".`,
+              reason: !currentSize
+                ? `Size is missing; populating verified size range (${expectedApparelSize}).`
+                : `Current size "${currentSize}" is not an available option; replacing with verified size range (${expectedApparelSize}).`,
               isSafeToFix: true,
             });
-          } else if (currentSize === expectedApparelSize) {
+          } else {
             discrepancies.push({
               field: 'size',
               currentValue: currentSize,
               proposedValue: currentSize,
-              status: 'supported',
-              evidenceSource: 'Product options & specifications',
-              reason: 'Size correctly matches verified apparel size options.',
+              status: 'unresolved',
+              evidenceSource: 'Catalog data',
+              reason: 'Current size has unknown provenance; no explicit variant match.',
               isSafeToFix: false,
             });
           }
@@ -482,7 +729,7 @@ export function reconcileProductAttributes(item: ProductItem): AttributeDiscrepa
     }
   } else if (currentSize) {
     const dim = detectDimensionFromEvidence(item);
-    if (dim && currentSize !== dim) {
+    if (dim && normalizeSize(currentSize) !== normalizeSize(dim)) {
       discrepancies.push({
         field: 'size',
         currentValue: currentSize,
@@ -523,7 +770,19 @@ export function reconcileProductAttributes(item: ProductItem): AttributeDiscrepa
     });
   } else {
     const detectedColor = detectColorFromEvidence(item);
-    if (detectedColor) {
+    const isCurrentColorValid = isValidColorName(currentColor);
+
+    if (!isCurrentColorValid && currentColor) {
+      discrepancies.push({
+        field: 'color',
+        currentValue: currentColor,
+        proposedValue: detectedColor || '',
+        status: 'contradicted',
+        evidenceSource: 'Attribute semantic validation',
+        reason: `Current color "${currentColor}" is an invalid color string (contains size, brand, or metadata).`,
+        isSafeToFix: Boolean(detectedColor),
+      });
+    } else if (detectedColor) {
       if (!currentColor) {
         discrepancies.push({
           field: 'color',

@@ -6,6 +6,7 @@ import { BulkWorkspace } from './components/BulkWorkspace';
 import { ProductWorkspace } from './components/ProductWorkspace';
 import { BatchUrlIngester } from './components/BatchUrlIngester';
 import { CsvImportExportModal } from './components/CsvImportExportModal';
+import { WebsiteFeedSyncModal } from './components/WebsiteFeedSyncModal';
 import { StrategyConfigModal } from './components/StrategyConfigModal';
 import { BulkProgressModal } from './components/BulkProgressModal';
 import { useBulkOptimizer } from './hooks/useBulkOptimizer';
@@ -16,6 +17,7 @@ export default function App() {
   const [strategyConfig, setStrategyConfig] = useState<StrategyConfig>(INITIAL_STRATEGY_CONFIG);
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
   const [isBatchUrlModalOpen, setIsBatchUrlModalOpen] = useState(false);
+  const [isWebsiteFeedSyncModalOpen, setIsWebsiteFeedSyncModalOpen] = useState(false);
   const [isCsvModalOpen, setIsCsvModalOpen] = useState(false);
   const [csvModalTab, setCsvModalTab] = useState<'import' | 'export'>('export');
   const [isStrategyModalOpen, setIsStrategyModalOpen] = useState(false);
@@ -385,6 +387,7 @@ export default function App() {
         products={products}
         modelName={strategyConfig.geminiModel || 'gemini-3.5-flash-lite'}
         onOpenBatchUrlModal={() => setIsBatchUrlModalOpen(true)}
+        onOpenWebsiteFeedSyncModal={() => setIsWebsiteFeedSyncModalOpen(true)}
         onOpenCsvModal={(tab = 'export') => {
           setCsvModalTab(tab);
           setIsCsvModalOpen(true);
@@ -485,6 +488,13 @@ export default function App() {
         onClose={() => setIsCsvModalOpen(false)}
         products={products}
         onImportComplete={() => loadInitialData()}
+      />
+
+      {/* Website Feed Sync Modal */}
+      <WebsiteFeedSyncModal
+        isOpen={isWebsiteFeedSyncModalOpen}
+        onClose={() => setIsWebsiteFeedSyncModalOpen(false)}
+        onSyncApplied={() => loadInitialData()}
       />
 
       {/* Strategy & Taxonomy Config Modal */}

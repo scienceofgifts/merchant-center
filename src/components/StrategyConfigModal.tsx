@@ -546,13 +546,23 @@ export const StrategyConfigModal: React.FC<StrategyConfigModalProps> = ({
                 {[
                   {
                     id: 'gemini-3.5-flash-lite',
-                    name: 'Gemini 3.5 Flash Lite (Default / Fast & Efficient)',
-                    desc: 'Optimized for high-throughput catalog batch processing with rapid intent extraction.',
+                    name: 'Gemini 3.5 Flash Lite (Default / Ultra-Fast & High Efficiency)',
+                    desc: 'Optimized for rapid intent extraction, feed compliance, and high-volume batch processing.',
                   },
                   {
                     id: 'gemini-3.8-flash',
-                    name: 'Gemini 3.8 Flash (Deep Reasoning & Complex Text)',
-                    desc: 'Recommended for comprehensive title scoring and detailed editorial audits.',
+                    name: 'Gemini 3.8 Flash (High Quality & Editorial Reasoning)',
+                    desc: 'Recommended for comprehensive title scoring, evidence synthesis, and detailed feed audits.',
+                  },
+                  {
+                    id: 'gemini-3.6-flash',
+                    name: 'Gemini 3.6 Flash (Balanced Speed & Reasoning)',
+                    desc: 'Balanced high-efficiency model for multi-attribute feed generation.',
+                  },
+                  {
+                    id: 'gemini-3.1-flash-lite',
+                    name: 'Gemini 3.1 Flash Lite (Legacy Fast Model)',
+                    desc: 'High-speed alternative model for batch operations.',
                   },
                 ].map((m) => (
                   <label

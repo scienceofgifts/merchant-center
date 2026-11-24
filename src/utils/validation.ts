@@ -132,8 +132,27 @@ export function validateMerchantData(
   }
 
   // 8. Variant consistency
-  if (data.item_group_id && (!data.color && !data.size && !data.material)) {
-    warnings.push('Product has item_group_id set (variant) but no distinguishing attribute like color, size, or material is filled.');
+  const hasSyncedDistinguishingAttr =
+    item.syncedVariants &&
+    item.syncedVariants.some((v) => Boolean(v.color || v.size || v.material));
+
+  if (data.item_group_id && !data.color && !data.size && !data.material && !hasSyncedDistinguishingAttr) {
+    warnings.push(
+      'Product has item_group_id set (variant) but no distinguishing attribute like color, size, or material is filled.'
+    );
+  }
+
+  if (item.syncedVariants && item.syncedVariants.length > 0) {
+    const seenVariantIds = new Set<string>();
+    for (const v of item.syncedVariants) {
+      if (!v.id || !v.id.trim()) {
+        blockingErrors.push('One or more synced website variants are missing a valid variant ID (<g:id>).');
+      } else if (seenVariantIds.has(v.id.trim())) {
+        blockingErrors.push(`Duplicate variant ID "${v.id}" within product "${item.id}".`);
+      } else {
+        seenVariantIds.add(v.id.trim());
+      }
+    }
   }
 
   return {
