@@ -28,8 +28,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "science-of-gifts-merchant-feed-db",
-      "database_id": "merchant-center",
+      "database_name": "merchant-center",
+      "database_id": "dbf78aa9-29f5-4d90-990a-25d7711b8ea3",
       "migrations_dir": "migrations"
     }
   ],
